@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<script>
+// input fields and buttons
+const numQuestsField = document.createElement('input');
+numQuestsField.type = 'number';
+numQuestsField.style.margin = '10px';
+numQuestsField.style.width = '50px';
+
+const btnGenerate = document.createElement('button');
+btnGenerate.style.margin = '10px';
+btnGenerate.textContent = 'Generieren';
+
+const btnClear = document.createElement('button');
+btnClear.textContent = 'Löschen';
+btnClear.style.margin = '10px';
+
+// generate quest function
+function generateQuest() {
+  // Begriffe und Abschnitte für den Questgenerator
+  const akteure = [
+    "Anführer, maskulin",
+    "Berühmtheit, feminin",
+    "Bürger, maskulin",
+  ];
+
+  const aktionen = [
+    "anzugreifen",
+    "zu terrorisieren",
+    "zu töten",
+  ];
+
+  const ziele = [
+    "Tier, neutrum",
+    "Abberation, feminin",
+    "Konstrukt, neutrum",
+  ];
+
+  const absichten = [
+    "aus einer Notwendigkeit heraus",
+    "damit eine Herausforderung bestanden wird",
+    "damit das Gesetz aufrechterhalten wird",
+  ];
+
+  const entwicklungen = [
+    "wird von einer höheren Macht geschützt",
+    "flieht in ein Versteck",
+    "wird fälschlicherweise beschuldigt",
+  ];
+
+  // Funktion, um einen zufälligen Text aus einem Array auszuwählen
+  function getRandomText(arr) {
+    const index = Math.floor(Math.random() * arr.length);
+    return arr[index];
+  }
+
+  const akteurData = getRandomText(akteure);
+  const aktion = getRandomText(aktionen);
+
+  // Geschlecht und Artikel für das Ziel bestimmen
+  const zielData = getRandomText(ziele);
+  const [zielText, zielGeschlecht] = zielData.split(', ');
+  let articleZielNominativ;
+  let articleZiel;
+
+  switch (zielGeschlecht) {
+    case 'maskulin':
+      articleZielNominativ = 'der ';
+      articleZielGenetiv = 'des ';
+      articleZielDativ = 'dem ';
+      articleZielAkkusativ = 'den ';
+      articleZielUnbestimmt = 'einen ';
+      articleZielPossesivSingularNominativ = 'sein ';
+      articleZielPossesivPluralNominativ = 'seine ';
+      break;
+    case 'feminin':
+      articleZielNominativ = 'die ';
+      articleZielGenetiv = 'der ';
+      articleZielDativ = 'der ';
+      articleZielAkkusativ = 'die ';
+      articleZielUnbestimmt = 'eine ';
+      articleZielPossesivSingularNominativ = 'ihre ';
+      articleZielPossesivPluralNominativ = 'ihre ';
+      break;
+    case 'neutrum':
+      articleZielNominativ = 'das ';
+      articleZielGenetiv = 'des ';
+      articleZielDativ = 'dem ';
+      articleZielUnbestimmt = 'ein ';
+      articleZielPossesivSingularNominativ = 'sein ';
+      articleZielPossesivPluralNominativ = 'seine ';
+      break;
+    default:
+      articleZielNominativ = 'das ';
+      articleZiel = 'das ';
+      break;
+  }
+
+  const Ziel = zielText; // Artikel und Zielbegriff zusammenführen
+
+  const absicht = getRandomText(absichten);
+  const entwicklung = getRandomText(entwicklungen);
+
+  // Geschlecht und Artikel für den Akteur bestimmen
+  const [akteurText, akteurGeschlecht] = akteurData.split(', ');
+  const articleAkteur = akteurGeschlecht === 'maskulin' ? 'Ein ' : 'Eine ';
+
+
+
+  // Artikel für das Ziel nur im Nominativ-Fall nicht hinzufügen
+  const questSentence = `${articleAkteur}${akteurText} heuert euch an, um  ${articleZielUnbestimmt} ${Ziel} ${aktion}, ${absicht}, aber ${articleZielNominativ} ${Ziel} ${entwicklung}.`;
+
+  return questSentence;
+}
+
+// on-click events
+btnGenerate.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  // clear existing results
+  const container = document.getElementById('container');
+  container.querySelectorAll('li').forEach((li) => li.remove());
+
+  const numQuests = parseInt(numQuestsField.value);
+
+  for (let i = 0; i < numQuests; i++) {
+    const quest = generateQuest();
+
+    const li = document.createElement('li');
+    li.textContent = quest;
+    container.appendChild(li);
+  }
+});
+
+btnClear.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  // clear existing results
+  const container = document.getElementById('container');
+  container.querySelectorAll('li').forEach((li) => li.remove());
+});
+
+// append elements to the document body
+document.body.appendChild(document.createTextNode('Anzahl der Quests: '));
+document.body.appendChild(numQuestsField);
+document.body.appendChild(btnGenerate);
+document.body.appendChild(btnClear);
+
+// create a container for the results
+const container = document.createElement('ul');
+container.id = 'container';
+document.body.appendChild(container);
+
+</script>
+
+</body>
+</html>

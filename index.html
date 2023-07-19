@@ -164,7 +164,7 @@ function declineNoun(noun, gender) {
     maskulin: {
       nominativ: 'der ' + noun,
       genitiv:  endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
-      dativ: 'dem ' + noun,
+      dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
       akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
       nominativEin: endsWithE ? 'ein ' + noun + 'r' :'ein ' + noun,
       genitivEin:  endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',

@@ -61,151 +61,162 @@ function generateQuest() {
     return arr[index];
   }
 
-// Geschlecht und Artikel für den Akteur bestimmen
+// Geschlecht für den Akteur bestimmen
 const akteurData = getRandomText(akteure);
 const [akteurText, akteurGeschlecht] = akteurData.split(', ');
-let articleAkteurNominativ;
-let articleAkteurGenitiv;
-let articleAkteurDativ;
-let articleAkteurAkkusativ;
-let articleAkteurUnbestimmt;
-let articleAkteurPossessivSingularNominativ;
-let articleAkteurPossessivPluralNominativ;
-switch (akteurGeschlecht) {
-  case 'maskulin':
-    articleAkteurNominativ = 'der ';
-    articleAkteurGenitiv = 'des ';
-    articleAkteurDativ = 'dem ';
-    articleAkteurAkkusativ = 'den ';
-    articleAkteurUnbestimmt = 'einen ';
-    articleAkteurPossessivSingularNominativ = 'sein ';
-    articleAkteurPossessivPluralNominativ = 'seine ';
-    break;
-  case 'feminin':
-    articleAkteurNominativ = 'die ';
-    articleAkteurGenitiv = 'der ';
-    articleAkteurDativ = 'der ';
-    articleAkteurAkkusativ = 'die ';
-    articleAkteurUnbestimmt = 'eine ';
-    articleAkteurPossessivSingularNominativ = 'ihre ';
-    articleAkteurPossessivPluralNominativ = 'ihre ';
-    break;
-  case 'neutrum':
-    articleAkteurNominativ = 'das ';
-    articleAkteurGenitiv = 'des ';
-    articleAkteurDativ = 'dem ';
-    articleAkteurUnbestimmt = 'ein ';
-    articleAkteurPossessivSingularNominativ = 'sein ';
-    articleAkteurPossessivPluralNominativ = 'seine ';
-    break;
- default:
-   articleAkteurNominativ = 'das ';
-   articleAkteurGenitiv = 'des ';
-   articleAkteurDativ = 'dem ';
-   articleAkteurUnbestimmt = 'ein ';
-   articleAkteurPossessivSingularNominativ = 'sein ';
-   articleAkteurPossessivPluralNominativ = 'seine ';
-   break;
-}
 
-// Geschlecht und Artikel für das Ziel bestimmen
+// Geschlecht für das Ziel bestimmen
 const zielData = getRandomText(ziele);
 const [zielText, zielGeschlecht] = zielData.split(', ');
-let articleZielNominativ;
-let articleZielGenitiv;
-let articleZielDativ;
-let articleZielAkkusativ;
-let articleZielUnbestimmt;
-let articleZielPossessivSingularNominativ;
-let articleZielPossessivPluralNominativ;
-switch (zielGeschlecht) {
-  case 'maskulin':
-    articleZielNominativ = 'der ';
-    articleZielGenitiv = 'des ';
-    articleZielDativ = 'dem ';
-    articleZielAkkusativ = 'den ';
-    articleZielUnbestimmt = 'einen ';
-    articleZielPossessivSingularNominativ = 'sein ';
-    articleZielPossessivPluralNominativ = 'seine ';
-    break;
-  case 'feminin':
-    articleZielNominativ = 'die ';
-    articleZielGenitiv = 'der ';
-    articleZielDativ = 'der ';
-    articleZielAkkusativ = 'die ';
-    articleZielUnbestimmt = 'eine ';
-    articleZielPossessivSingularNominativ = 'ihre ';
-    articleZielPossessivPluralNominativ = 'ihre ';
-    break;
-  case 'neutrum':
-    articleZielNominativ = 'das ';
-    articleZielGenitiv = 'des ';
-    articleZielDativ = 'dem ';
-    articleZielUnbestimmt = 'ein ';
-    articleZielPossessivSingularNominativ = 'sein ';
-    articleZielPossessivPluralNominativ = 'seine ';
-    break;
-  default:
-    articleZielNominativ = 'das ';
-    articleZielGenitiv = 'des ';
-    articleZielDativ = 'dem ';
-    articleZielUnbestimmt = 'ein ';
-    articleZielPossessivSingularNominativ = 'sein ';
-    articleZielPossessivPluralNominativ = 'seine ';
-    break;
-}
+
+// Erstelle das Array für Nomen mit schwacher Deklination
+const nomenSchwacheDeklination = [
+  'Gelehrte',
+  'Fremde',
+];
 
 // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
 function declineNoun(noun, gender) {
   const endsWithE = noun.endsWith('e');
   const endsWithT = noun.endsWith('t');
   
-  const nounCases = {
-    maskulin: {
-      nominativ: 'der ' + noun,
-      genitiv:  endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
-      dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
-      akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
-      nominativEin: endsWithE ? 'ein ' + noun + 'r' :'ein ' + noun,
-      genitivEin:  endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
-      dativEin:  endsWithE ? 'einem ' + noun + 'n' :'einem ' + noun,
-      akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
-      nominativWelcher: 'welcher ',
-      genitivWelcher: 'welches ' ,
-      dativWelcher: 'welchem ',
-      akkusativWelcher: 'welchen ',
-    },
-    feminin: {
-      nominativ: 'die ' + noun,
-      genitiv: 'der ' + noun,
-      dativ: 'der ' + noun,
-      akkusativ: 'die ' + noun,
-      nominativEin: 'eine ' + noun,
-      genitivEin: 'einer ' + noun,
-      dativEin: 'einer ' + noun,
-      akkusativEin: 'eine ' + noun,
-      nominativWelcher: 'welche ',
-      genitivWelcher: 'welcher ' ,
-      dativWelcher: 'welcher ',
-      akkusativWelcher: 'welche ',
-    },
-    neutrum: {
-      nominativ: 'das ' + noun,
-      genitiv: 'des ' + noun,
-      dativ: 'dem ' + noun,
-      akkusativ: 'das ' + noun,
-      nominativEin: 'ein ' + noun,
-      genitivEin: 'eines ' + noun,
-      dativEin: 'einem ' + noun,
-      akkusativEin: 'ein ' + noun,
-      nominativWelcher: 'welches ',
-      genitivWelcher: 'welchen ' ,
-      dativWelcher: 'welchem ',
-      akkusativWelcher: 'welches ',
-    },
-  };
+  // Überprüfe, ob das Nomen eine schwache Deklination hat
+  if (nomenSchwacheDeklination.includes(noun)) {
+    const nounCases = {
+      maskulin: {      
+        nominativ: 'der ' + noun,
+        genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+        dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
+        akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
+        
+        nominativEin: endsWithE ? 'ein ' + noun + 'r' :'ein ' + noun,
+        genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
+        dativEin: endsWithE ? 'einem ' + noun + 'n' :'einem ' + noun,
+        akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
+        
+        nominativWelcher: 'welcher ',
+        genitivWelcher: 'welches ',
+        dativWelcher: 'welchem ',
+        akkusativWelcher: 'welchen ',
+        
+        possesivPronomenSingular: 'sein',
+        possesivPronomenPlural: 'sein',
+      },
+      
+      feminin: {      
+        nominativ: 'die ' + noun,
+        genitiv: 'der ' + noun,
+        dativ: 'der ' + noun,
+        akkusativ: 'die ' + noun,
+        
+        nominativEin: 'eine ' + noun,
+        genitivEin: 'einer ' + noun,
+        dativEin: 'einer ' + noun,
+        akkusativEin: 'eine ' + noun,
+        
+        nominativWelcher: 'welche ',
+        genitivWelcher: 'welcher ',
+        dativWelcher: 'welcher ',
+        akkusativWelcher: 'welche ',
+        
+        possesivPronomenSingular: 'ihr',
+        possesivPronomenPlural: 'ihre',
+      },
+      
+      neutrum: {
+        nominativ: 'das ' + noun,
+        genitiv: 'des ' + noun,
+        dativ: 'dem ' + noun,
+        akkusativ: 'das ' + noun,
+                    
+        nominativEin: 'ein ' + noun,
+        genitivEin: 'eines ' + noun,
+        dativEin: 'einem ' + noun,
+        akkusativEin: 'ein ' + noun,
+        
+        nominativWelcher: 'welches ',
+        genitivWelcher: 'welchen ',
+        dativWelcher: 'welchem ',
+        akkusativWelcher: 'welches ',
+        
+        possesivPronomenSingular: 'sein',
+        possesivPronomenPlural: 'seine',
+      },
+    };
 
-  return nounCases[gender];
+    return nounCases[gender];
+    
+  } else {
+  
+    // Normale Deklinationsregeln für Nomen ohne schwache Deklination
+    const nounCases = {
+      maskulin: {
+        nominativ: 'der ' + noun,
+        genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+        dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
+        akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
+        
+        nominativEin: 'ein ' + noun,
+        genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
+        dativEin: endsWithE ? 'einem ' + noun + 'n' :'einem ' + noun,
+        akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
+        
+        nominativWelcher: 'welcher ',
+        genitivWelcher: 'welches ',
+        dativWelcher: 'welchem ',
+        akkusativWelcher: 'welchen ',
+        
+        possesivPronomenSingularNominativ: 'sein',
+        possesivPronomenSingularNominativFeminin: 'seine',
+        possesivPronomenPluralNominativ: 'seine',
+      },
+      
+      feminin: {
+        nominativ: 'die ' + noun,
+        genitiv: 'der ' + noun,
+        dativ: 'der ' + noun,
+        akkusativ: 'die ' + noun,
+        
+        nominativEin: 'eine ' + noun,
+        genitivEin: 'einer ' + noun,
+        dativEin: 'einer ' + noun,
+        akkusativEin: 'eine ' + noun,
+        
+        nominativWelcher: 'welche ',
+        genitivWelcher: 'welcher ',
+        dativWelcher: 'welcher ',
+        akkusativWelcher: 'welche ',
+        
+        possesivPronomenSingularNominativ: 'ihr',
+        possesivPronomenSingularNominativFeminin: 'ihre',
+        possesivPronomenPlural: 'ihre',
+      },
+      
+      neutrum: {
+        nominativ: 'das ' + noun,
+        genitiv: 'des ' + noun,
+        dativ: 'dem ' + noun,
+        akkusativ: 'das ' + noun,
+        
+        nominativEin: 'ein ' + noun,
+        genitivEin: 'eines ' + noun,
+        dativEin: 'einem ' + noun,
+        akkusativEin: 'ein ' + noun,
+        
+        nominativWelcher: 'welches ',
+        genitivWelcher: 'welchen ',
+        dativWelcher: 'welchem ',
+        akkusativWelcher: 'welches ',
+        
+        possesivPronomenSingularNominativ: 'sein',
+        possesivPronomenSingularNominativ: 'seine',
+        possesivPronomenPlural: 'seine', 
+      }
+      
+    };
+
+    return nounCases[gender];
+  }
 }
 
   // Dekliniert Akteurnomen 
@@ -254,7 +265,7 @@ const aktion = getRandomText(aktionen);
   //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
   const entwicklungen = [
     `${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
-    `${declinedZiel.nominativ} flieht in ${articleZielPossessivSingularNominativ} Versteck`,
+    `${declinedZiel.nominativ} flieht in ${declinedZiel.possesivPronomenSingularNominativ} Versteck`,
     `${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`,
     "das Ganze ist nur inszeniert",
     `${declinedZiel.nominativ} bereut die eigenen Taten`,

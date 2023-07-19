@@ -238,7 +238,7 @@ const absichten = [
   ];
   const absicht = getRandomText(absichten);
   
-//Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
+  //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
   const entwicklungen = [
     `${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
     `${declinedZiel.nominativ} flieht in ${articleZielPossessivSingularNominativ} Versteck`,
@@ -254,10 +254,13 @@ const absichten = [
   ];
   const entwicklung = getRandomText(entwicklungen);
   
-// Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${declinedZiel.akkusativEin} ${aktion}, ${absicht}, aber ${entwicklung}.`;
+  // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
+  const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${declinedZiel.akkusativEin} ${aktion}, ${absicht}, aber ${entwicklung}.`;
 
-  return questSentence;
+ // Großbuchstaben für den ersten Buchstaben jedes Satzes
+  const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
+
+  return questSentenceCapitalized;
 }
 
 // on-click events
@@ -279,11 +282,11 @@ for (let i = 0; i < numQuests; i++) {
   }
 });
 
-//Fügt einen Event Listener hinzu, um das Standardverhalten des 'btnClear'-Buttons zu verhindern
+// Fügt einen Event Listener hinzu, um das Standardverhalten des 'btnClear'-Buttons zu verhindern
 btnClear.addEventListener('click', (event) => {
   event.preventDefault();
 
-//Entfernt bisher generierte Resulate
+// Entfernt bisher generierte Resulate
   const container = document.getElementById('container');
   container.querySelectorAll('li').forEach((li) => li.remove());
 });

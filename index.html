@@ -102,46 +102,6 @@ function declineNoun(noun, gender) {
         possesivPronomenSingular: 'sein',
         possesivPronomenPlural: 'sein',
       },
-      
-      feminin: {      
-        nominativ: 'die ' + noun,
-        genitiv: 'der ' + noun,
-        dativ: 'der ' + noun,
-        akkusativ: 'die ' + noun,
-        
-        nominativEin: 'eine ' + noun,
-        genitivEin: 'einer ' + noun,
-        dativEin: 'einer ' + noun,
-        akkusativEin: 'eine ' + noun,
-        
-        nominativWelcher: 'welche ',
-        genitivWelcher: 'welcher ',
-        dativWelcher: 'welcher ',
-        akkusativWelcher: 'welche ',
-        
-        possesivPronomenSingular: 'ihr',
-        possesivPronomenPlural: 'ihre',
-      },
-      
-      neutrum: {
-        nominativ: 'das ' + noun,
-        genitiv: 'des ' + noun,
-        dativ: 'dem ' + noun,
-        akkusativ: 'das ' + noun,
-                    
-        nominativEin: 'ein ' + noun,
-        genitivEin: 'eines ' + noun,
-        dativEin: 'einem ' + noun,
-        akkusativEin: 'ein ' + noun,
-        
-        nominativWelcher: 'welches ',
-        genitivWelcher: 'welchen ',
-        dativWelcher: 'welchem ',
-        akkusativWelcher: 'welches ',
-        
-        possesivPronomenSingular: 'sein',
-        possesivPronomenPlural: 'seine',
-      },
     };
 
     return nounCases[gender];
@@ -194,7 +154,7 @@ function declineNoun(noun, gender) {
       
       neutrum: {
         nominativ: 'das ' + noun,
-        genitiv: 'des ' + noun,
+        genitiv: 'des ' + noun + 's',
         dativ: 'dem ' + noun,
         akkusativ: 'das ' + noun,
         
@@ -251,7 +211,7 @@ const aktion = getRandomText(aktionen);
     `damit ${declinedAkteur.nominativ} Magie entfesseln kann`,
     `weil ${declinedAkteur.nominativ} von Emotionen getrieben wird`,
     `damit ${declinedAkteur.nominativ} Dominanz zeigen kann`,
-    `damit ${declinedAkteur.nominativ} die Schätze an sich nehmen kann`,
+    `damit ${declinedAkteur.nominativ} die Schätze ${declinedZiel.genitiv} an sich nehmen kann`,
     `damit ${declinedAkteur.nominativ} Macht erlangt`,
     `damit ${declinedAkteur.nominativ} die Natur kontrollieren kann`,
     "weil diese Handlung Teil eines Rituals ist",

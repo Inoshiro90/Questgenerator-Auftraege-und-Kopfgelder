@@ -218,12 +218,8 @@ function declineNoun(noun, gender) {
     return nounCases[gender];
   }
 }
-
-  // Dekliniert Akteurnomen 
-  const articleAkteur = akteurGeschlecht === 'maskulin' ? 'Ein ' : 'Eine ';
-  const articleZiel = zielGeschlecht === 'maskulin' ? 'ein ' : 'neutrum' ? 'ein ' : 'eine ';
-
-  //Dekliniert Zielnomen
+  
+  //Dekliniert Akteur- und Zielnomen
   const declinedZiel = declineNoun(zielText, zielGeschlecht);
   const declinedAkteur = declineNoun(akteurText, akteurGeschlecht);
 

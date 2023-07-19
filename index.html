@@ -76,8 +76,8 @@ function generateQuest() {
   }
 
 // Geschlecht und Artikel für den Akteur bestimmen
-const AkteurData = getRandomText(akteure);
-const [AkteurText, AkteurGeschlecht] = AkteurData.split(', ');
+const akteurData = getRandomText(akteure);
+const [akteurText, akteurGeschlecht] = akteurData.split(', ');
 let articleAkteurNominativ;
 let articleAkteurGenitiv;
 let articleAkteurDativ;
@@ -85,7 +85,7 @@ let articleAkteurAkkusativ;
 let articleAkteurUnbestimmt;
 let articleAkteurPossessivSingularNominativ;
 let articleAkteurPossessivPluralNominativ;
-switch (AkteurGeschlecht) {
+switch (akteurGeschlecht) {
   case 'maskulin':
     articleAkteurNominativ = 'der ';
     articleAkteurGenitiv = 'des ';
@@ -176,22 +176,34 @@ function declineNoun(noun, gender) {
   
   const nounCases = {
     maskulin: {
-      nominativ: noun,
-      genitiv: endsWithE ? noun + 'n' : endsWithE ? noun + 'en' :noun + 's',
-      dativ: noun + 'm',
-      akkusativ: endsWithE ? noun + 'n' : noun,
+      nominativ: 'der ' + noun,
+      genitiv:  endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+      dativ: 'dem ' + noun,
+      akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
+      nominativEin: 'der ' + noun,
+      genitivEin:  endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+      dativEin: 'dem ' + noun,
+      akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
     },
     feminin: {
-      nominativ: noun,
-      genitiv: noun + 'er',
-      dativ: noun + 'er',
-      akkusativ: noun,
+      nominativ: 'die ' + noun,
+      genitiv: 'der ' + noun,
+      dativ: 'der ' + noun,
+      akkusativ: 'die ' + noun,
+      nominativEin: 'eine ' + noun,
+      genitivEin: 'eine ' + noun,
+      dativEin: 'eine ' + noun,
+      akkusativEin: 'eine ' + noun,
     },
     neutrum: {
-      nominativ: noun,
-      genitiv: noun + 'es',
-      dativ: noun + 'em',
-      akkusativ: noun,
+      nominativ: 'das ' + noun,
+      genitiv: 'des ' + noun,
+      dativ: 'dem ' + noun,
+      akkusativ: 'das ' + noun,
+      nominativEin: 'ein ' + noun,
+      genitivEin: 'ein ' + noun,
+      dativEin: 'ein ' + noun,
+      akkusativEin: 'ein ' + noun,
     },
   };
 
@@ -199,9 +211,8 @@ function declineNoun(noun, gender) {
 }
 
 // Dekliniert Akteurnomen 
-const akteurData = getRandomText(akteure);
-const [akteurText, akteurGeschlecht] = akteurData.split(', ');
 const articleAkteur = akteurGeschlecht === 'maskulin' ? 'Ein ' : 'Eine ';
+const articleZiel = zielGeschlecht === 'maskulin' ? 'ein ' : 'neutrum' ? 'ein ' : 'eine ';
 
 //Dekliniert Zielnomen
 const declinedZiel = declineNoun(zielText, zielGeschlecht);
@@ -212,39 +223,39 @@ const aktion = getRandomText(aktionen);
 
 //Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
 const absichten = [
-    `aus einer Notwendigkeit ${articleAkteurGenitiv} ${declinedAkteur.genitiv} heraus`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} eine Herausforderung besteht`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} Rache nehmen kann`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} Befehle ausführen kann`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} Magie entfesseln kann`,
-    `weil ${articleAkteurNominativ} ${declinedAkteur.nominativ} von Emotionen getrieben wird`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} Dominanz zeigen kann`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} die Schätze an sich nehmen kann`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} Macht erlangt`,
-    `damit ${articleAkteurNominativ} ${declinedAkteur.nominativ} die Natur kontrollieren kann`,
+    `aus einer Notwendigkeit ${declinedAkteur.genitiv} heraus`,
+    `damit ${declinedAkteur.nominativ} eine Herausforderung besteht`,
+    `damit ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`,
+    `damit ${declinedAkteur.nominativ} Rache nehmen kann`,
+    `damit ${declinedAkteur.nominativ} Befehle ausführen kann`,
+    `damit ${declinedAkteur.nominativ} Magie entfesseln kann`,
+    `weil ${declinedAkteur.nominativ} von Emotionen getrieben wird`,
+    `damit ${declinedAkteur.nominativ} Dominanz zeigen kann`,
+    `damit ${declinedAkteur.nominativ} die Schätze an sich nehmen kann`,
+    `damit ${declinedAkteur.nominativ} Macht erlangt`,
+    `damit ${declinedAkteur.nominativ} die Natur kontrollieren kann`,
     "als Teil eines Rituals",
   ];
   const absicht = getRandomText(absichten);
   
 //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
   const entwicklungen = [
-    `${articleZielNominativ}${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
-    `${articleZielNominativ}${declinedZiel.nominativ} flieht in ${articleZielPossessivSingularNominativ} Versteck`,
-    `${articleZielNominativ}${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`,
+    `${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
+    `${declinedZiel.nominativ} flieht in ${articleZielPossessivSingularNominativ} Versteck`,
+    `${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`,
     "die ganze Tortur ist inszeniert",
-    `${articleZielNominativ}${declinedZiel.nominativ} bereut die eigenen Taten`,
+    `${declinedZiel.nominativ} bereut die eigenen Taten`,
     "es wird dadurch unwissentlich eine Prophezeiung erfüllt",
-    `${articleZielNominativ}${declinedZiel.nominativ} verbreitet eine Krankheit`,
-    `${articleZielNominativ}${declinedZiel.nominativ} wird von Gefolgsleuten unterstützt`,
-    `${articleZielNominativ}${declinedZiel.nominativ} ergreift Maßnahmen, um sich zu schützen`,
-    `${articleZielNominativ}${declinedZiel.nominativ} reist in ein anderes Reich`,
-    `${articleZielNominativ}${declinedZiel.nominativ} wird von Magie geschützt`,
+    `${declinedZiel.nominativ} verbreitet eine Krankheit`,
+    `${declinedZiel.nominativ} wird von Gefolgsleuten unterstützt`,
+    `${declinedZiel.nominativ} ergreift Maßnahmen, um sich zu schützen`,
+    `${declinedZiel.nominativ} reist in ein anderes Reich`,
+    `${declinedZiel.nominativ} wird von Magie geschützt`,
   ];
   const entwicklung = getRandomText(entwicklungen);
   
 // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${articleZielUnbestimmt}${declinedZiel.akkusativ} ${aktion}, ${absicht}, aber ${entwicklung}.`;
+const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${declinedZiel.akkusativEin} ${aktion}, ${absicht}, aber ${entwicklung}.`;
 
   return questSentence;
 }

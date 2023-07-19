@@ -168,7 +168,7 @@ function declineNoun(noun, gender) {
       akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
       nominativEin: endsWithE ? 'ein ' + noun + 'r' :'ein ' + noun,
       genitivEin:  endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
-      dativEin: 'einem ' + noun,
+      dativEin:  endsWithE ? 'einem ' + noun + 'n' :'einem ' + noun,
       akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
       nominativWelcher: 'welcher ',
       genitivWelcher: 'welches ' ,

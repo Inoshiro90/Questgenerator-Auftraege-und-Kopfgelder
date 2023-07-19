@@ -39,21 +39,6 @@ function generateQuest() {
     "Fraktion, feminin",
   ];
 
-  // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
-  const aktionen = [
-    "anzugreifen",
-    "zu terrorisieren",
-    "zu töten",
-    "zu fangen",
-    "zu vertreiben",
-    "zu neutralisieren",
-    "zu quälen",
-    "zu demoralisieren",
-    "zu bestehlen",
-    "zu unterjochen",
-    "zu ruinieren",
-  ];
-
   // Abschnitt Ziele und entsprechende Begriffe für den Questgenerator
   const ziele = [
     "Tier, neutrum",
@@ -68,6 +53,7 @@ function generateQuest() {
     "Elementar, maskulin",
     "Schlick, maskulin",
   ];
+
 
 // Funktion, um einen zufälligen Text aus einem Array auszuwählen
   function getRandomText(arr) {
@@ -210,19 +196,34 @@ function declineNoun(noun, gender) {
   return nounCases[gender];
 }
 
-// Dekliniert Akteurnomen 
-const articleAkteur = akteurGeschlecht === 'maskulin' ? 'Ein ' : 'Eine ';
-const articleZiel = zielGeschlecht === 'maskulin' ? 'ein ' : 'neutrum' ? 'ein ' : 'eine ';
+  // Dekliniert Akteurnomen 
+  const articleAkteur = akteurGeschlecht === 'maskulin' ? 'Ein ' : 'Eine ';
+  const articleZiel = zielGeschlecht === 'maskulin' ? 'ein ' : 'neutrum' ? 'ein ' : 'eine ';
 
-//Dekliniert Zielnomen
-const declinedZiel = declineNoun(zielText, zielGeschlecht);
-const declinedAkteur = declineNoun(akteurText, akteurGeschlecht);
+  //Dekliniert Zielnomen
+  const declinedZiel = declineNoun(zielText, zielGeschlecht);
+  const declinedAkteur = declineNoun(akteurText, akteurGeschlecht);
 
+  // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
+  const aktionen = [
+    `${declinedZiel.akkusativEin} anzugreifen`,
+    `${declinedZiel.akkusativEin} zu terrorisieren`,
+    `${declinedZiel.akkusativEin} zu töten`,
+    `${declinedZiel.akkusativEin} zu fangen`,
+    `${declinedZiel.akkusativEin} zu vertreiben`,
+    `${declinedZiel.akkusativEin} zu neutralisieren`,
+    `${declinedZiel.akkusativEin} zu quälen`,
+    `${declinedZiel.akkusativEin} zu demoralisieren`,
+    `von ${declinedZiel.dativEin} zu stehlen`,
+    `${declinedZiel.akkusativEin} zu unterjochen`,
+    `das Eigentum ${declinedZiel.genitivEin} zu zerstören`,
+  ];
+  
 //Wählt eine zufällige Aktion aus
 const aktion = getRandomText(aktionen);
 
-//Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
-const absichten = [
+  //Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
+  const absichten = [
     `aus einer Notwendigkeit ${declinedAkteur.genitiv} heraus`,
     `damit ${declinedAkteur.nominativ} eine Herausforderung besteht`,
     `damit ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`,
@@ -255,7 +256,7 @@ const absichten = [
   const entwicklung = getRandomText(entwicklungen);
   
   // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-  const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${declinedZiel.akkusativEin} ${aktion}, ${absicht}, aber ${entwicklung}.`;
+  const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}.`;
 
  // Großbuchstaben für den ersten Buchstaben jedes Satzes
   const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());

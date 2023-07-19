@@ -166,10 +166,14 @@ function declineNoun(noun, gender) {
       genitiv:  endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
       dativ: 'dem ' + noun,
       akkusativ: endsWithE ? 'den ' + noun + 'n': endsWithT ? 'den ' + noun + 'en': 'den ' + noun,
-      nominativEin: 'ein ' + noun,
+      nominativEin: endsWithE ? 'ein ' + noun + 'r' :'ein ' + noun,
       genitivEin:  endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
       dativEin: 'einem ' + noun,
       akkusativEin: endsWithE ? 'einen ' + noun + 'n': endsWithT ? 'einen ' + noun + 'en': 'einen ' + noun,
+      nominativWelcher: 'welcher ',
+      genitivWelcher: 'welches ' ,
+      dativWelcher: 'welchem ',
+      akkusativWelcher: 'welchen ',
     },
     feminin: {
       nominativ: 'die ' + noun,
@@ -180,6 +184,10 @@ function declineNoun(noun, gender) {
       genitivEin: 'einer ' + noun,
       dativEin: 'einer ' + noun,
       akkusativEin: 'eine ' + noun,
+      nominativWelcher: 'welche ',
+      genitivWelcher: 'welcher ' ,
+      dativWelcher: 'welcher ',
+      akkusativWelcher: 'welche ',
     },
     neutrum: {
       nominativ: 'das ' + noun,
@@ -190,6 +198,10 @@ function declineNoun(noun, gender) {
       genitivEin: 'eines ' + noun,
       dativEin: 'einem ' + noun,
       akkusativEin: 'ein ' + noun,
+      nominativWelcher: 'welches ',
+      genitivWelcher: 'welchen ' ,
+      dativWelcher: 'welchem ',
+      akkusativWelcher: 'welches ',
     },
   };
 
@@ -256,8 +268,10 @@ const aktion = getRandomText(aktionen);
   const entwicklung = getRandomText(entwicklungen);
   
   // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-  const questSentence = `${articleAkteur}${akteurText} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}.`;
+  const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}. `;
 
+//Erweiterung von questSentence für später: Bei ${declinedAkteur.dativ} handelt es sich um declinedSubakteur.akkusativEin, beschreibungSubakteur, declinedSubakteur.nominativWelcher subabsicht und declinedSubakteur.nominativ möchte, dass ${declinedZiel.nominativ} subaktion, beschreibungSubaktion  Bei ${declinedZiel.dativ} handelt es sich um declinedSubziel.akkusativEin, beschreibungSubziel. Bei der unerwarteten Entwicklung handelt es sich um subentwicklung, beschreibungSubentwicklung.
+  
  // Großbuchstaben für den ersten Buchstaben jedes Satzes
   const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
 

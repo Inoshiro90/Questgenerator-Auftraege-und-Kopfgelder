@@ -1,300 +1,701 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <style>
-        ul#container {
-            white-space: pre-wrap;
-        }
+      ul#container {
+        white-space: pre-wrap;
+      }
     </style>
-</head>
-
-<body>
-
+  </head>
+  <body>
     <script>
-        // Erstellt Eingabefeld und Buttons
-        const numQuestsField = document.createElement('input');
-        numQuestsField.type = 'number';
-        numQuestsField.style.margin = '10px';
-        numQuestsField.style.width = '50px';
-
-        const btnGenerate = document.createElement('button');
-        btnGenerate.style.margin = '10px';
-        btnGenerate.textContent = 'Generieren';
-
-        const btnClear = document.createElement('button');
-        btnClear.textContent = 'Löschen';
-        btnClear.style.margin = '10px';
-
-        // Erstellt Questfunktion
-        function generateQuest() {
-
-            // Abschnitt Akteur und entsprechende Begriffe für den Questgenerator
-            const akteure = [
-                "Anführer , maskulin , regiert oder unterstützt die Regierung bestimmter Völker, Kulturen oder Regionen und hat seinen Platz verdient, wurde dazu gewählt, hat ihn geerbt oder hat ihn mit Gewalt übernommen",
-                "Berühmtheit , feminin , ist charismatisch und einnehmend. Sie hat sich auf eine Art und Weise einen Namen gemacht. Vielleicht ist sie berühmt und beliebt, oder sie ist ein bisschen ruchlos",
-                "Bürger , maskulin , arbeitet hart, um über die Runden zu kommen. Er folgt wahrscheinlich einem ähnlichen Weg wie seine Vorfahren, indem er das Land bewirtschaftet oder ein bestimmtes Handwerk ausübt, welches gerade lukrativ genug ist, um den Winter zu überstehen",
-                "Soldat , maskulin , hat in Kriegen gekämpft, Siedlungen gegen Angriffe von Monstern verteidigt oder ist zumindest kampferprobt, auch wenn er noch nie in einem echten Kampf war",
-                "Sonderling , maskulin , lebt und überlebt in der Wildnis. Er hat sich für ein Leben außerhalb der Zivilisation entschieden und könnte zur Bewachung wichtiger Pfade angestellt worden sein oder er könnte sich selbst dem Schutz der Natur verschrieben haben",
-                "Kaufmann , maskulin , ist in der Regel wohlhabend und er hat sein Geld durch günstigen Einkauf und teuren Verkauf verdient. Die Waren, mit denen er sein Geld verdient können gewöhnlich oder exotisch sein",
-                "Handwerker , maskulin , erhielt eine spezielle Ausbildung, mit der es ihm möglich ist, eine bestimmte Arbeit auf hohem Niveau auszuführen. Dieser Beruf kann über Generationen weitergeben worden sein",
-                "Bettler , maskulin , ist eine arme, unglückliche Seele, die der Armut verfallen ist. Er bettelt nun am Straßenrand um Geld und ist möglicherweise aus irgendeinem Grund nicht in der Lage zu arbeiten",
-                "Gelehrte , maskulin , ist ein Experte auf einem bestimmten Gebiet. Er kann relativ neu und unbekannt auf seinem Gebiet sein, oder aber ein absoluter Experte, der über mehr Wissen auf diesem Gebiet verfügt als jeder andere",
-                "Fremde , maskulin , kommt aus einem fernen Land und ist auf einheimische Kreaturen gestoßen, und irgendetwas hindert ihn daran, die Situation selbst zu meistern. Er braucht Hilfe von Leuten, die das Gebiet besser kennen als er",
-                "Zauberwirker , maskulin , kann in allen Formen und Größen kommen. Er kann seine Magie aus einer der vielen Quellen schöpfen, die beeinflussen, wie er sie einsetzt und welche Form sie annimmt",
-                "Fraktion , feminin , kann vieles sein: von Handelsgilden bis zu Piratenflotten, von Schuhmacherallianzen bis zu militärischen Einheiten. Sie ist eine Gruppe von Individuen, die durch gemeinsame Ziele oder Moralvorstellungen miteinander verbunden sind",
-            ];
-
-            // Abschnitt Ziele und entsprechende Begriffe für den Questgenerator
-            const ziele = [
-                "Tier , neutrum , ist ein Teil der natürlichen Ökologie der Welt, normalerweise unintelligent und ohne Gesellschaft oder Sprache. Ein unintelligentes Tier kann im Auftrag eines Besitzers oder Herrn handeln",
-                "Abberation , feminin , ist ein außerirdisches Wesen aus einer fremden Existenzebene, das oft angeborene magische Fähigkeiten besitzt, die eher von seinem fremden Geist als von den mystischen Kräften der Welt herrühren",
-                "Konstrukt , neutrum , wurde nicht geboren, sondern geschaffen und kann von seinem Schöpfer so programmiert worden sein, dass es in einer bestimmten Weise handelt oder selbständig denkt. Ein nicht-intelligentes Konstrukt kann im Auftrag eines Besitzers oder Meisters handeln",
-                "Drache , maskulin , ist ein großes, reptilienartiges Wesen uralten Ursprungs, das über enorme Kräfte verfügt, die mit dem Alter zunehmen. Es besitzt eine hohe Intelligenz und angeborene Magie",
-                "Feenwesen , neutrum , ist ein magisches Geschöpf, das eng mit den Kräften der Natur verbunden ist, in dämmrigen Hainen und nebligen Wäldern lebt und oft launisch ist",
-                "Unhold , maskulin , ist eine böse Kreatur, die in den niederen Ebenen der Existenz lebt und durch und durch böse ist. Er kann von finsteren Kulten herbeigerufen worden sein oder sich seinen eigenen Weg hierher gebahnt haben, um abscheuliche Taten zu begehen",
-                "Riese , maskulin , ist von humanoider Gestalt. Seine Proportionen sind jedoch riesig. Er lebt in eigenen, komplexen Kulturen und Gesellschaften - manche mehr, andere weniger zivilisiert",
-                "Humanoide , maskulin , ist ein Mitglied eines humanoiden Volkes, das über eine eigene Sprache, eine eigene Kultur und ein eigenes politisches und moralisches Spektrum verfügt",
-                "Monstrosität , feminin , ist eine furchterregende Kreatur, die das Ergebnis eines schief gelaufenen magischen Experiments, eines schrecklichen Fluchs oder ein pseudo-natürliches Ungeheuer sein kann, das sich jeder Kategorisierung entzieht",
-                "Elementar , maskulin , ist eine biologische Form, die von einer chaotischen, elementaren Essenz durchdrungen ist",
-                "Schlick , maskulin , ist eine gallertartige Kreatur, die selten eine feste Form annimmt und meist in unterirdischen Höhlen und Verliesen lebt, wo sie sich von Abfällen, Aas oder unglücklichen Abenteurern ernährt",
-                "Untote , maskulin , war einst eine lebende Kreatur, die durch nekromantische Magie oder einen unheiligen Fluch in einen entsetzlichen Zustand des Untodes versetzt wurde. Ein unintelligenter Untoter kann im Auftrag eines Meisters handeln",
-            ];
-
-
-            // Funktion, um einen zufälligen Text aus einem Array auszuwählen
-            function getRandomText(arr) {
-                const index = Math.floor(Math.random() * arr.length);
-                return arr[index];
-            }
-
-            // Geschlecht für den Akteur bestimmen
-            const akteurData = getRandomText(akteure);
-            const [akteurText, akteurGeschlecht, akteurBeschreibung] = akteurData.split(' , ');
-
-            // Geschlecht für das Ziel bestimmen
-            const zielData = getRandomText(ziele);
-            const [zielText, zielGeschlecht, zielBeschreibung] = zielData.split(' , ');
-
-            // Erstelle das Array für Nomen mit schwacher Deklination
-            const nomenSchwacheDeklination = [
-                'Gelehrte',
-                'Fremde',
-                'Untote',
-                'Humanoide',
-            ];
-
-            // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
-            function declineNoun(noun, gender) {
-                const endsWithE = noun.endsWith('e');
-                const endsWithT = noun.endsWith('t');
-
-                // Überprüfe, ob das Nomen eine schwache Deklination hat
-                if (nomenSchwacheDeklination.includes(noun)) {
-                    const nounCases = {
-                        maskulin: {
-                            nominativ: 'der ' + noun,
-                            genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
-                            dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
-                            akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
-
-                            nominativEin: endsWithE ? 'ein ' + noun + 'r' : 'ein ' + noun,
-                            genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
-                            dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
-                            akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : 'einen ' + noun,
-
-                            nominativWelcher: 'welcher ',
-                            genitivWelcher: 'welches ',
-                            dativWelcher: 'welchem ',
-                            akkusativWelcher: 'welchen ',
-
-                            possesivPronomenSingular: 'sein',
-                            possesivPronomenPlural: 'sein',
-                        },
-                    };
-
-                    return nounCases[gender];
-
-                } else {
-
-                    // Normale Deklinationsregeln für Nomen ohne schwache Deklination
-                    const nounCases = {
-                        maskulin: {
-                            nominativ: 'der ' + noun,
-                            genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
-                            dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
-                            akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
-
-                            nominativEin: 'ein ' + noun,
-                            genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
-                            dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
-                            akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : 'einen ' + noun,
-
-                            nominativWelcher: 'welcher ',
-                            genitivWelcher: 'welches ',
-                            dativWelcher: 'welchem ',
-                            akkusativWelcher: 'welchen ',
-
-                            possesivPronomenSingularNominativ: 'sein',
-                            possesivPronomenSingularNominativFeminin: 'seine',
-                            possesivPronomenPluralNominativ: 'seine',
-                        },
-
-                        feminin: {
-                            nominativ: 'die ' + noun,
-                            genitiv: 'der ' + noun,
-                            dativ: 'der ' + noun,
-                            akkusativ: 'die ' + noun,
-
-                            nominativEin: 'eine ' + noun,
-                            genitivEin: 'einer ' + noun,
-                            dativEin: 'einer ' + noun,
-                            akkusativEin: 'eine ' + noun,
-
-                            nominativWelcher: 'welche ',
-                            genitivWelcher: 'welcher ',
-                            dativWelcher: 'welcher ',
-                            akkusativWelcher: 'welche ',
-
-                            possesivPronomenSingularNominativ: 'ihr',
-                            possesivPronomenSingularNominativFeminin: 'ihre',
-                            possesivPronomenPlural: 'ihre',
-                        },
-
-                        neutrum: {
-                            nominativ: 'das ' + noun,
-                            genitiv: 'des ' + noun + 's',
-                            dativ: 'dem ' + noun,
-                            akkusativ: 'das ' + noun,
-
-                            nominativEin: 'ein ' + noun,
-                            genitivEin: 'eines ' + noun,
-                            dativEin: 'einem ' + noun,
-                            akkusativEin: 'ein ' + noun,
-
-                            nominativWelcher: 'welches ',
-                            genitivWelcher: 'welchen ',
-                            dativWelcher: 'welchem ',
-                            akkusativWelcher: 'welches ',
-
-                            possesivPronomenSingularNominativ: 'sein',
-                            possesivPronomenSingularNominativFeminin: 'seine',
-                            possesivPronomenPlural: 'seine',
-                        }
-
-                    };
-
-                    return nounCases[gender];
-                }
-            }
-
-            //Dekliniert Akteur- und Zielnomen
-            const declinedZiel = declineNoun(zielText, zielGeschlecht);
-            const declinedAkteur = declineNoun(akteurText, akteurGeschlecht);
-
-            // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
-            const aktionen = [
-                `${declinedZiel.akkusativEin} anzugreifen`,
-                `${declinedZiel.akkusativEin} zu terrorisieren`,
-                `${declinedZiel.akkusativEin} zu töten`,
-                `${declinedZiel.akkusativEin} zu fangen`,
-                `${declinedZiel.akkusativEin} zu vertreiben`,
-                `${declinedZiel.akkusativEin} zu neutralisieren`,
-                `${declinedZiel.akkusativEin} zu quälen`,
-                `${declinedZiel.akkusativEin} zu demoralisieren`,
-                `von ${declinedZiel.dativEin} zu stehlen`,
-                `${declinedZiel.akkusativEin} zu unterjochen`,
-                `das Eigentum ${declinedZiel.genitivEin} zu zerstören`,
-            ];
-
-            //Wählt eine zufällige Aktion aus
-            const aktion = getRandomText(aktionen);
-
-            //Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
-            const absichten = [
-                `aus einer Notwendigkeit ${declinedAkteur.genitiv} heraus`,
-                `damit ${declinedAkteur.nominativ} eine Herausforderung besteht`,
-                `damit ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`,
-                `damit ${declinedAkteur.nominativ} Rache nehmen kann`,
-                `damit ${declinedAkteur.nominativ} Befehle ausführen kann`,
-                `damit ${declinedAkteur.nominativ} Magie entfesseln kann`,
-                `weil ${declinedAkteur.nominativ} von Emotionen getrieben wird`,
-                `damit ${declinedAkteur.nominativ} Dominanz zeigen kann`,
-                `damit ${declinedAkteur.nominativ} die Schätze ${declinedZiel.genitiv} an sich nehmen kann`,
-                `damit ${declinedAkteur.nominativ} Macht erlangt`,
-                `damit ${declinedAkteur.nominativ} die Natur kontrollieren kann`,
-                "weil diese Handlung Teil eines Rituals ist",
-            ];
-            const absicht = getRandomText(absichten);
-
-            //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
-            const entwicklungen = [
-                `${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
-                `${declinedZiel.nominativ} flieht in ${declinedZiel.possesivPronomenSingularNominativ} Versteck`,
-                `${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`,
-                "das Ganze ist nur inszeniert",
-                `${declinedZiel.nominativ} bereut die eigenen Taten`,
-                "dadurch wird unwissentlich eine Prophezeiung erfüllt",
-                `${declinedZiel.nominativ} verbreitet eine Krankheit`,
-                `${declinedZiel.nominativ} wird von Gefolgsleuten unterstützt`,
-                `${declinedZiel.nominativ} ergreift Maßnahmen, um sich zu schützen`,
-                `${declinedZiel.nominativ} reist in ein anderes Reich`,
-                `${declinedZiel.nominativ} wird von Magie geschützt`,
-            ];
-            const entwicklung = getRandomText(entwicklungen);
-
-            // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-            const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}. \n\n${declinedAkteur.nominativ} ${akteurBeschreibung}. \n\n${declinedZiel.nominativEin} ${zielBeschreibung}.\n\n`;
-
-            //Erweiterung von questSentence für später: Bei ${declinedAkteur.dativ} handelt es sich um declinedSubakteur.akkusativEin, beschreibungSubakteur, declinedSubakteur.nominativWelcher subabsicht und declinedSubakteur.nominativ möchte, dass ${declinedZiel.nominativ} subaktion, beschreibungSubaktion  Bei ${declinedZiel.dativ} handelt es sich um declinedSubziel.akkusativEin, beschreibungSubziel. Bei der unerwarteten Entwicklung handelt es sich um subentwicklung, beschreibungSubentwicklung.
-
-            // Großbuchstaben für den ersten Buchstaben jedes Satzes
-            const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
-
-            return questSentenceCapitalized;
+      // Erstellt Eingabefeld und Buttons
+      const numQuestsField = document.createElement('input');
+      numQuestsField.type = 'number';
+      numQuestsField.style.margin = '10px';
+      numQuestsField.style.width = '50px';
+      const btnGenerate = document.createElement('button');
+      btnGenerate.style.margin = '10px';
+      btnGenerate.textContent = 'Generieren';
+      const btnClear = document.createElement('button');
+      btnClear.textContent = 'Löschen';
+      btnClear.style.margin = '10px';
+      // Erstellt Questfunktion
+      function generateQuest() {
+        // Abschnitt Akteur und entsprechende Begriffe für den Questgenerator
+        const akteure = [{
+          name: "Anführer",
+          geschlecht: "maskulin",
+          text: "regiert oder unterstützt die Regierung bestimmter Völker, Kulturen oder Regionen und hat seinen Platz verdient, wurde dazu gewählt, hat ihn geerbt oder hat ihn mit Gewalt übernommen",
+          optionen: [{
+            name: "Bürgermeister",
+            geschlecht: "maskulin",
+            beschreibung: "ist ein gewähltes Oberhaupt einer Siedlung. Er erlässt Gesetze, die regeln, wie die Bewohner der Siedlung zu handeln haben"
+          }, {
+            name: "Hohepriester",
+            geschlecht: "maskulin",
+            beschreibung: " ist für einen bestimmten Glauben verantwortlich und repräsentiert ihn in einer Region. Er ist in der Regel fromm und mit göttlicher Magie begabt. "
+          }, {
+            name: "Adeliger",
+            geschlecht: "maskulin",
+            beschreibung: "hat seinen Titel in der Regel geerbt, gewonnen oder gekauft. Er kann einem Rat angehören, der bei der Ausarbeitung oder Verabschiedung von Gesetzen hilft, oder er hat die Kontrolle über eine kleine Ortschaft. "
+          }, {
+            name: "Monarch",
+            geschlecht: "maskulin",
+            beschreibung: "ist der oberste Herrscher ganzer Regionen, Reiche, Länder oder sogar Kontinente verwaltet der Monarch und seinesgleichen die großen Probleme und Gesetze"
+          }]
+        }, {
+          name: "Berühmtheit",
+          geschlecht: "feminin",
+          text: "ist charismatisch und einnehmend. Sie hat sich auf eine Art und Weise einen Namen gemacht. Vielleicht ist sie berühmt und beliebt, oder sie ist ein bisschen ruchlos",
+          optionen: [{
+            name: "Volksheld",
+            geschlecht: "maskulin",
+            beschreibung: "kommt aus bescheidenen Verhältnissen, hat aber gezeigt, dass er Teil eines größeren Schicksals ist, indem er das Leben Unschuldiger gerettet hat. "
+          }, {
+            name: "beliebte Adelige",
+            geschlecht: "maskulin",
+            beschreibung: "hat sich das Vertrauen und die Liebe seiner Untertanen verdient, indem er entweder günstige Gesetze erlassen oder sie als Gleichberechtigte behandelt hat"
+          }, {
+            name: "Darsteller",
+            geschlecht: "maskulin",
+            beschreibung: "ist eine Art Künstler - ein Geschichtenerzähler, Tänzer, Sänger oder ähnliches - dessen Kunst in einer Region außerordentlich populär geworden ist"
+          }, {
+            name: "Militärveteran",
+            geschlecht: "maskulin",
+            beschreibung: "ist ein dekorierter Held früherer Kriege, der seinen Mut bewiesen und große Opfer gebracht hat. Ihm gebührt großer Respekt."
+          }]
+        }, {
+          name: "Bürger",
+          geschlecht: "maskulin",
+          text: "arbeitet hart, um über die Runden zu kommen. Er folgt wahrscheinlich einem ähnlichen Weg wie seine Vorfahren, indem er das Land bewirtschaftet oder ein bestimmtes Handwerk ausübt, welches gerade lukrativ genug ist, um den Winter zu überstehen",
+          optionen: [{
+            name: "Kind",
+            geschlecht: "neutrum",
+            beschreibung: "ist das unschuldigste und verletzlichste Mitglied jeder Gemeinschaft. Seine Motive können belanglos oder ernst sein; die eigentliche Aufgabe besteht darin, sie zu entschlüsseln"
+          }, {
+            name: "Jugendliche",
+            geschlecht: "maskulin",
+            beschreibung: "wird oft von seinem eigenen Stolz und nicht von äußeren Zielen angetrieben. Er verfügt über ein gewisses Maß an Unabhängigkeit, ist aber immer noch auf seine Eltern angewiesen"
+          }, {
+            name: "Erwachsene",
+            geschlecht: "maskulin",
+            beschreibung: "hat zum Wohle der Gemeinschaft mit anderen Mitgliedern zusammenzuarbeiten, was aber leider nicht immer der Fall ist"
+          }, {
+            name: "Älteste",
+            geschlecht: "maskulin",
+            beschreibung: "hat zwar im Laufe seines Lebens viel Wissen über die Region angesammelt, ist aber körperlich schwach und anfällig für Krankheiten"
+          }]
+        }, {
+          name: "Soldat",
+          geschlecht: "maskulin",
+          text: "hat in Kriegen gekämpft, Siedlungen gegen Angriffe von Monstern verteidigt oder ist zumindest kampferprobt, auch wenn er noch nie in einem echten Kampf war",
+          optionen: [{
+            name: "Wächter",
+            geschlecht: "maskulin",
+            beschreibung: "ist verantwortlich für die Sicherheit anderer - vielleicht für eine ganze Siedlung oder nur eine wichtige Person - und ist wachsam, risikofreudig und hoffentlich gutherzig"
+          }, {
+            name: "Veteran",
+            geschlecht: "maskulin",
+            beschreibung: "ist ein erfahrener Krieger, der schon viele Kämpfe erlebt und überlebt hat. Er ist ein talentierter Kämpfe, der weiß, wie man mit einer Schlägerei umgeht"
+          }, {
+            name: "Spion",
+            geschlecht: "maskulin",
+            beschreibung: "arbeitet an der Seite des Militärs oder der Regierung, um durch Spionage wichtige Informationen über seine Feinde herauszufinden. Er kann auch als heimliger Auftragsmörder ausgebildet sein"
+          }, {
+            name: "Hilfsstreitkraft",
+            geschlecht: "feminin",
+            beschreibung: "hat eine unterstützende Funktion in einer Armee, wie Koch oder Musiker. Sie ist nicht weniger wichtig als ein Kämpfer an der Fronst, hat aber andere, spezielle Fähigkeiten"
+          }]
+        }, {
+          name: "Sonderling",
+          geschlecht: "maskulin",
+          text: "lebt und überlebt in der Wildnis. Er hat sich für ein Leben außerhalb der Zivilisation entschieden und könnte zur Bewachung wichtiger Pfade angestellt worden sein oder er könnte sich selbst dem Schutz der Natur verschrieben haben",
+          optionen: [{
+            name: "Waldläufer",
+            geschlecht: "maskulin",
+            beschreibung: "kennt seine Wildnis wie seine Westentasche. Er ist ein fähiger Jäger, Sammler, Fallensteller, Navigator und Überlebenskünstler in jeder Hinsicht"
+          }, {
+            name: "Druide",
+            geschlecht: "maskulin",
+            beschreibung: "zieht in der Regel die Gesellschaft von Bäumen und Eichhörnchen den Gebäuden und Ratten vor. Er beherrscht die Naturmagie und kann sich in Tiere verwandeln"
+          }, {
+            name: "Barbar",
+            geschlecht: "maskulin",
+            beschreibung: "ist ein wahrer Krieger der Wildnis, der aus einer nomadischen Kultur stammt oder vielleicht die Einsamkeit außerhalb der Zivilisation gesucht hat"
+          }, {
+            name: "Einsiedler",
+            geschlecht: "maskulin",
+            beschreibung: "könnte die Isolation um der Erleuchtung oder des Studiums willen gesucht haben oder aus seiner Gemeinschaft verbannt worden sein"
+          }]
+        }, {
+          name: "Kaufmann",
+          geschlecht: "maskulin",
+          text: "ist in der Regel wohlhabend und hat sein Geld durch günstigen Einkauf und teuren Verkauf verdient. Die Waren, mit denen er sein Geld verdient, können gewöhnlich oder exotisch sein",
+          optionen: [{
+            name: "fröhliche Kaufmann",
+            geschlecht: "maskulin",
+            beschreibung: "hat immer ein Lächeln auf den Lippen und ist mehr als bereit, einen Handel mit denen zu machen, die seine Ausrüstung gut gebrauchen können. "
+          }, {
+            name: "geizige Kaufmann",
+            geschlecht: "maskulin",
+            beschreibung: "ist ein Pfennigfuchser - er verlangt überhöhte Preise für seine Waren und ist nicht bereit, zu verhandeln"
+          }, {
+            name: "betrügerische Kaufmann",
+            geschlecht: "maskulin",
+            beschreibung: "bietet Waren an, die nicht genau das sind, was sie zu sein scheinen. Vielleicht haben sie ihr Haltbarkeitsdatum überschritten, sind aus minderwertigen Materialien hergestellt, gefälscht oder gestohlen"
+          }, {
+            name: "exotische Kaufmann",
+            geschlecht: "maskulin",
+            beschreibung: "hat eine Vielzahl von seltsamen und aufregenden Waren im Angebot, die für andere schwer zu bekommen sind"
+          }]
+        }, {
+          name: "Handwerker",
+          geschlecht: "maskulin",
+          text: "erhielt eine spezielle Ausbildung, mit der es ihm möglich ist, eine bestimmte Arbeit auf hohem Niveau auszuführen. Dieser Beruf kann über Generationen weitergegeben worden sein",
+          optionen: [{
+            name: "Holzschnitzer",
+            geschlecht: "maskulin",
+            beschreibung: "weiß, wie man Holz bearbeitet, um schöne Motive aus Sagen und Märchen zu schaffen"
+          }, {
+            name: "Steinmetz",
+            geschlecht: "maskulin",
+            beschreibung: "kann Formen in Stein sehen und weiß, wie man sie mit Hammer und Meißel herausarbeitet"
+          }, {
+            name: "Schmied",
+            geschlecht: "maskulin",
+            beschreibung: " arbeitet in einer Schmiede und in einem Schmiedewerk, wo er Metall in neue Formen biegt und bricht, von Klingen bis zu Nägeln"
+          }, {
+            name: "Schneider",
+            geschlecht: "maskulin",
+            beschreibung: "arbeitet mit feinen Textilien oder einfacher Baumwolle und Leder und kreiert Kleidungsstücke mit Flair oder Funktionalität"
+          }]
+        }, {
+          name: "Bettler",
+          geschlecht: "maskulin",
+          text: "ist eine arme, unglückliche Seele, die der Armut verfallen ist. Er bettelt nun am Straßenrand um Geld und ist möglicherweise aus irgendeinem Grund nicht in der Lage zu arbeiten",
+          optionen: [{
+            name: "verzweifelte Bettler",
+            geschlecht: "maskulin",
+            beschreibung: "ist wirklich verzweifelt - er braucht dringend Geld, um von einem Tag auf den anderen überleben zu können. Er könnte aus Verzweiflung gefährlich werden"
+          }, {
+            name: "durchtriebene Bettler",
+            geschlecht: "maskulin",
+            beschreibung: "weiß, was er tut. Er ist manipulativ und hinterhältig und bettelt vielleicht eher aus Faulheit als aus echter Not"
+          }, {
+            name: "kundige Bettler",
+            geschlecht: "maskulin",
+            beschreibung: "hat während seiner Zeit auf der Straße einiges gesehen. Er kennt das Kommen und Gehen der einfachen Leute und gibt sein Wissen gegen Bezahlung weiter"
+          }, {
+            name: "getarnte Bettler",
+            geschlecht: "maskulin",
+            beschreibung: "ist überhaupt kein Bettler! Er könnte ein Krimineller sein, der einen Laden auskundschaftet, ein Himmelsmensch in menschlicher Gestalt oder ein Spion im Dienste des Gerichts"
+          }]
+        }, {
+          name: "Gelehrte",
+          geschlecht: "maskulin",
+          text: "ist ein Experte auf einem bestimmten Gebiet. Er kann relativ neu und unbekannt auf seinem Gebiet sein, oder aber ein absoluter Experte, der über mehr Wissen auf diesem Gebiet verfügt als jeder andere",
+          optionen: [{
+            name: "hiflose Gelehrte",
+            geschlecht: "maskulin",
+            beschreibung: " kann nicht darauf vertrauen, dass er allein aus einer misslichen Lage herauskommt. Er braucht dringend jemanden, der ihm hilft"
+          }, {
+            name: "empörte Gelehrte",
+            geschlecht: "maskulin",
+            beschreibung: "ist ernsthaft beunruhigt über ein Problem, mit dem er konfrontiert ist. Vielleicht fühlt er sich ungerecht behandelt"
+          }, {
+            name: "isolierte Gelehrte",
+            geschlecht: "maskulin",
+            beschreibung: "hat niemanden, an den er sich wenden kann, und fühlt sich völlig allein. Vielleicht wurde er von seiner Akademie geächtet, weil er unangemessene Themen untersucht hat, oder er ist einfach sozial unbeholfen"
+          }, {
+            name: "mutige Gelehrte",
+            geschlecht: "maskulin",
+            beschreibung: "ist mutig und kühn und wünscht sich möglicherweise Unterstützung bei der Durchführung der Aktion, sofern er angemessen geschützt ist."
+          }]
+        }, {
+          name: "Fremde",
+          geschlecht: "maskulin",
+          text: "kommt aus einem fernen Land und ist auf einheimische Kreaturen gestoßen, und irgendetwas hindert ihn daran, die Situation selbst zu meistern. Er braucht Hilfe von Leuten, die das Gebiet besser kennen als er",
+          optionen: [{
+            name: "verwirrte Fremde",
+            geschlecht: "maskulin",
+            beschreibung: "versteht etwas von der Region nicht, in der er sich befindet; vielleicht kann er die Landessprache nicht sprechen oder die kulturellen Bräuche nicht verstehen"
+          }, {
+            name: "teilnahmslose Fremde",
+            geschlecht: "maskulin",
+            beschreibung: "hat kein Interesse oder keine Begeisterung für das Land, in dem er sich befindet. Er will, dass sein Auftrag erfüllt wird, damit er abreisen kann"
+          }, {
+            name: "verspottete Fremde",
+            geschlecht: "maskulin",
+            beschreibung: "wurde von der Gemeinschaft verspottet oder fühlt sich von den örtlichen Gerichten oder Unternehmen brüskiert. Der Grund für den Vertrag hat dies nur noch verschlimmert"
+          }, {
+            name: "entsetzte Fremde",
+            geschlecht: "maskulin",
+            beschreibung: "findet die örtliche Kultur abstoßend oder moralisch verwerflich. Er möchte die Region so schnell wie möglich wieder verlassen"
+          }]
+        }, {
+          name: "Zauberwirker",
+          geschlecht: "maskulin",
+          text: "kann in allen Formen und Größen kommen. Er kann seine Magie aus einer der vielen Quellen schöpfen, die beeinflussen, wie er sie einsetzt und welche Form sie annimmt",
+          optionen: [{
+            name: "arkane Zauberwirker",
+            geschlecht: "maskulin",
+            beschreibung: "benutzt die mythischen Kräfte der Welt, einschließlich Phänomenen wie Leylinien, um seine Zauber zu wirken, die oft fantastischer Natur sind. "
+          }, {
+            name: "göttliche Zauberwirker",
+            geschlecht: "maskulin",
+            beschreibung: "erhält seine Macht von Gottheiten, die ihn für würdig erachten, oder durch heilige Eide. Seine Magie ist oft gleißend oder heilend"
+          }, {
+            name: "urtümliche Zauberwirker",
+            geschlecht: "maskulin",
+            beschreibung: "schöpft seine Magie aus der natürlichen Welt und dem Kreislauf von Leben und Tod. Er kann mit wilden Tieren sprechen, das Wetter verändern oder die Gestalt von Bestien annehmen"
+          }, {
+            name: "schauerliche Zauberwirker",
+            geschlecht: "maskulin",
+            beschreibung: "erhält seine Magie von geheimnisvollen Wesenheiten aus fremden Existenzebenen, die er durch Pakte erlangt hat. Seine Magie ist oft seltsam und dunkel"
+          }]
+        }, {
+          name: "Fraktion",
+          geschlecht: "feminin",
+          text: "kann vieles sein: von Handelsgilden bis zu Piratenflotten, von Schuhmacherallianzen bis zu militärischen Einheiten. Sie ist eine Gruppe von Individuen, die durch gemeinsame Ziele oder Moralvorstellungen miteinander verbunden sind",
+          optionen: [{
+            name: "religiöse Orden",
+            geschlecht: "maskulin",
+            beschreibung: "verehrt eine bestimmte Gottheit, Lebensweise, Spiritualität oder eine andere bindende Kraft. Er kann Zugang zu göttlicher Magie haben"
+          }, {
+            name: "Söldnerkompanie",
+            geschlecht: "feminin",
+            beschreibung: "besteht aus Soldaten, die angeheuert werden können. Sie kann als Verstärkung für Armeen dienen oder Aufträge zum Töten von Monstern annehmen"
+          }, {
+            name: "Handwerksgilde",
+            geschlecht: "feminin",
+            beschreibung: "ist eine Gruppe von gleichwertig ausgebildeten Handwerkern, die dafür sorgen, dass ihre Arbeit angemessen bezahlt wird"
+          }, {
+            name: "Druidenzirkel",
+            geschlecht: "feminin",
+            beschreibung: "ist ein Zusammenschluss von Druiden, die alle das Ziel haben, eine bestimmte heilige Landschaft zu schützen. Er kann mit den heimischen Tieren und Pflanzen in Verbindung stehen."
+          }]
+        }, ];
+        // Funktion, um einen zufälligen Text aus einer Optionenliste auszuwählen
+        function getRandomOption(options) {
+          const index = Math.floor(Math.random() * options.length);
+          return options[index];
         }
-
-        // on-click events
-        btnGenerate.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            // clear existing results
-            const container = document.getElementById('container');
-            container.querySelectorAll('li').forEach((li) => li.remove());
-
-            const numQuests = parseInt(numQuestsField.value);
-
-            for (let i = 0; i < numQuests; i++) {
-                const quest = generateQuest();
-
-                const li = document.createElement('li');
-                li.textContent = quest;
-                container.appendChild(li);
-            }
-        });
-
-        // Fügt einen Event Listener hinzu, um das Standardverhalten des 'btnClear'-Buttons zu verhindern
-        btnClear.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            // Entfernt bisher generierte Resulate
-            const container = document.getElementById('container');
-            container.querySelectorAll('li').forEach((li) => li.remove());
-        });
-
-        // Fügt einen Textknoten 'Anzahl der Quests: ' sowie die Felder 'numQuestsField', den Button 'btnGenerate' und den Button 'btnClear' dem Dokumentkörper hinzu.
-        document.body.appendChild(document.createTextNode('Anzahl der Quests: '));
-        document.body.appendChild(numQuestsField);
-        document.body.appendChild(btnGenerate);
-        document.body.appendChild(btnClear);
-
-        // Fügt einen Container für die Ergebnisse hinzu
-        const container = document.createElement('ul');
-        container.id = 'container';
-        document.body.appendChild(container);
+        // Abschnitt Ziele und entsprechende Begriffe für den Questgenerator
+        const ziele = [{
+          name: "Tier",
+          geschlecht: "neutrum",
+          text: "ist ein Teil der natürlichen Ökologie der Welt, normalerweise unintelligent und ohne Gesellschaft oder Sprache. Ein unintelligentes Tier kann im Auftrag eines Besitzers oder Herrn handeln",
+          optionen: [{
+            name: "Haustier",
+            geschlecht: "neutrum",
+            beschreibung: "Ein Tier, das als Begleiter eines Menschen gehalten wird, oft als treuer Gefährte und zur Gesellschaft."
+          }, {
+            name: "Wildes Raubtier",
+            geschlecht: "neutrum",
+            beschreibung: "Ein wildes und gefährliches Tier, das als Raubtier in der Natur lebt und Jagd auf Beutetiere macht."
+          }, {
+            name: "Nutztier",
+            geschlecht: "neutrum",
+            beschreibung: "Ein Tier, das von Menschen für landwirtschaftliche oder wirtschaftliche Zwecke gehalten wird, wie z.B. Kühe oder Pferde."
+          }, {
+            name: "Exotisches Wesen",
+            geschlecht: "neutrum",
+            beschreibung: "Ein seltenes und faszinierendes Wesen, das in fernen Regionen oder Fantasiewelten existiert und oft magische Eigenschaften hat."
+          }]
+        }, {
+          name: "Abberation",
+          geschlecht: "feminin",
+          text: "ist ein außerirdisches Wesen aus einer fremden Existenzebene, das oft angeborene magische Fähigkeiten besitzt, die eher von seinem fremden Geist als von den mystischen Kräften der Welt herrühren",
+          optionen: [{
+            name: "Schrecken aus der Tiefe",
+            geschlecht: "maskulin",
+            beschreibung: "Ein gigantisches Wesen, das aus den Tiefen des Ozeans auftaucht und Schiffe verschlingt."
+          }, {
+            name: "Alptraumwesen",
+            geschlecht: "neutrum",
+            beschreibung: "Eine düstere Kreatur, die aus den Albträumen der Menschen geboren wurde und Angst und Schrecken verbreitet."
+          }, {
+            name: "Entstelltes Wesen",
+            geschlecht: "neutrum",
+            beschreibung: "Eine deformierte Aberration, die durch magische Experimente oder Verunreinigungen entstanden ist und nach Rache sinnt."
+          }, {
+            name: "Himmelsverschlinger",
+            geschlecht: "maskulin",
+            beschreibung: "Ein fliegendes Ungetüm, das die Wolken durchbricht und alles auf seinem Weg verschlingt."
+          }]
+        }, {
+          name: "Konstrukt",
+          geschlecht: "neutrum",
+          text: "wurde nicht geboren, sondern geschaffen und kann von seinem Schöpfer so programmiert worden sein, dass es in einer bestimmten Weise handelt oder selbständig denkt. Ein nicht-intelligentes Konstrukt kann im Auftrag eines Besitzers oder Meisters handeln",
+          optionen: [{
+            name: "Automaton",
+            geschlecht: "neutrum",
+            beschreibung: "Ein mechanisches Konstrukt, das zur Ausführung repetitiver Aufgaben oder als einfache Diener dient."
+          }, {
+            name: "Wächtergolem",
+            geschlecht: "maskulin",
+            beschreibung: "Ein massives Konstrukt, das als Verteidigung oder Beschützer eines Ortes oder Schatzes erschaffen wurde."
+          }, {
+            name: "Kybernetischer Begleiter",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Konstrukt, das mit fortschrittlicher Technologie und künstlicher Intelligenz ausgestattet ist und als treuer Gefährte dient."
+          }, {
+            name: "Zerstörer",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mächtiges Kampfkonstrukt, das für den Krieg und die Vernichtung von Feinden geschaffen wurde."
+          }]
+        }, {
+          name: "Drache",
+          geschlecht: "maskulin",
+          text: "ist ein großes, reptilienartiges Wesen uralten Ursprungs, das über enorme Kräfte verfügt, die mit dem Alter zunehmen. Es besitzt eine hohe Intelligenz und angeborene Magie",
+          optionen: [{
+            name: "Feuerspucker",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mächtiger Drache, der über die Fähigkeit verfügt, tödliches Feuer zu speien und ganze Landschaften zu verbrennen."
+          }, {
+            name: "Eisiger Wächter",
+            geschlecht: "maskulin",
+            beschreibung: "Ein majestätischer Drache, der die Kälte beherrscht und über gefrorene Länder und Gletscher wacht."
+          }, {
+            name: "Schattenflügler",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mysteriöser Drache, der in den Schatten lauert und die Dunkelheit zu seinem Vorteil nutzt."
+          }, {
+            name: "Weisheit des Alters",
+            geschlecht: "feminin",
+            beschreibung: "Ein uralter Drache, der über jahrhundertelanges Wissen und Einsicht verfügt und oft als weiser Ratgeber angesehen wird."
+          }]
+        }, {
+          name: "Feenwesen",
+          geschlecht: "neutrum",
+          text: "ist ein magisches Geschöpf, das eng mit den Kräften der Natur verbunden ist, in dämmrigen Hainen und nebligen Wäldern lebt und oft launisch ist",
+          optionen: [{
+            name: "Waldnymphen",
+            geschlecht: "feminin",
+            beschreibung: "Zarte und anmutige Feen, die in den Wäldern tanzen und die Natur schützen."
+          }, {
+            name: "Glühwürmchengeist",
+            geschlecht: "maskulin",
+            beschreibung: "Winzige Feen, die wie leuchtende Glühwürmchen in der Dunkelheit leuchten und als Leuchtfeuer dienen."
+          }, {
+            name: "Eulenzauberer",
+            geschlecht: "maskulin",
+            beschreibung: "Feenwesen, die die Gestalt von Eulen annehmen und geheimnisvolle Zaubersprüche flüstern."
+          }, {
+            name: "Nebeltänzer",
+            geschlecht: "maskulin",
+            beschreibung: "Geheimnisvolle Feen, die in den dichten Nebeln der Wälder tanzen und Illusionen weben."
+          }]
+        }, {
+          name: "Unhold",
+          geschlecht: "maskulin",
+          text: "ist eine böse Kreatur, die in den niederen Ebenen der Existenz lebt und durch und durch böse ist. Er kann von finsteren Kulten herbeigerufen worden sein oder sich seinen eigenen Weg hierher gebahnt haben, um abscheuliche Taten zu begehen",
+          optionen: [{
+            name: "Dämonischer Beschwörer",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Unhold, der von finsteren Kultisten herbeigerufen wird, um ihre dämonischen Befehle auszuführen."
+          }, {
+            name: "Schattenkrieger",
+            geschlecht: "maskulin",
+            beschreibung: "Ein finsterer Unhold, der die Schatten nutzt, um heimtückische Angriffe durchzuführen."
+          }, {
+            name: "Todbringer",
+            geschlecht: "maskulin",
+            beschreibung: "Ein grausamer Unhold, der mit einer dunklen Klinge auf der Suche nach dem Tod wandelt."
+          }, {
+            name: "Verfluchter Seelenfresser",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Unhold, der Seelen in die Finsternis zieht und von den Qualen der Verdammnis lebt."
+          }]
+        }, {
+          name: "Riese",
+          geschlecht: "maskulin",
+          text: "ist von humanoider Gestalt. Seine Proportionen sind jedoch riesig. Er lebt in eigenen, komplexen Kulturen und Gesellschaften - manche mehr, andere weniger zivilisiert",
+          optionen: [{
+            name: "Bergkönig",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mächtiger Riese, der über die majestätischen Gipfel der Berge herrscht und von seinem Volk als König verehrt wird."
+          }, {
+            name: "Waldwächter",
+            geschlecht: "maskulin",
+            beschreibung: "Ein gutmütiger Riese, der über die endlosen Wälder wacht und als Beschützer der Natur agiert."
+          }, {
+            name: "Steinmetz",
+            geschlecht: "maskulin",
+            beschreibung: "Ein geschickter Riese, der mit seinen kräftigen Händen gewaltige Steine formt und kunstvolle Statuen erschafft."
+          }, {
+            name: "Felsenhüter",
+            geschlecht: "maskulin",
+            beschreibung: "Ein stoischer Riese, der über die wertvollen Schätze in den Tiefen der Berge wacht und Eindringlinge abschreckt."
+          }]
+        }, {
+          name: "Humanoide",
+          geschlecht: "maskulin",
+          text: "ist ein Mitglied eines humanoiden Volkes, das über eine eigene Sprache, eine eigene Kultur und ein eigenes politisches und moralisches Spektrum verfügt",
+          optionen: [{
+            name: "Elfenbogenschütze",
+            geschlecht: "maskulin",
+            beschreibung: "Ein elfischer Krieger, der geschickt mit Pfeil und Bogen umgeht und seine Feinde aus der Ferne besiegt."
+          }, {
+            name: "Zwergenschmied",
+            geschlecht: "maskulin",
+            beschreibung: "Ein zwerghafter Handwerker, der mit seiner Kunstfertigkeit und Erfahrung erstaunliche Waffen und Rüstungen herstellt."
+          }, {
+            name: "Menschlicher Magier",
+            geschlecht: "maskulin",
+            beschreibung: "Ein menschlicher Zauberwirker, der die Magie beherrscht und mächtige Zaubersprüche wirken kann."
+          }, {
+            name: "Halbling-Gauner",
+            geschlecht: "maskulin",
+            beschreibung: "Ein listiger Halbling, der sich durch seine Schläue und Flinkheit aus gefährlichen Situationen herauswinden kann."
+          }]
+        }, {
+          name: "Monstrosität",
+          geschlecht: "feminin",
+          text: "ist eine furchterregende Kreatur, die das Ergebnis eines schief gelaufenen magischen Experiments, eines schrecklichen Fluchs oder ein pseudo-natürliches Ungeheuer sein kann, das sich jeder Kategorisierung entzieht",
+          optionen: [{
+            name: "Verschlinger des Abgrunds",
+            geschlecht: "maskulin",
+            beschreibung: "Eine monströse Kreatur, die in den Tiefen des Abgrunds lauert und alles verschlingt, was sich ihr nähert."
+          }, {
+            name: "Verfluchter Wandler",
+            geschlecht: "maskulin",
+            beschreibung: "Eine unheimliche Monstrosität, die durch einen finsteren Fluch von einer einst menschlichen Gestalt in ein abscheuliches Ungetüm verwandelt wurde."
+          }, {
+            name: "Albtraumschrecken",
+            geschlecht: "maskulin",
+            beschreibung: "Ein schreckliches Wesen, das aus den Albträumen der Menschen entstanden ist und die Dunkelheit mit Angst und Schrecken erfüllt."
+          }, {
+            name: "Chaosverzerrer",
+            geschlecht: "maskulin",
+            beschreibung: "Eine bizarre Monstrosität, die die Realität verändert und die Gesetze der Physik auf den Kopf stellt."
+          }]
+        }, {
+          name: "Elementar",
+          geschlecht: "maskulin",
+          text: "ist eine biologische Form, die von einer chaotischen, elementaren Essenz durchdrungen ist",
+          optionen: [{
+            name: "Feuergeist",
+            geschlecht: "maskulin",
+            beschreibung: "Ein lebendiges Feuerwesen, das mit heißer Flamme brennt und durch Hitze und Zerstörung wandelt."
+          }, {
+            name: "Wassernymphe",
+            geschlecht: "feminin",
+            beschreibung: "Ein anmutiges Wasserwesen, das in klaren Gewässern lebt und die Macht über Strömungen und Wellen besitzt."
+          }, {
+            name: "Luftdämon",
+            geschlecht: "maskulin",
+            beschreibung: "Ein unheimlicher Dämon, der durch die Lüfte schwebt und Stürme und Unwetter heraufbeschwört."
+          }, {
+            name: "Erdwächter",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mächtiger Wächter, der mit der Erde verschmilzt und die Naturkräfte kontrolliert, um das Gleichgewicht zu wahren."
+          }]
+        }, {
+          name: "Schlick",
+          geschlecht: "maskulin",
+          text: "ist eine gallertartige Kreatur, die selten eine feste Form annimmt und meist in unterirdischen Höhlen und Verliesen lebt, wo sie sich von Abfällen, Aas oder unglücklichen Abenteurern ernährt",
+          optionen: [{
+            name: "Schleimige Schlinger",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Schlick, der mit seinen klebrigen Tentakeln und Säuren unvorsichtige Eindringlinge gefangen hält."
+          }, {
+            name: "Todesgrube",
+            geschlecht: "feminin",
+            beschreibung: "Eine gigantische Schlickkreatur, die ihre Opfer verschlingt und in ihrer tiefen Grube gefangen hält."
+          }, {
+            name: "Giftiger Glibber",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Schlick, dessen Berührung tödliche Gifte freisetzt und seine Opfer langsam dahinsiechen lässt."
+          }, {
+            name: "Verschlinger des Verderbens",
+            geschlecht: "maskulin",
+            beschreibung: "Ein bösartiger Schlick, der alles, was in sein Reich gelangt, in eine entsetzliche Verwesung zieht."
+          }]
+        }, {
+          name: "Untote",
+          geschlecht: "maskulin",
+          text: "war einst eine lebende Kreatur, die durch nekromantische Magie oder einen unheiligen Fluch in einen entsetzlichen Zustand des Untodes versetzt wurde. Ein unintelligenter Untoter kann im Auftrag eines Meisters handeln",
+          optionen: [{
+            name: "Zombie",
+            geschlecht: "maskulin",
+            beschreibung: "Ein langsam schlurfender Untoter, der von Nekromantie oder einer Seuche befallen wurde."
+          }, {
+            name: "Skelett-Krieger",
+            geschlecht: "maskulin",
+            beschreibung: "Ein Untoter, dessen Skelett durch dunkle Magie wiederbelebt wurde, um als Krieger zu dienen."
+          }, {
+            name: "Geisterpirat",
+            geschlecht: "maskulin",
+            beschreibung: "Der Geist eines einstigen Piratenkapitäns, der immer noch die Meere heimsucht und nach verlorenen Schätzen sucht."
+          }, {
+            name: "Vampirfürst",
+            geschlecht: "maskulin",
+            beschreibung: "Ein mächtiger Untoter, der seine Kraft aus dem Blut der Lebenden zieht und über eine Vielzahl von dunklen Fähigkeiten verfügt."
+          }]
+        }];
+        // Funktion, um einen zufälligen Text aus einem Array auszuwählen
+        function getRandomText(arr) {
+          const index = Math.floor(Math.random() * arr.length);
+          return arr[index];
+        }
+        const akteurData = getRandomText(akteure);
+        const akteurName = akteurData.name;
+        const akteurGeschlecht = akteurData.geschlecht;
+        const akteurText = akteurData.text;
+        const akteurOption = getRandomOption(akteurData.optionen);
+        const akteurOptionName = akteurOption.name;
+        const akteurOptionGeschlecht = akteurOption.geschlecht;
+        const akteurOptionBeschreibung = akteurOption.beschreibung;
+        // Geschlecht für das Ziel bestimmen
+        const zielData = getRandomText(ziele);
+        const zielName = zielData.name;
+        const zielGeschlecht = zielData.geschlecht;
+        const zielText = zielData.text;
+        const zielOption = getRandomOption(zielData.optionen);
+        const zielOptionName = zielOption.name;
+        const zielOptionGeschlecht = zielOption.geschlecht;
+        const zielOptionBeschreibung = zielOption.beschreibung;
+        // Erstelle das Array für Nomen mit schwacher Deklination
+        const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste' ];
+        // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
+        function declineNoun(noun, gender) {
+          const endsWithE = noun.endsWith('e');
+          const endsWithT = noun.endsWith('t');
+          const endsWithD = noun.endsWith('d');
+          // Überprüfe, ob das Nomen eine schwache Deklination hat
+          if (nomenSchwacheDeklination.includes(noun)) {
+            const nounCases = {
+              maskulin: {
+                nominativ: 'der ' + noun,
+                genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+                dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
+                akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
+                nominativEin: endsWithE ? 'ein ' + noun + 'r' : 'ein ' + noun,
+                genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
+                dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
+                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : 'einen ' + noun,
+                nominativWelcher: 'welcher ',
+                genitivWelcher: 'welches ',
+                dativWelcher: 'welchem ',
+                akkusativWelcher: 'welchen ',
+                possesivPronomenSingular: 'sein',
+                possesivPronomenPlural: 'sein',
+              },
+            };
+            return nounCases[gender];
+          } else {
+            // Normale Deklinationsregeln für Nomen ohne schwache Deklination
+            const nounCases = {
+              maskulin: {
+                nominativ: 'der ' + noun,
+                genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
+                dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
+                akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
+                nominativEin: 'ein ' + noun,
+                genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
+                dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
+                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun,
+                nominativWelcher: 'welcher ',
+                genitivWelcher: 'welches ',
+                dativWelcher: 'welchem ',
+                akkusativWelcher: 'welchen ',
+                possesivPronomenSingularNominativ: 'sein',
+                possesivPronomenSingularNominativFeminin: 'seine',
+                possesivPronomenPluralNominativ: 'seine',
+              },
+              feminin: {
+                nominativ: 'die ' + noun,
+                genitiv: 'der ' + noun,
+                dativ: 'der ' + noun,
+                akkusativ: 'die ' + noun,
+                nominativEin: 'eine ' + noun,
+                genitivEin: 'einer ' + noun,
+                dativEin: 'einer ' + noun,
+                akkusativEin: 'eine ' + noun,
+                nominativWelcher: 'welche ',
+                genitivWelcher: 'welcher ',
+                dativWelcher: 'welcher ',
+                akkusativWelcher: 'welche ',
+                possesivPronomenSingularNominativ: 'ihr',
+                possesivPronomenSingularNominativFeminin: 'ihre',
+                possesivPronomenPlural: 'ihre',
+              },
+              neutrum: {
+                nominativ: 'das ' + noun,
+                genitiv: 'des ' + noun + 's',
+                dativ: 'dem ' + noun,
+                akkusativ: 'das ' + noun,
+                nominativEin: 'ein ' + noun,
+                genitivEin: 'eines ' + noun,
+                dativEin: 'einem ' + noun,
+                akkusativEin: 'ein ' + noun,
+                nominativWelcher: 'welches ',
+                genitivWelcher: 'welchen ',
+                dativWelcher: 'welchem ',
+                akkusativWelcher: 'welches ',
+                possesivPronomenSingularNominativ: 'sein',
+                possesivPronomenSingularNominativFeminin: 'seine',
+                possesivPronomenPlural: 'seine',
+              }
+            };
+            return nounCases[gender];
+          }
+        }
+        //Dekliniert Akteur- und Zielnomen
+        const declinedAkteur = declineNoun(akteurName, akteurGeschlecht);
+        const declinedAkteurOption = declineNoun(akteurOptionName, akteurOptionGeschlecht);
+        const declinedZiel = declineNoun(zielName, zielGeschlecht);
+        const declinedZielOption = declineNoun(zielOptionName, zielOptionGeschlecht);
+        // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
+        const aktionen = [`${declinedZiel.akkusativEin} anzugreifen`, `${declinedZiel.akkusativEin} zu terrorisieren`, `${declinedZiel.akkusativEin} zu töten`, `${declinedZiel.akkusativEin} zu fangen`, `${declinedZiel.akkusativEin} zu vertreiben`, `${declinedZiel.akkusativEin} zu neutralisieren`, `${declinedZiel.akkusativEin} zu quälen`, `${declinedZiel.akkusativEin} zu demoralisieren`, `von ${declinedZiel.dativEin} zu stehlen`, `${declinedZiel.akkusativEin} zu unterjochen`, `das Eigentum ${declinedZiel.genitivEin} zu zerstören`, ];
+        //Wählt eine zufällige Aktion aus
+        const aktion = getRandomText(aktionen);
+        //Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
+        const absichten = [`aus einer Notwendigkeit ${declinedAkteur.genitiv} heraus`, `damit ${declinedAkteur.nominativ} eine Herausforderung besteht`, `damit ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`, `damit ${declinedAkteur.nominativ} Rache nehmen kann`, `damit ${declinedAkteur.nominativ} Befehle ausführen kann`, `damit ${declinedAkteur.nominativ} Magie entfesseln kann`, `weil ${declinedAkteur.nominativ} von Emotionen getrieben wird`, `damit ${declinedAkteur.nominativ} Dominanz zeigen kann`, `damit ${declinedAkteur.nominativ} die Schätze ${declinedZiel.genitiv} an sich nehmen kann`, `damit ${declinedAkteur.nominativ} Macht erlangt`, `damit ${declinedAkteur.nominativ} die Natur kontrollieren kann`, "weil diese Handlung Teil eines Rituals ist", ];
+        const absicht = getRandomText(absichten);
+        //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
+        const entwicklungen = [`${declinedZiel.nominativ} wird von einer höheren Macht geschützt`, `${declinedZiel.nominativ} flieht in ${declinedZiel.possesivPronomenSingularNominativ} Versteck`, `${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`, "das Ganze ist nur inszeniert", `${declinedZiel.nominativ} bereut die eigenen Taten`, "dadurch wird unwissentlich eine Prophezeiung erfüllt", `${declinedZiel.nominativ} verbreitet eine Krankheit`, `${declinedZiel.nominativ} wird von Gefolgsleuten unterstützt`, `${declinedZiel.nominativ} ergreift Maßnahmen, um sich zu schützen`, `${declinedZiel.nominativ} reist in ein anderes Reich`, `${declinedZiel.nominativ} wird von Magie geschützt`, ];
+        const entwicklung = getRandomText(entwicklungen);
+        // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
+        const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}. \n\n${declinedAkteur.nominativ} ${akteurText}. \n\nBei ${declinedAkteur.dativ} handelt es sich um ${declinedAkteurOption.akkusativEin}. ${declinedAkteurOption.nominativ} ${akteurOptionBeschreibung}.  \n\n${declinedZiel.nominativ} ${zielText}.\n\n`;
+        //Erweiterung von questSentence für später: Bei ${declinedAkteur.dativ} handelt es sich um declinedSubakteur.akkusativEin, beschreibungSubakteur, declinedSubakteur.nominativWelcher subabsicht und declinedSubakteur.nominativ möchte, dass ${declinedZiel.nominativ} subaktion, beschreibungSubaktion  Bei ${declinedZiel.dativ} handelt es sich um declinedSubziel.akkusativEin, beschreibungSubziel. Bei der unerwarteten Entwicklung handelt es sich um subentwicklung, beschreibungSubentwicklung.
+        // Großbuchstaben für den ersten Buchstaben jedes Satzes
+        const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
+        return questSentenceCapitalized;
+      }
+      // on-click events
+      btnGenerate.addEventListener('click', (event) => {
+        event.preventDefault();
+        // clear existing results
+        const container = document.getElementById('container');
+        container.querySelectorAll('li').forEach((li) => li.remove());
+        const numQuests = parseInt(numQuestsField.value);
+        for (let i = 0; i < numQuests; i++) {
+          const quest = generateQuest();
+          const li = document.createElement('li');
+          li.textContent = quest;
+          container.appendChild(li);
+        }
+      });
+      // Fügt einen Event Listener hinzu, um das Standardverhalten des 'btnClear'-Buttons zu verhindern
+      btnClear.addEventListener('click', (event) => {
+        event.preventDefault();
+        // Entfernt bisher generierte Resulate
+        const container = document.getElementById('container');
+        container.querySelectorAll('li').forEach((li) => li.remove());
+      });
+      // Fügt einen Textknoten 'Anzahl der Quests: ' sowie die Felder 'numQuestsField', den Button 'btnGenerate' und den Button 'btnClear' dem Dokumentkörper hinzu.
+      document.body.appendChild(document.createTextNode('Anzahl der Quests: '));
+      document.body.appendChild(numQuestsField);
+      document.body.appendChild(btnGenerate);
+      document.body.appendChild(btnClear);
+      // Fügt einen Container für die Ergebnisse hinzu
+      const container = document.createElement('ul');
+      container.id = 'container';
+      document.body.appendChild(container);
     </script>
-
-</body>
-
+  </body>
 </html>

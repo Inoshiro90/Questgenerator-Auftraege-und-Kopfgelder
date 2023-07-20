@@ -242,12 +242,7 @@ const aktion = getRandomText(aktionen);
   const entwicklung = getRandomText(entwicklungen);
   
   // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-  const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}. 
-  
-${declinedAkteur.nominativ} ${akteurBeschreibung}. 
-
-${declinedZiel.nominativ} ${zielBeschreibung}.
-`;
+  const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktion}, ${absicht}, aber ${entwicklung}. ${declinedAkteur.nominativ} ${akteurBeschreibung}. ${declinedZiel.nominativ} ${zielBeschreibung}.`;
 
 //Erweiterung von questSentence für später: Bei ${declinedAkteur.dativ} handelt es sich um declinedSubakteur.akkusativEin, beschreibungSubakteur, declinedSubakteur.nominativWelcher subabsicht und declinedSubakteur.nominativ möchte, dass ${declinedZiel.nominativ} subaktion, beschreibungSubaktion  Bei ${declinedZiel.dativ} handelt es sich um declinedSubziel.akkusativEin, beschreibungSubziel. Bei der unerwarteten Entwicklung handelt es sich um subentwicklung, beschreibungSubentwicklung.
   

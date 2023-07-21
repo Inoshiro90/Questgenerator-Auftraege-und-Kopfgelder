@@ -559,7 +559,7 @@
         const zielOptionGeschlecht = zielOption.geschlecht;
         const zielOptionBeschreibung = zielOption.beschreibung;
         // Erstelle das Array für Nomen mit schwacher Deklination
-        const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste', 'Volksheld' ];
+        const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste', 'Volksheld', 'Monarch' ];
         // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
         function declineNoun(noun, gender) {
           const endsWithE = noun.endsWith('e');
@@ -573,10 +573,10 @@
                 genitiv: endsWithE ? 'des ' + noun + 'n' : endsWithT ? 'des ' + noun + 'en' : 'des ' + noun + 's',
                 dativ: endsWithE ? 'dem ' + noun + 'n' : 'dem ' + noun,
                 akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
-                nominativEin: endsWithE ? 'ein ' + noun + 'r' : 'ein ' + noun,
+                nominativEin: endsWithE ? 'ein ' + noun + 'r' : 'ein ' + noun + 'en',
                 genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
                 dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
-                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun,
+                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun + 'en',
                 nominativWelcher: 'welcher ',
                 genitivWelcher: 'welches ',
                 dativWelcher: 'welchem ',

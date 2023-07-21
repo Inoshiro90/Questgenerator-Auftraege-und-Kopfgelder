@@ -35,11 +35,11 @@
           }, {
             name: "Hohepriester",
             geschlecht: "maskulin",
-            beschreibung: "ist für einen bestimmten Glauben verantwortlich und repräsentiert ihn in einer Region. Er ist in der Regel fromm und mit göttlicher Magie begabt. "
+            beschreibung: "ist für einen bestimmten Glauben verantwortlich und repräsentiert ihn in einer Region. Er ist in der Regel fromm und mit göttlicher Magie begabt"
           }, {
             name: "Adeliger",
             geschlecht: "maskulin",
-            beschreibung: "hat seinen Titel in der Regel geerbt, gewonnen oder gekauft. Er kann einem Rat angehören, der bei der Ausarbeitung oder Verabschiedung von Gesetzen hilft, oder er hat die Kontrolle über eine kleine Ortschaft. "
+            beschreibung: "hat seinen Titel in der Regel geerbt, gewonnen oder gekauft. Er kann einem Rat angehören, der bei der Ausarbeitung oder Verabschiedung von Gesetzen hilft, oder er hat die Kontrolle über eine kleine Ortschaft"
           }, {
             name: "Monarch",
             geschlecht: "maskulin",
@@ -52,7 +52,7 @@
           optionen: [{
             name: "Volksheld",
             geschlecht: "maskulin",
-            beschreibung: "kommt aus bescheidenen Verhältnissen, hat aber gezeigt, dass er Teil eines größeren Schicksals ist, indem er das Leben Unschuldiger gerettet hat. "
+            beschreibung: "kommt aus bescheidenen Verhältnissen, hat aber gezeigt, dass er Teil eines größeren Schicksals ist, indem er das Leben Unschuldiger gerettet hat"
           }, {
             name: "beliebte Adelige",
             geschlecht: "maskulin",
@@ -136,7 +136,7 @@
           optionen: [{
             name: "fröhliche Kaufmann",
             geschlecht: "maskulin",
-            beschreibung: "hat immer ein Lächeln auf den Lippen und ist mehr als bereit, einen Handel mit denen zu machen, die seine Ausrüstung gut gebrauchen können. "
+            beschreibung: "hat immer ein Lächeln auf den Lippen und ist mehr als bereit, einen Handel mit denen zu machen, die seine Ausrüstung gut gebrauchen können"
           }, {
             name: "geizige Kaufmann",
             geschlecht: "maskulin",
@@ -241,7 +241,7 @@
           optionen: [{
             name: "arkane Zauberwirker",
             geschlecht: "maskulin",
-            beschreibung: "benutzt die mythischen Kräfte der Welt, einschließlich Phänomenen wie Leylinien, um seine Zauber zu wirken, die oft fantastischer Natur sind. "
+            beschreibung: "benutzt die mythischen Kräfte der Welt, einschließlich Phänomenen wie Leylinien, um seine Zauber zu wirken, die oft fantastischer Natur sind"
           }, {
             name: "göttliche Zauberwirker",
             geschlecht: "maskulin",
@@ -559,7 +559,7 @@
         const zielOptionGeschlecht = zielOption.geschlecht;
         const zielOptionBeschreibung = zielOption.beschreibung;
         // Erstelle das Array für Nomen mit schwacher Deklination
-        const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste' ];
+        const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste', 'Volksheld' ];
         // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
         function declineNoun(noun, gender) {
           const endsWithE = noun.endsWith('e');
@@ -576,7 +576,7 @@
                 nominativEin: endsWithE ? 'ein ' + noun + 'r' : 'ein ' + noun,
                 genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
                 dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
-                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : 'einen ' + noun,
+                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun,
                 nominativWelcher: 'welcher ',
                 genitivWelcher: 'welches ',
                 dativWelcher: 'welchem ',
@@ -597,7 +597,7 @@
                 nominativEin: 'ein ' + noun,
                 genitivEin: endsWithE ? 'eines ' + noun + 'n' : endsWithT ? 'eines ' + noun + 'en' : 'eines ' + noun + 's',
                 dativEin: endsWithE ? 'einem ' + noun + 'n' : 'einem ' + noun,
-                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun,
+                akkusativEin: endsWithE ? 'einen ' + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' :  'einen ' + noun,
                 nominativWelcher: 'welcher ',
                 genitivWelcher: 'welches ',
                 dativWelcher: 'welchem ',

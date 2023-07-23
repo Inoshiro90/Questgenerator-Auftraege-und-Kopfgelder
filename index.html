@@ -904,7 +904,7 @@
         // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
 const aktionen = [{
           name: `der Angriff auf ${declinedZielOption.akkusativ}`,
-          text: `${declinedZielOption.akkusativEin} anzugreifen`,
+          text: `${declinedZiel.akkusativEin} anzugreifen`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} angreift. Vielleicht soll der Angriff ${declinedZielOption.akkusativ} töten, ${declinedZielOption.akkusativ} in Angst und Schrecken versetzen oder ein anderes mit der Absicht ${declinedAkteurOption.genitiv} verbundenes Ziel erreichen`,
           optionen: [{
             name: "soll durch einen Angriff mit Flucht durchgeführt werden",
@@ -921,7 +921,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Terrorisierung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu terrorisieren`,
+          text: `${declinedZiel.akkusativEin} zu terrorisieren`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr den Geist ${declinedZielOption.genitiv} durch brutale Handlungen gebrochen wird, um ${declinedZielOption.akkusativ} in Angst und Schrecken zu versetzen`,
           optionen: [{
             name: "soll durch Einschüchterung erfolgen",
@@ -938,7 +938,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Tötung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu töten`,
+          text: `${declinedZiel.akkusativEin} zu töten`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} tötet. Wenn es sich um eine lebende Kreatur handelt, bedeutet dies, ihr Leben zu beenden. Bei einem Untoten bedeutet dies die Zerstörung seiner belebten Überreste oder die gewaltsame Vernichtung seines Geistes`,
           optionen: [{
             name: "soll während eines Kampfes erfolgen",
@@ -955,7 +955,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Gefangennahme ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} gefangenzunehmen`,
+          text: `${declinedZiel.akkusativEin} gefangenzunehmen`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} in irgendeiner Weise festhaltet, ohne die Hoffnung auf eine Flucht. Die Dauer der Inhaftierung kann je nach Absicht ${declinedAkteurOption.genitiv} variieren`,
           optionen: [{
             name: `muss in ${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort stattfinden`,
@@ -972,7 +972,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Vertreibung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu vertreiben`,
+          text: `${declinedZiel.akkusativEin} zu vertreiben`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} von ${declinedZielOption.dativPossesivpronomenMaskulinum} derzeitigen Aufenthaltsort vertreibt, vermutlich um zu verhindern, dass ${declinedZielOption.nominativ} dort, wo sich ${declinedZielOption.nominativPersonalpronomen} gerade aufhält, Ärger macht`,
           optionen: [{
             name: `soll durch ${declinedZielOption.nominativPossesivpronomenFemininum} Verängstigung geschehen`,
@@ -989,7 +989,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Neutralisierung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu neutralisieren`,
+          text: `${declinedZiel.akkusativEin} zu neutralisieren`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} in irgendeiner Weise unschädlich macht. ${declinedAkteurOption.nominativPersonalpronomen} möchte ${declinedZielOption.akkusativ} vielleicht daran hindern, gefährlich, hinterhältig oder einschüchternd zu sein, oder etwas anderes, das mit der Absicht ${declinedAkteurOption.genitiv} zusammenhängt`,
           optionen: [{
             name: `soll durch die Veränderung ${declinedZielOption.genitivPossesivpronomenMaskulinum} Körpers geschehen`,
@@ -1006,7 +1006,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Plagung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu plagen`,
+          text: `${declinedZiel.akkusativEin} zu plagen`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ${declinedZielOption.nominativ} von einer Plage heimgesucht wird, das ${declinedZielOption.dativPersonalpronomen} anhaltenden Schaden oder Kummer bereitet`,
           optionen: [{
             name: `soll durch die Besessenheit geschehen`,
@@ -1023,7 +1023,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Demoralisierung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu demoralisieren`,
+          text: `${declinedZiel.akkusativEin} zu demoralisieren`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass der Geist ${declinedZielOption.genitiv} auf irgendeine Art und Weise gebrochen wird. Vielleicht wird dies ${declinedZielOption.akkusativ} davon abhalten, zukünftige Taten zu begehen`,
           optionen: [{
             name: `soll durch Qual geschehen`,
@@ -1040,7 +1040,7 @@ const aktionen = [{
           }]
         }, {
           name: `der Diebstahl ${declinedZielOption.genitiv} Eigentum`,
-          text: `von ${declinedZielOption.dativEin} zu stehlen`,
+          text: `von ${declinedZiel.dativEin} zu stehlen`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass etwas von ${declinedZielOption.dativ} gestohlen wird. Dabei kann es sich um etwas handeln, was ${declinedAkteurOption.dativ} gehört, um etwas, das andere gefährdet, oder einfach um einen Akt der Habgier`,
           optionen: [{
             name: `zielt auf ein Familienerbstück ${declinedAkteurOption.genitiv} ab`,
@@ -1057,7 +1057,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Unterjochung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu unterjochen`,
+          text: `${declinedZiel.akkusativEin} zu unterjochen`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ${declinedZielOption.nominativ} bezwungen und unter ${declinedAkteurOption.nominativPossesivpronomenFemininum} Kontrolle gebracht wird. Die Mittel, mit denen dies geschehen kann, sind unterschiedlich, aber die vollständige Beherrschung ist unerlässlich`,
           optionen: [{
             name: `soll durch die Ausübung von Dominanz über ${declinedZielOption.akkusativPersonalpronomen} erfolgen`,
@@ -1074,7 +1074,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Versklavung ${declinedZielOption.genitiv}`,
-          text: `${declinedZielOption.akkusativEin} zu versklaven`,
+          text: `${declinedZiel.akkusativEin} zu versklaven`,
           beschreibung: `${declinedAkteurOption.nominativ} wünscht sich ${declinedZielOption.akkusativ} als Sklaven oder Diener. Vielleicht will ${declinedAkteurOption.nominativPersonalpronomen} ${declinedZielOption.akkusativPersonalpronomen} für eine bestimmte Aufgabe einsetzen oder für den Rest ${declinedZielOption.genitivPossesivpronomenNeutrum} Lebens versklaven`,
           optionen: [{
             name: "soll durch Gewalt erfolgen",
@@ -1091,7 +1091,7 @@ const aktionen = [{
           }]
         }, {
           name: `die Zerstörung ${declinedZielOption.genitiv} Eigentum`,
-          text: `das Eigentum ${declinedZielOption.genitivEin} zu zerstören`,
+          text: `das Eigentum ${declinedZiel.genitivEin} zu zerstören`,
           beschreibung: `${declinedAkteurOption.nominativ} möchte, dass etwas, was ${declinedZielOption.dativ} gehört, zerstört wird. Es könnte sein, dass ${declinedAkteurOption.nominativ} damit eine Botschaft senden möchte, oder dass das Objekt gefährlich ist`,
           optionen: [{
             name: `zielt auf ${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort ab`,

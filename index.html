@@ -710,7 +710,7 @@
                 nominativEin: endsWithE ? 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun + 'r' : 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun,
                 genitivEin: endsWithE ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en' : 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                 dativEin: endsWithE ? 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
-                akkusativEin: endsWithE ? 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen ' + noun + 'en' : 'einen ' + noun + 'en',
+                akkusativEin: endsWithE ? 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'einen ' + noun + 'en' : endsWithD ? 'einen '+ (adjectiv ? adjectiv + 'n ' : '') + noun + 'en' : 'einen '+ (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
 
                 nominativBestimmterArtikel: 'der',
                 genitivBestimmterArtikel:'des',
@@ -754,9 +754,9 @@
             const nounCases = {
               maskulinum: {
                 nominativ: 'der '+ (adjectiv ? adjectiv + ' ' : '') + noun,
-                genitiv: endsWithE ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'es' : 'des ' + noun + 's',
+                genitiv: endsWithE ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'es' : 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                 dativ: endsWithE ? 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
-                akkusativ: endsWithE ? 'den ' + noun + 'n' : endsWithT ? 'den ' + noun + 'en' : 'den ' + noun,
+                akkusativ: endsWithE ? 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'den '+ (adjectiv ? adjectiv + 'n ' : '') + noun + 'en' : 'den '+ (adjectiv ? adjectiv + 'n ' : '') + noun,
 
                 nominativEin: 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun,
                 genitivEin: endsWithE ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'es' : 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
@@ -1046,10 +1046,10 @@ const aktionen = [{
             name: `zielt auf ein Familienerbstück ${declinedAkteurOption.genitiv} ab`,
             text: `Ein Erbstück, das der Familie ${declinedAkteurOption.genitiv} gehört und das ${declinedAkteurOption.nominativPersonalpronomen} zurückhaben möchte, oder ein Gegenstand, der ${declinedZielOption.dativ} gehört, aber für ${declinedAkteurOption.akkusativ} von großem persönlichen Wert ist` 
           }, {
-            name: `zielt auf ${declinedZielOption.genitivPossesivpronomenPlural} Reichtümer ab`,
+            name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Reichtümer ab`,
             text: `Das angehäufte Gold, die Schätze, Edelsteine und dergleichen ${declinedZielOption.genitiv}. Der Auftrag kann lauten, alles oder nur eine bestimmte Art oder Menge zu stehlen`
           }, {
-            name: `zielt auf ${declinedZielOption.genitivPossesivpronomenPlural} Besitzümer`,
+            name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Besitzümer`,
             text: `Ausrüstung oder andere Gegenstände, die sich im Besitz ${declinedZielOption.genitiv} befinden und die wertvoll, gefährlich oder sentimental sein können. Es kann sich um etwas handeln, das ${declinedZielOption.nominativ} ständig bei sich trägt`
           }, {
             name: `zielt auf ${declinedZielOption.genitivPossesivpronomenMaskulinum} magischen Gegenstand ab`,

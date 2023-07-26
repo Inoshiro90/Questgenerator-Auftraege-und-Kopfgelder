@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <style>
-
       /* Stil für die Breite des Body-Elements und Textausrichtung */
       body {
       max-width: 80%;
@@ -13,7 +12,7 @@
       }
       /* Stil für den Button */
       .collapsible {
-      background-color: #f1f1f1;
+      background-color: #E1E1E1;
       color: #444;
       cursor: pointer;
       padding: 10px;
@@ -24,7 +23,7 @@
       font-size: 16px;
       }
       .collapsible:after {
-      content: '\02795'; /* Unicode Zeichen für "minus "plus"-Zeichen (+) */
+      content: '\02795'; /* Unicode Zeichen für "plus"-Zeichen (+) */
       font-size: 13px;
       color: white;
       float: right;
@@ -35,12 +34,20 @@
       }
       /* Stil für den Inhalt, der standardmäßig ausgeblendet ist */
       .content {
-      padding: 0 18px;
-      display: none;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 10px;
+      background: #F1F1F1;
+      transition: max-height 0.2s ease-out;
       }
       /* Stil für den Zeilenumbruch innerhalb der generierten Sätze*/
       ul#container {
       white-space: pre-wrap;
+      padding-inline-start: 0px;
+      }
+      /* Stil für die Auflistung, damit keine Aufzählungszeichen angezeigt werden */
+      ul {
+      list-style-type: none;
       }
     </style>
   </head>
@@ -53,7 +60,7 @@
     <div class="content">
       <p>
       <p><b>Titel</b></p>
-      <p>Ein geeigneter Titel für das Quest.</p>
+      <p>Ein geeigneter Titel für die Quest.</p>
       <p><b>Zusammenfassung</b></p>
       <p>Eine Zusammenfassung der Geschichte in fünf Sätzen.</p>
       <p><b>Abenteuer-Aufhänger</b></p>
@@ -74,43 +81,42 @@
       // JavaScript zum Ein- und Ausklappen des Inhalts
       var coll = document.getElementsByClassName("collapsible");
       var i;
-
+      
       for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-              this.classList.toggle("active");
-              var content = this.nextElementSibling;
-              if (content.style.display === "block") {
-                  content.style.display = "none";
-              } else {
-                  content.style.display = "block";
-              }
-          });
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
       }
-
       // Javascript zur Generierung der Quests
-
+      
       // Erstellt Eingabefeld und Buttons
       // Eingabefeld für die Anzahl der zu generierenden Quests
       const numQuestsField = document.createElement('input');
       numQuestsField.type = 'number';
       numQuestsField.style.margin = '10px';
       numQuestsField.style.width = '50px';
-
+      
       // Button zur Generierung der Sätze
       const btnGenerate = document.createElement('button');
       btnGenerate.style.margin = '10px';
       btnGenerate.textContent = 'Generieren';
-
+      
       // Button zum Löschen der Sätze
       const btnClear = document.createElement('button');
       btnClear.textContent = 'Löschen';
       btnClear.style.margin = '10px';
-
+      
       // Button zum Kopieren der Sätze in die Zwischenablage      
       const btnCopy = document.createElement('button');
       btnCopy.textContent = 'In Zwischenablage kopieren';
       btnCopy.style.margin = '10px';
-
+      
       // Erstellt Questfunktion
       function generateQuest() {
           // Abschnitt Akteur und entsprechende Begriffe für den Questgenerator
@@ -367,7 +373,7 @@
           }, {
               name: "Zauberwirker",
               geschlecht: "maskulinum",
-              text: "kann in allen Formen und Größen kommen. Er kann seine Magie aus einer der vielen Quellen schöpfen, die beeinflussen, wie er sie einsetzt und welche Form sie annimmt",
+              text: "kann in allen Formen und Farben kommen. Er kann seine Magie aus einer der vielen Quellen schöpfen, die beeinflussen, wie er sie einsetzt und welche Form sie annimmt",
               optionen: [{
                   name: "Zauberwirker",
                   geschlecht: "maskulinum",
@@ -504,7 +510,7 @@
                   name: "Rüstung",
                   geschlecht: "femininum",
                   adjektiv: "belebte",
-                  text: "ist eine durch Animationsmagie zum Leben erweckte Rüstung, mag zwar auf Hochglanz poliert sein, aber ist in Wirklichkeit eher langweilig."
+                  text: "ist eine durch Animationsmagie zum Leben erweckte Rüstung, mag zwar auf Hochglanz poliert sein, aber ist in Wirklichkeit eher langweilig"
               }, {
                   name: "Schildwächter",
                   geschlecht: "maskulinum",
@@ -574,7 +580,7 @@
                   name: "Dämon",
                   geschlecht: "maskulinum",
                   adjektiv: "niedere",
-                  text: "ist eine von Natur aus chaotisches Kreatur, die mit Vorliebe das pure und mörderische Böse verbreitet, wo immer sie auch kann"
+                  text: "ist eine von Natur aus eine chaotische Kreatur, die mit Vorliebe das pure und mörderische Böse verbreitet, wo immer sie auch kann"
               }, {
                   name: "Teufel",
                   geschlecht: "maskulinum",
@@ -747,13 +753,13 @@
                   text: "ist ein öliges Wesen, das empfindungsfähig werden kann, wenn es genug Humanoide verschlingt. Einige schwarze Blobs haben sogar psionische Fähigkeiten"
               }]
           }, ];
-
+      
           // Funktion, um einen zufälligen Text aus einem Array auszuwählen
           function getRandomText(arr) {
               const index = Math.floor(Math.random() * arr.length);
               return arr[index];
           }
-
+      
           // Bestimmt das Geschlecht für ${declinedAkteurOption.akkusativ} und führt Variablendeklarationen und Zuweisungen für Akteure durch
           const akteurData = getRandomText(akteure);
           const akteurName = akteurData.name;
@@ -765,7 +771,7 @@
           const akteurOptionGeschlecht = akteurOption.geschlecht;
           const akteurOptionAdjektiv = akteurOption.adjektiv;
           const akteurOptionText = akteurOption.text;
-
+      
           // Bestimmt das Geschlecht für das Ziel und führt Variablendeklarationen und Zuweisungen für Ziele durch
           const zielData = getRandomText(ziele);
           const zielName = zielData.name;
@@ -777,10 +783,10 @@
           const zielOptionGeschlecht = zielOption.geschlecht;
           const zielOptionAdjektiv = zielOption.adjektiv;
           const zielOptionText = zielOption.text;
-
+      
           // Erstelle das Array für Nomen mit schwacher Deklination
-          const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste', 'Volksheld', 'Monarch', 'Soldat'];
-
+          const nomenSchwacheDeklination = ['Gelehrte', 'Fremde', 'Untote', 'Humanoide', 'Jugendliche', 'Erwachsene', 'Älteste', 'Volksheld', 'Monarch', 'Soldat', 'Barbar', 'Adelige'];
+      
           // Funktion zum Erzeugen der verschiedenen Fälle eines Substantivs
           function declineNoun(noun, gender, adjectiv) {
               const endsWithE = noun.endsWith('e');
@@ -788,10 +794,10 @@
               const endsWithD = noun.endsWith('d');
               const endsWithS = noun.endsWith('s');
               const endsWithCh = noun.endsWith('ch');
-
+      
               // Überprüfe, ob das Nomen eine schwache Deklination hat
               if (nomenSchwacheDeklination.includes(noun)) {
-
+      
                   // Deklinationsregeln für Adjektive und Nomen mit schwacher Deklination
                   const nounCases = {
                       maskulinum: {
@@ -799,42 +805,42 @@
                           genitiv: endsWithE ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
                           dativ: endsWithE ? 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
                           akkusativ: endsWithE ? 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
-
+      
                           nominativEin: endsWithE ? 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun + 'r' : 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun,
                           genitivEin: endsWithE ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
                           dativEin: endsWithE ? 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
                           akkusativEin: endsWithE ? 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en',
-
+      
                           nominativBestimmterArtikel: 'der',
                           genitivBestimmterArtikel: 'des',
                           dativBestimmterArtikel: 'dem',
                           akkusativBestimmterArtikel: 'den',
-
+      
                           nominativPersonalpronomen: 'er',
                           genitivPersonalpronomen: 'seiner',
                           dativPersonalpronomen: 'ihm',
                           akkusativPersonalpronomen: 'ihn',
-
+      
                           nominativWelcher: 'welcher',
                           genitivWelcher: 'welches',
                           dativWelcher: 'welchem',
                           akkusativWelcher: 'welchen',
-
+      
                           nominativPossesivpronomenMaskulinum: 'sein',
                           genitivPossesivpronomenMaskulinum: 'seines',
                           dativPossesivpronomenMaskulinum: 'seinem',
                           akkusativPossesivpronomenMaskulinum: 'seinen',
-
+      
                           nominativPossesivpronomenFemininum: 'seine',
                           genitivPossesivpronomenFemininum: 'seiner',
                           dativPossesivpronomenFemininum: 'seiner',
                           akkusativPossesivpronomenFemininum: 'seine',
-
+      
                           nominativPossesivpronomenNeutrum: 'sein',
                           genitivPossesivpronomenNeutrum: 'seines',
                           dativPossesivpronomenNeutrum: 'seinem',
                           akkusativPossesivpronomenNeutrum: 'sein',
-
+      
                           nominativPossesivpronomenPlural: 'seine',
                           genitivPossesivpronomenPlural: 'seiner',
                           dativPossesivpronomenPlural: 'seinen',
@@ -850,42 +856,42 @@
                           genitiv: endsWithE ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'es' : endsWithS ? 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + '\'' : 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                           dativ: endsWithE ? 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativ: endsWithE ? 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'en' : 'den ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
-
+      
                           nominativEin: 'ein ' + (adjectiv ? adjectiv + 'r ' : '') + noun,
                           genitivEin: endsWithE ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : endsWithT ? 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'es' : 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                           dativEin: endsWithE ? 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativEin: endsWithE ? 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 'n' : 'einen ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
-
+      
                           nominativBestimmterArtikel: 'der',
                           genitivBestimmterArtikel: 'des',
                           dativBestimmterArtikel: 'dem',
                           akkusativBestimmterArtikel: 'den',
-
+      
                           nominativPersonalpronomen: 'er',
                           genitivPersonalpronomen: 'seiner',
                           dativPersonalpronomen: 'ihm',
                           akkusativPersonalpronomen: 'ihn',
-
+      
                           nominativWelcher: 'welcher',
                           genitivWelcher: 'welches',
                           dativWelcher: 'welchem',
                           akkusativWelcher: 'welchen',
-
+      
                           nominativPossesivpronomenMaskulinum: 'sein',
                           genitivPossesivpronomenMaskulinum: 'seines',
                           dativPossesivpronomenMaskulinum: 'seinem',
                           akkusativPossesivpronomenMaskulinum: 'seinen',
-
+      
                           nominativPossesivpronomenFemininum: 'seine',
                           genitivPossesivpronomenFemininum: 'seiner',
                           dativPossesivpronomenFemininum: 'seiner',
                           akkusativPossesivpronomenFemininum: 'seine',
-
+      
                           nominativPossesivpronomenNeutrum: 'sein',
                           genitivPossesivpronomenNeutrum: 'seines',
                           dativPossesivpronomenNeutrum: 'seinem',
                           akkusativPossesivpronomenNeutrum: 'sein',
-
+      
                           nominativPossesivpronomenPlural: 'seine',
                           genitivPossesivpronomenPlural: 'seiner',
                           dativPossesivpronomenPlural: 'seinen',
@@ -896,42 +902,42 @@
                           genitiv: 'der ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           dativ: 'der ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativ: 'die ' + (adjectiv ? adjectiv + ' ' : '') + noun,
-
+      
                           nominativEin: 'eine ' + (adjectiv ? adjectiv + ' ' : '') + noun,
                           genitivEin: 'einer ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           dativEin: 'einer ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativEin: 'eine ' + (adjectiv ? adjectiv + ' ' : '') + noun,
-
+      
                           nominativBestimmterArtikel: 'die',
                           genitivBestimmterArtikel: 'der',
                           dativBestimmterArtikel: 'der',
                           akkusativBestimmterArtikel: 'die',
-
+      
                           nominativPersonalpronomen: 'sie',
                           genitivPersonalpronomen: 'ihrer',
                           dativPersonalpronomen: 'ihr',
                           akkusativPersonalpronomen: 'sie',
-
+      
                           nominativWelcher: 'welche',
                           genitivWelcher: 'welcher',
                           dativWelcher: 'welcher',
                           akkusativWelcher: 'welche',
-
+      
                           nominativPossesivpronomenMaskulinum: 'ihr',
                           genitivPossesivpronomenMaskulinum: 'ihres',
                           dativPossesivpronomenMaskulinum: 'ihrem',
                           akkusativPossesivpronomenMaskulinum: 'ihren',
-
+      
                           nominativPossesivpronomenFemininum: 'ihre',
                           genitivPossesivpronomenFemininum: 'ihrer',
                           dativPossesivpronomenFemininum: 'ihrer',
                           akkusativPossesivpronomenFemininum: 'ihre',
-
+      
                           nominativPossesivpronomenNeutrum: 'ihr',
                           genitivPossesivpronomenNeutrum: 'ihres',
                           dativPossesivpronomenNeutrum: 'ihrem',
                           akkusativPossesivpronomenNeutrum: 'ihr',
-
+      
                           nominativPossesivpronomenPlural: 'ihre',
                           genitivPossesivpronomenPlural: 'ihrer',
                           dativPossesivpronomenPlural: 'ihren',
@@ -942,42 +948,42 @@
                           genitiv: 'des ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                           dativ: 'dem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativ: 'das ' + (adjectiv ? adjectiv + ' ' : '') + noun,
-
+      
                           nominativEin: 'ein ' + (adjectiv ? adjectiv + 's ' : '') + noun,
-                          genitivEin: 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
+                          genitivEin: 'eines ' + (adjectiv ? adjectiv + 'n ' : '') + noun + 's',
                           dativEin: 'einem ' + (adjectiv ? adjectiv + 'n ' : '') + noun,
                           akkusativEin: 'ein ' + (adjectiv ? adjectiv + 's ' : '') + noun,
-
+      
                           nominativBestimmterArtikel: 'das',
                           genitivBestimmterArtikel: 'des',
                           dativBestimmterArtikel: 'dem',
                           akkusativBestimmterArtikel: 'das',
-
+      
                           nominativPersonalpronomen: 'es',
                           genitivPersonalpronomen: 'seiner',
                           dativPersonalpronomen: 'ihm',
                           akkusativPersonalpronomen: 'es',
-
+      
                           nominativWelcher: 'welches',
                           genitivWelcher: 'welchen',
                           dativWelcher: 'welchem',
                           akkusativWelcher: 'welches',
-
+      
                           nominativPossesivpronomenMaskulinum: 'sein',
                           genitivPossesivpronomenMaskulinum: 'seines',
                           dativPossesivpronomenMaskulinum: 'seinem',
                           akkusativPossesivpronomenMaskulinum: 'seinen',
-
+      
                           nominativPossesivpronomenFemininum: 'seine',
                           genitivPossesivpronomenFemininum: 'seiner',
                           dativPossesivpronomenFemininum: 'seiner',
                           akkusativPossesivpronomenFemininum: 'seine',
-
+      
                           nominativPossesivpronomenNeutrum: 'sein',
                           genitivPossesivpronomenNeutrum: 'seines',
                           dativPossesivpronomenNeutrum: 'seinem',
                           akkusativPossesivpronomenNeutrum: 'sein',
-
+      
                           nominativPossesivpronomenPlural: 'seine',
                           genitivPossesivpronomenPlural: 'seiner',
                           dativPossesivpronomenPlural: 'seinen',
@@ -987,29 +993,29 @@
                   return nounCases[gender];
               }
           }
-
+      
           //Dekliniert Akteur- und Zielnomen
           const declinedAkteur = declineNoun(akteurName, akteurGeschlecht, akteurAdjektiv);
           const declinedAkteurOption = declineNoun(akteurOptionName, akteurOptionGeschlecht, akteurOptionAdjektiv);
           const declinedZiel = declineNoun(zielName, zielGeschlecht, zielAdjektiv);
           const declinedZielOption = declineNoun(zielOptionName, zielOptionGeschlecht, zielOptionAdjektiv);
-
+      
           // Abschnitt Aktionen und entsprechende Begriffe für den Questgenerator
           const aktionen = [{
               name: `der Angriff auf ${declinedZielOption.akkusativ}`,
               text: `${declinedZiel.akkusativEin} anzugreifen`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} angreift. Vielleicht soll der Angriff ${declinedZielOption.akkusativ} töten, ${declinedZielOption.akkusativ} in Angst und Schrecken versetzen oder ein anderes mit der Absicht ${declinedAkteurOption.genitiv} verbundenes Ziel erreichen`,
               optionen: [{
-                  name: "soll durch einen Angriff mit Flucht durchgeführt werden",
+                  name: "Der Plan ist ein Angriff mit anschließender Flucht",
                   text: `${declinedZielOption.nominativ} muss schnell ausgeschaltet oder mit einer Reihe von schnellen Schlägen außer Gefecht gesetzt werden, bevor ${declinedZielOption.nominativPersonalpronomen} einen Gegenschlag ausführen kann. Angriff und Flucht ist ein schneller Weg, das Herz eines Gegners in Angst und Schrecken zu versetzen`
               }, {
-                  name: "soll durch einen Hinterhalt erfolgen",
+                  name: "Der Plan ist ein Angriff aus dem Hinterhalt",
                   text: `${declinedZielOption.nominativ} muss im richtigen Moment überrascht werden, um den Spieß zugunsten der Angreifer umzudrehen, auch wenn die Chancen schlecht stehen`
               }, {
-                  name: "während eines Überfalls durchgeführt werden",
+                  name: "Der Plan ist ein Angriff bei einem Überfall",
                   text: `${declinedZielOption.nominativ} muss durch einen massiven Überfall überwältigt werden. Dies kann bedeuten, dass eine relativ große Truppe oder eine große Kreatur ${declinedZielOption.akkusativPersonalpronomen} an einem bekannten Ort angreift`
               }, {
-                  name: "soll durch eine Belagerung erfolgen",
+                  name: "Der Plan ist ein Belagerungsangriff",
                   text: `${declinedZielOption.nominativ} muss an seinem Standort eingekesselt werden, sei es eine Siedlung, ein Versteck, ein Verlies oder ein anderer Ort, an dem ${declinedZielOption.akkusativPossesivpronomenPlural} Ressourcen schwinden, während ${declinedZielOption.nominativPersonalpronomen} dort wartet`
               }]
           }, {
@@ -1017,33 +1023,33 @@
               text: `${declinedZiel.akkusativEin} zu terrorisieren`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr den Geist ${declinedZielOption.genitiv} durch brutale Handlungen gebrochen wird, um ${declinedZielOption.akkusativ} in Angst und Schrecken zu versetzen`,
               optionen: [{
-                  name: "soll durch Einschüchterung erfolgen",
+                  name: "Der Terror soll durch Einschüchterung ausgeübt werden",
                   text: `${declinedZielOption.nominativ} muss durch Macht, Stärke, kriegerische Fähigkeiten oder sogar Zauberei eingeschüchtert werden`
               }, {
-                  name: "soll durch Entsetzen erfolgen",
+                  name: "Der Terror soll durch Entsetzen ausgeübt werden",
                   text: `${declinedZielOption.nominativ} muss durch Illusion, grafische Bilder oder Sprache oder andere abscheuliche Taten entsetzt sein, die darauf abzielen, eine anhaltende Angst zu hinterlassen`
               }, {
-                  name: "durch Bedrohung erfolgen",
+                  name: "Der Terror soll durch Bedrohung ausgeübt werden",
                   text: `${declinedZielOption.nominativ} muss durch verbale Bedrohung, typischerweise in Form von Beschimpfungen, die eine kurzfristige Wirkung auf ${declinedZielOption.akkusativ} haben, vor einer bestimmten Handlung gewarnt oder zu einer bestimmten Handlung angehalten werden`
               }, {
-                  name: "durch verursachten Schaden erfolgen",
-                  text: `${declinedZielOption.nominativ}, ${declinedZielOption.genitivPossesivpronomenNeutrum} Eigentum, ${declinedZielOption.genitivPossesivpronomenPlural} Verbündeten oder ein anderer wichtiger Aspekt ${declinedZielOption.genitivPossesivpronomenNeutrum} Existenz muss physisch geschädigt werden, um ${declinedZielOption.akkusativPersonalpronomen} zu verängstigen`
+                  name: "Der Terror soll durch die Verursachung Schaden ausgeübt werden",
+                  text: `${declinedZielOption.nominativ}, ${declinedZielOption.nominativPossesivpronomenNeutrum} Eigentum, ${declinedZielOption.nominativPossesivpronomenPlural} Verbündeten oder ein anderer wichtiger Aspekt ${declinedZielOption.genitivPossesivpronomenNeutrum} Existenz muss physisch geschädigt werden, um ${declinedZielOption.akkusativPersonalpronomen} zu verängstigen`
               }]
           }, {
               name: `die Tötung ${declinedZielOption.genitiv}`,
               text: `${declinedZiel.akkusativEin} zu töten`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} tötet. Wenn es sich um eine lebende Kreatur handelt, bedeutet dies, ihr Leben zu beenden. Bei einem Untoten bedeutet dies die Zerstörung seiner belebten Überreste oder die gewaltsame Vernichtung seines Geistes`,
               optionen: [{
-                  name: "soll während eines Kampfes erfolgen",
+                  name: "Der Tod muss während eines Kampfes eintreten",
                   text: `${declinedZielOption.nominativ} muss in einem Kampf getötet werden, nicht unbedingt durch eine Klinge, aber auf jeden Fall unter gewaltsamen Umständen`
               }, {
-                  name: "soll durch ein Attentat erfolgen",
+                  name: "Der Tod muss durch ein Attentat herbeigeführt worden sein.",
                   text: `${declinedZielOption.nominativ} muss auf subtile und heimliche Weise getötet werden, beispielsweise durch einen Messerstich in den Rücken oder durch eine Phiole mit Gift, die in ein Getränk gegeben wird`
               }, {
-                  name: "soll durch eine vollständige Auslöschung erfolgen",
+                  name: "Der Tod wird durch vollständige Auslöschung erreicht.",
                   text: `${declinedZielOption.nominativ} muss vollständig ausgelöscht werden - keine Essenz ${declinedZielOption.genitivPossesivpronomenNeutrum} Wesens sollte übrig bleiben, wenn die Handlung abgeschlossen ist`
               }, {
-                  name: "muss vertuscht werden",
+                  name: "Das Töten hat heimlich zu erfolgen.",
                   text: `${declinedZielOption.nominativ} muss getötet werden, aber ${declinedZielOption.nominativPossesivpronomenMaskulinum} Tod muss vertuscht werden, es muss wie ein Unfall aussehen, oder es muss völlig unentdeckbar gemacht werden`
               }]
           }, {
@@ -1051,16 +1057,16 @@
               text: `${declinedZiel.akkusativEin} gefangenzunehmen`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} in irgendeiner Weise festhaltet, ohne die Hoffnung auf eine Flucht. Die Dauer der Inhaftierung kann je nach Absicht ${declinedAkteurOption.genitiv} variieren`,
               optionen: [{
-                  name: `muss in ${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort stattfinden`,
-                  text: `${declinedZielOption.nominativ} muss gezwungen werden, in ${declinedZielOption.genitivPossesivpronomenFemininum} Höhle zu bleiben. Jeder Fluchtweg muss vollständig versperrt sein`
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss in ${declinedZielOption.dativPossesivpronomenMaskulinum} Hort eingeschlossen werden`,
+                  text: `${declinedZielOption.nominativ} muss gezwungen werden, in ${declinedZielOption.nominativPossesivpronomenFemininum} Höhle zu bleiben. Jeder Fluchtweg muss vollständig versperrt sein`
               }, {
-                  name: `muss zu ${declinedZielOption.nominativPossesivpronomenFemininum} Inhaftierung in einem Gefängnis führen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss in ein Gefängnis gesperrt werden`,
                   text: `${declinedZielOption.nominativ} muss in ein Gefängnis gebracht werden, wo ${declinedZielOption.nominativPersonalpronomen} festgehalten und ständig überwacht werden kann`
               }, {
-                  name: `soll längerfristig durch ${declinedAkteurOption.akkusativ} erfolgen`,
-                  text: `${declinedZielOption.nominativ} muss vom ${declinedAkteurOption.dativ} persönlich gefangen gehalten werden. ${declinedZielOption.nominativPersonalpronomen} muss lebendig hergebracht werden und gefesselt sein oder auf irgendeine Weise kontrolliert werden`
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird durch ${declinedAkteurOption.akkusativ} erfolgen`,
+                  text: `${declinedZielOption.nominativ} muss von ${declinedAkteurOption.dativ} persönlich gefangen gehalten werden. ${declinedZielOption.nominativPersonalpronomen} muss lebendig hergebracht werden und gefesselt sein oder auf irgendeine Weise kontrolliert werden`
               }, {
-                  name: `soll durch die Verbannung ${declinedZielOption.genitiv} auf einer Halbebene erreicht werden`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} soll auf eine Halbebene gebracht werden`,
                   text: `${declinedZielOption.nominativ} muss von der aktuellen Ebene der Existenz entfernt und in ein anderes Reich der Existenz verbannt werden`
               }]
           }, {
@@ -1068,16 +1074,16 @@
               text: `${declinedZiel.akkusativEin} zu vertreiben`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} von ${declinedZielOption.dativPossesivpronomenMaskulinum} derzeitigen Aufenthaltsort vertreibt, vermutlich um zu verhindern, dass ${declinedZielOption.nominativ} dort, wo sich ${declinedZielOption.nominativPersonalpronomen} gerade aufhält, Ärger macht`,
               optionen: [{
-                  name: `soll durch ${declinedZielOption.nominativPossesivpronomenFemininum} Verängstigung geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss verängstigt werden`,
                   text: `${declinedZielOption.nominativ} muss durch durch Einschüchterung, Drohungen und sogar Gewalt so sehr verängstigt werden, dass ${declinedZielOption.nominativPersonalpronomen} sich gezwungen sieht, zu gehen. Dies kann eine längere Zeit in Anspruch nehmen`
               }, {
-                  name: `soll durch ${declinedZielOption.nominativPossesivpronomenFemininum} Verdrängung geschehen`,
-                  text: `${declinedZielOption.nominativ} muss mit Gewalt von ${declinedZielOption.genitivPossesivpronomenMaskulinum} Standort entfernt werden. Dazu kann es notwendig sein, ${declinedZielOption.nominativPersonalpronomen} zu finden und gefangen zu nehmen, um ${declinedZielOption.nominativPersonalpronomen} dann an einen anderen Ort zu bringen`
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss aus dem Weg geräumt werden`,
+                  text: `${declinedZielOption.nominativ} muss mit Gewalt von ${declinedZielOption.nominativPossesivpronomenMaskulinum} Standort entfernt werden. Dazu kann es notwendig sein, ${declinedZielOption.akkusativPersonalpronomen} zu finden und gefangen zu nehmen, um ${declinedZielOption.akkusativPersonalpronomen} dann an einen anderen Ort zu bringen`
               }, {
-                  name: `soll durch ${declinedZielOption.nominativPossesivpronomenFemininum} Verbannung geschehen`,
-                  text: `${declinedZielOption.nominativ} muss mit Hilfe von Magie oder dem vollen Ausmaß des Gesetzes von ${declinedZielOption.genitivPossesivpronomenMaskulinum} derzeitigen Aufenthaltsort verbannt werden, so dass eine Rückkehr unmöglich oder extrem töricht ist`
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss verbannt werden`,
+                  text: `${declinedZielOption.nominativ} muss mit Hilfe von Magie oder dem vollen Ausmaß des Gesetzes von ${declinedZielOption.nominativPossesivpronomenMaskulinum} derzeitigen Aufenthaltsort verbannt werden, so dass eine Rückkehr unmöglich oder extrem töricht ist`
               }, {
-                  name: `soll durch Befestigung um ${declinedZielOption.akkusativPersonalpronomen} geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss daran gehindert werden, ein Gebiet zu betreten oder zu verlassen`,
                   text: `${declinedZielOption.nominativ} muss durch den Bau von Befestigungen daran gehindert werden, in ein bestimmtes Gebiet zu kommen, das einst ${declinedZielOption.dativPersonalpronomen} gehörte, oder aus einem Gebiet zu fliehen, was zu ${declinedZielOption.dativPossesivpronomenNeutrum} derzeitigen Revier gehört`
               }]
           }, {
@@ -1085,33 +1091,33 @@
               text: `${declinedZiel.akkusativEin} zu neutralisieren`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ihr ${declinedZielOption.akkusativ} in irgendeiner Weise unschädlich macht. ${declinedAkteurOption.nominativPersonalpronomen} möchte ${declinedZielOption.akkusativ} vielleicht daran hindern, gefährlich, hinterhältig oder einschüchternd zu sein, oder etwas anderes, das mit der Absicht ${declinedAkteurOption.genitiv} zusammenhängt`,
               optionen: [{
-                  name: `soll durch die Veränderung ${declinedZielOption.genitivPossesivpronomenMaskulinum} Körpers geschehen`,
+                  name: `Eine Veränderung ${declinedZielOption.genitivPossesivpronomenMaskulinum} Körpers muss durchgeführt werden`,
                   text: `Irgendetwas an der physischen Form ${declinedZielOption.genitiv} muss verändert werden, um ${declinedZielOption.akkusativPersonalpronomen} unschädlich zu machen. Vielleicht müssen ${declinedZielOption.nominativPossesivpronomenPlural} Krallen entfernt oder ${declinedZielOption.nominativPossesivpronomenNeutrum} furchterregendes Aussehen mit einer Illusion überdeckt werden`
               }, {
-                  name: `soll durch die Kontrolle ${declinedZielOption.genitivPossesivpronomenFemininum} Seele geschehen`,
+                  name: `${declinedZielOption.genitivPossesivpronomenFemininum} Seele muss kontrolliert werden`,
                   text: `Irgendetwas an der Seele ${declinedZielOption.genitiv} muss unter Kontrolle gebracht werden. Vielleicht kann ${declinedZielOption.nominativ} durch Magie beherrscht, durch Folter gebrochen oder in einem magischen Gegenstand versiegelt werden`
               }, {
-                  name: `soll durch den Entzug ${declinedZielOption.genitivPossesivpronomenFemininum} Zauberkraft geschehen`,
+                  name: `${declinedZielOption.genitivPossesivpronomenFemininum} Zauberkraft muss unterdrückt werden`,
                   text: `${declinedZielOption.nominativ} hat irgendeine Fähigkeit zur Zauberei, die gestoppt werden muss. Eine antimagische Aura oder der Entzug des arkanen Fokus könnten hier Abhilfe schaffen`
               }, {
-                  name: `soll durch die Veränderung ${declinedZielOption.genitivPossesivpronomenNeutrum} Wesens geschehen`,
+                  name: `Eine Veränderung ${declinedZielOption.genitivPossesivpronomenNeutrum} Wesens muss durchgeführt werden`,
                   text: `Das Wesen ${declinedZielOption.genitiv} ist ${declinedAkteurOption.dativ} in gewisser Weise ein Gräuel. Vielleicht kann man ${declinedZielOption.dativ} eine andere Lebensweise beibringen oder ${declinedZielOption.dativPersonalpronomen} bestechen, damit ${declinedZielOption.nominativPersonalpronomen} sich anders verhält`
               }]
           }, {
               name: `die Plagung ${declinedZielOption.genitiv}`,
               text: `${declinedZiel.akkusativEin} zu plagen`,
-              beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ${declinedZielOption.nominativ} von einer Plage heimgesucht wird, das ${declinedZielOption.dativPersonalpronomen} anhaltenden Schaden oder Kummer bereitet`,
+              beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ${declinedZielOption.nominativ} von einer Plage heimgesucht wird, die ${declinedZielOption.dativPersonalpronomen} anhaltenden Schaden oder Kummer bereitet`,
               optionen: [{
-                  name: `soll durch die Besessenheit geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss von Besessenheit geplagt sein.`,
                   text: `${declinedZielOption.nominativ} muss besessen werden, vielleicht durch ein Ritual, bei dem ${declinedZielOption.nominativPossesivpronomenFemininum} Seele verpflanzt oder von der eines anderen Wesens überlagert wird`
               }, {
-                  name: `soll durch die Versteinerung geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss von einer Versteinerung befallen sein`,
                   text: `${declinedZielOption.nominativ} muss versteinert - in Stein oder ein anderes nicht-lebendes Material verwandelt - oder dauerhaft gelähmt werden`
               }, {
-                  name: `soll durch Gedankenkontrolle geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch Gedankenkontrolle gequält werden`,
                   text: `${declinedZielOption.nominativ} muss durch mentale oder psychische Manipulation, durch Zauber, Hypnose oder Ähnliches unter die Kontrolle eines anderen gebracht werden`
               }, {
-                  name: `soll durch die Verfluchung geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss mit einem Fluch belegt werden`,
                   text: `${declinedZielOption.nominativ} muss verflucht werden, vielleicht um ${declinedZielOption.akkusativPersonalpronomen} auf irgendeine Weise zu schwächen oder um ${declinedZielOption.akkusativPersonalpronomen} daran zu hindern, bestimmte Handlungen ohne schwerwiegende Konsequenzen durchzuführen`
               }]
           }, {
@@ -1119,16 +1125,16 @@
               text: `${declinedZiel.akkusativEin} zu demoralisieren`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass der Geist ${declinedZielOption.genitiv} auf irgendeine Art und Weise gebrochen wird. Vielleicht wird dies ${declinedZielOption.akkusativ} davon abhalten, zukünftige Taten zu begehen`,
               optionen: [{
-                  name: `soll durch Qual geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} Qualen erleiden`,
                   text: `${declinedZielOption.nominativ} muss gequält werden. Illusorische Visionen oder Traumgespenster könnten funktionieren, ebenso wie ständige schriftliche oder mündliche Ermahnungen`
               }, {
-                  name: `soll durch Untergrabung ${declinedZielOption.genitiv} geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch Untergrabung zermürbt werden`,
                   text: `${declinedZielOption.nominativ} muss untergraben werden, entweder durch Herabwürdigung, Einbringung größerer Bedrohungen in das Gebiet oder durch einen ähnlichen Vorgang`
               }, {
-                  name: `soll durch die ins Visiernahme ${declinedZielOption.genitivPossesivpronomenPlural} Verbündeten geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss ${declinedZielOption.genitivPossesivpronomenPlural} Verbündeten leiden sehen`,
                   text: `Die Verbündeten ${declinedZielOption.genitiv} müssen schikaniert werden, um ${declinedZielOption.nominativ} selbst von einem bestimmten Verhalten abzubringen`
               }, {
-                  name: `soll durch Propaganda gegen ${declinedZielOption.akkusativPersonalpronomen}geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss zum Propagandaziel werden`,
                   text: `Es muss Propaganda über ${declinedZielOption.akkusativ} verbreitet werden, was dazu führen kann, dass ${declinedZielOption.nominativ} das Gebiet verlässt oder sogar Gewalt gegen ${declinedZielOption.akkusativPersonalpronomen} ausgeübt wird`
               }]
           }, {
@@ -1136,16 +1142,16 @@
               text: `von ${declinedZiel.dativEin} zu stehlen`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass etwas von ${declinedZielOption.dativ} gestohlen wird. Dabei kann es sich um etwas handeln, was ${declinedAkteurOption.dativ} gehört, um etwas, das andere gefährdet, oder einfach um einen Akt der Habgier`,
               optionen: [{
-                  name: `zielt auf ein Familienerbstück ${declinedAkteurOption.genitiv} ab`,
+                  name: `Ein Familienerbstück ${declinedAkteurOption.genitiv} muss gestohlen werden`,
                   text: `Ein Erbstück, das der Familie ${declinedAkteurOption.genitiv} gehört und das ${declinedAkteurOption.nominativPersonalpronomen} zurückhaben möchte, oder ein Gegenstand, der ${declinedZielOption.dativ} gehört, aber für ${declinedAkteurOption.akkusativ} von großem persönlichen Wert ist`
               }, {
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Reichtümer ab`,
+                  name: `Die Reichtümer ${declinedZielOption.genitiv} müssen gestohlen werden`,
                   text: `Das angehäufte Gold, die Schätze, Edelsteine und dergleichen ${declinedZielOption.genitiv}. Der Auftrag kann lauten, alles oder nur eine bestimmte Art oder Menge zu stehlen`
               }, {
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Besitzümer`,
+                  name: `Die Besitztümer ${declinedZielOption.genitiv} müssen gestohlen werden`,
                   text: `Ausrüstung oder andere Gegenstände, die sich im Besitz ${declinedZielOption.genitiv} befinden und die wertvoll, gefährlich oder sentimental sein können. Es kann sich um etwas handeln, das ${declinedZielOption.nominativ} ständig bei sich trägt`
               }, {
-                  name: `zielt auf ${declinedZielOption.genitivPossesivpronomenMaskulinum} magischen Gegenstand ab`,
+                  name: `Ein magischer Gegenstand ${declinedZielOption.genitiv} muss gestohlen werden`,
                   text: `Ein wundersamer, magisch verzauberter Gegenstand, welcher ${declinedZielOption.dativ} gehört. Wahrscheinlich ${declinedZielOption.nominativPossesivpronomenMaskulinum} wertvollster Besitz`
               }]
           }, {
@@ -1153,16 +1159,16 @@
               text: `${declinedZiel.akkusativEin} zu unterjochen`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass ${declinedZielOption.nominativ} bezwungen und unter ${declinedAkteurOption.nominativPossesivpronomenFemininum} Kontrolle gebracht wird. Die Mittel, mit denen dies geschehen kann, sind unterschiedlich, aber die vollständige Beherrschung ist unerlässlich`,
               optionen: [{
-                  name: `soll durch die Ausübung von Dominanz über ${declinedZielOption.akkusativPersonalpronomen} erfolgen`,
-                  text: `${declinedZiel.nominativ} muss mit Willenskraft unterworfen werden. ${declinedZielOption.nominativPersonalpronomen} muss zum Schweigen gebracht, gedemütigt, bedroht oder ähnliches werden`
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch die Ausübung von Dominanz unterjocht werden`,
+                  text: `${declinedZielOption.nominativ} muss mit Willenskraft unterworfen werden. ${declinedZielOption.nominativPersonalpronomen} muss zum Schweigen gebracht, gedemütigt, bedroht oder ähnliches werden`
               }, {
-                  name: `soll durch Kontrolle über ${declinedZielOption.akkusativPersonalpronomen} geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch Kontrolle unterjocht werden`,
                   text: `${declinedZielOption.nominativ} muss durch Zaubersprüche oder andere magische Effekte, die ${declinedZielOption.dativPersonalpronomen} den freien Willen nehmen, vollständig kontrolliert werden`
               }, {
-                  name: `soll durch den Sieg über ${declinedZielOption.akkusativPersonalpronomen} geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch einen Sieg unterjocht werden`,
                   text: `${declinedZielOption.nominativ} muss besiegt werden, in der Regel im Kampf, aber auch durch ein magisches Duell, einen sportlichen Wettkampf, ein Geschicklichkeitsspiel oder ein Logikspiel`
               }, {
-                  name: `soll durch ${declinedZielOption.genitivPossesivpronomenFemininum} Unterdrückung geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} muss durch Unterdrückung unterjocht werden`,
                   text: `${declinedZielOption.nominativ} muss mit Gewalt zum Aufgeben gezwungen werden. ${declinedZielOption.nominativPersonalpronomen} kann in einem Käfig gefangen oder gefesselt und mit Handschellen versehen sein`
               }]
           }, {
@@ -1170,16 +1176,16 @@
               text: `${declinedZielOption.akkusativEin} zu versklaven`,
               beschreibung: `${declinedAkteurOption.nominativ} wünscht sich ${declinedZielOption.akkusativ} als Sklaven oder Diener. Vielleicht will ${declinedAkteurOption.nominativPersonalpronomen} ${declinedZielOption.akkusativPersonalpronomen} für eine bestimmte Aufgabe einsetzen oder für den Rest ${declinedZielOption.genitivPossesivpronomenNeutrum} Lebens versklaven`,
               optionen: [{
-                  name: "soll durch Gewalt erfolgen",
+                  name: `${declinedZielOption.nominativPersonalpronomen} soll durch Gewalt versklavt werden`,
                   text: `${declinedZielOption.nominativ} muss mit Gewalt ergriffen und gezwungen werden, die Forderungen ${declinedZielOption.genitivPossesivpronomenMaskulinum} neuen Herrn nachzukommen`
               }, {
-                  name: "soll durch Magie erfolgen",
+                  name: `${declinedZielOption.nominativPersonalpronomen} soll durch Magie versklavt werden`,
                   text: `${declinedZielOption.nominativ} muss mit Hilfe von Magie kontrolliert werden, die ${declinedZielOption.dativPersonalpronomen} den freien Willen nimmt und ${declinedZielOption.akkusativPersonalpronomen} zum Gehorsam zwingt`
               }, {
-                  name: "soll durch Betörung erfolgen",
-                  text: `${declinedZiel.nominativ} muss sich freiwillig in die Sklaverei begeben, nachdem ${declinedZielOption.nominativPersonalpronomen} getäuscht oder überredet wurde`
+                  name: `${declinedZielOption.nominativPersonalpronomen} soll durch Betörung versklavt werden`,
+                  text: `${declinedZielOption.nominativ} muss sich freiwillig in die Sklaverei begeben, nachdem ${declinedZielOption.nominativPersonalpronomen} getäuscht oder überredet wurde`
               }, {
-                  name: "soll durch Verträge erfolgen",
+                  name: `${declinedZielOption.nominativPersonalpronomen} soll durch einen Vertrag versklavt werden`,
                   text: `${declinedZielOption.nominativ} muss durch die Anwendung von Gesetzen in die Sklaverei gezwungen werden`
               }]
           }, {
@@ -1187,23 +1193,23 @@
               text: `das Eigentum ${declinedZiel.genitivEin} zu zerstören`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte, dass etwas, was ${declinedZielOption.dativ} gehört, zerstört wird. Es könnte sein, dass ${declinedAkteurOption.nominativ} damit eine Botschaft senden möchte, oder dass das Objekt gefährlich ist`,
               optionen: [{
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort ab`,
+                  name: `${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort muss zerstört werden`,
                   text: `Der Hort ${declinedZielOption.genitiv} muss vollständig zerstört werden, bis nichts mehr davon übrig ist, damit ${declinedZielOption.nominativ} gezwungen ist, ihn zu verlassen`
               }, {
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Reichtümer ab`,
+                  name: `${declinedZielOption.nominativPossesivpronomenPlural} Reichtümer müssen zerstört werden`,
                   text: `Der angehäufte Reichtum ${declinedZielOption.genitiv} muss zerstört werden, so dass ${declinedZielOption.nominativPersonalpronomen} mittellos wird`
               }, {
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Besitztümer ab`,
+                  name: `${declinedZielOption.nominativPossesivpronomenPlural} Besitztümer müssen zerstört werden`,
                   text: `Besondere Besitztümer ${declinedZielOption.genitiv}, wie Rüstungen, Waffen oder sogar magische Gegenstände, müssen zerstört werden`
               }, {
-                  name: `zielt auf ${declinedZielOption.nominativPossesivpronomenPlural} Güter ab`,
-                  text: `Ein anderer Gegenstand oder eine Sache, die ${declinedZielOption.dativ} gehört, wie beispielsweise ein Wachturm, eine Kohlenmine, eine Viehherde oder ähnliches, muss zerstört werden`
+                  name: `${declinedZielOption.nominativPossesivpronomenPlural} Güter müssen zerstört werden`,
+                  text: `Ein Gegenstand oder eine Sache, die ${declinedZielOption.dativ} gehört, wie beispielsweise ein Wachturm, eine Kohlenmine, eine Viehherde oder ähnliches, muss zerstört werden`
               }]
           }, ];
-
+      
           //Wählt eine zufällige Aktion aus
           const aktion = getRandomText(aktionen);
-
+      
           //Führt Variablendeklarationen und Zuweisungen für Aktionen durch
           const aktionData = aktion;
           const aktionName = aktionData.name;
@@ -1214,23 +1220,23 @@
           const aktionOptionName = aktionOption.name;
           const aktionOptionText = aktionOption.text;
           const aktionOptionBeschreibung = aktionOption.beschreibung;
-
+      
           //Erstellt eine Liste von möglichen Absichten basierend auf dekliniertem Akteur-Nomen und wählt zufällig eine Absicht aus
           const absichten = [{
-              name: `die Notwendigkeit ${declinedAkteurOption.genitiv}`,
-              text: `aus einer Not ${declinedAkteur.genitiv} heraus`,
+              name: `ein Erfordernis ${declinedAkteurOption.genitiv}`,
+              text: `aus einem Erfordernis ${declinedAkteur.genitiv} heraus`,
               beschreibung: `Etwas verlangt von ${declinedAkteurOption.dativ}, dass ${declinedAkteurOption.nominativPersonalpronomen} ${declinedAkteurOption.nominativPossesivpronomenPlural} Ziele erreicht. Ein Scheitern könnte für ${declinedAkteurOption.akkusativPersonalpronomen} katastrophale Folgen haben`,
               optionen: [{
-                  name: `ist für ${declinedAkteurOption.akkusativPersonalpronomen} etwas Wichtiges zu schützen`,
+                  name: `Das Erfordernis ist für ${declinedAkteurOption.akkusativPersonalpronomen} etwas Wichtiges zu schützen`,
                   text: `${declinedAkteurOption.nominativPersonalpronomen} muss sich selbst, ${declinedAkteurOption.nominativPossesivpronomenFemininum} Familie, Verbündete, Güter, Schätze, die Gesellschaft oder etwas anderes, das ${declinedAkteurOption.dativPersonalpronomen} unglaublich wichtig ist, schützen`
               }, {
-                  name: `ist ${declinedAkteurOption.nominativPossesivpronomenNeutrum} Bedürfnis`,
+                  name: `Das Erfordernis ist ${declinedAkteurOption.nominativPossesivpronomenNeutrum} Bedürfnis`,
                   text: `Ein Grundbedürfnis treibt ${declinedAkteurOption.akkusativPersonalpronomen} an, vielleicht Hunger, Durst, Krankheit oder ein eher philosophischer Antrieb wie Tapferkeit`
               }, {
-                  name: `ist ${declinedAkteurOption.nominativPossesivpronomenFemininum} Habgier`,
-                  text: `${declinedAkteurOption.nominativPersonalpronomen} wird von einer tief sitzenden Gier angetrieben. Dabei kann es sich um Reichtum handeln, aber auch um Land, Macht, Sicherheit oder ähnliches`
+                  name: `Das Erfordernis ist ${declinedAkteurOption.nominativPossesivpronomenFemininum} Habgier`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} wird von einer tiefsitzenden Gier angetrieben. Dabei kann es sich um Reichtum handeln, aber auch um Land, Macht, Sicherheit oder ähnliches`
               }, {
-                  name: `ist eine Zwangssituation, in der ${declinedAkteurOption.nominativPersonalpronomen} sich befindet`,
+                  name: `Das Erfordernis ist eine Zwangssituation, in der ${declinedAkteurOption.nominativPersonalpronomen} sich befindet`,
                   text: `${declinedAkteurOption.nominativPersonalpronomen} wird von jemand anderem gezwungen. Vielleicht schuldet ${declinedAkteurOption.nominativPersonalpronomen} einem Verbündeten etwas, muss für ${declinedAkteurOption.nominativPossesivpronomenPlural} eigenen Verfehlungen büßen oder ähnliches`
               }]
           }, {
@@ -1238,50 +1244,50 @@
               text: `damit ${declinedAkteur.nominativ} eine Herausforderung besteht`,
               beschreibung: `${declinedAkteurOption.nominativPersonalpronomen} wurde vor eine Art Herausforderung gestellt und braucht Hilfe, um sie zu erfüllen. Das kann von einer gesichtswahrenden Mutprobe bis hin zu einem feierlichen Schwur alles sein`,
               optionen: [{
-                  name: `kam von einem Ebenbürtigen`,
-                  text: ` Die Herausforderung wurde von einem Ebenbürtigen ${declinedAkteurOption.genitiv} - vielleicht einem Mitglied einer Gilde, eines Ordens oder ähnlichem - ausgesprochen, der ${declinedAkteurOption.dativPersonalpronomen} einen freundschaftlichen Wettbewerb oder eine Chance bot, sich zu beweisen`
+                  name: `Die Herausforderung wurde von einem Ebenbürtigen gestellt`,
+                  text: `Die Herausforderung wurde von einem Ebenbürtigen ${declinedAkteurOption.genitiv} - vielleicht einem Mitglied einer Gilde, eines Ordens oder ähnlichem - ausgesprochen, der ${declinedAkteurOption.dativPersonalpronomen} einen freundschaftlichen Wettbewerb oder eine Chance bot, sich zu beweisen`
               }, {
-                  name: `kam von einem Rivalen`,
+                  name: `Die Herausforderung wurde von einem Rivalen gestellt`,
                   text: `Die Herausforderung wurde vom Rivalen ${declinedAkteurOption.genitiv} ausgesprochen - vielleicht handelt es sich um eine freundschaftliche Rivalität, eine geerbte oder eine tödliche`
               }, {
-                  name: `kam von einem Anführer`,
+                  name: `Die Herausforderung wurde von einem Anführer gestellt`,
                   text: `Die Herausforderung wurde vom Anführer ${declinedAkteurOption.genitiv} ausgesprochen - dies könnte der Herrscher der Region sein, in der ${declinedAkteurOption.nominativPersonalpronomen} lebt, ${declinedAkteurOption.nominativPossesivpronomenMaskulinum} Vorgesetzer bei der Arbeit oder eine Autorität ${declinedAkteurOption.genitivPossesivpronomenMaskulinum} Glaubens`
               }, {
-                  name: `kam von einem Untergebenen`,
-                  text: `Die Herausforderung wurde von jemandem ausgesprochen, der ${declinedAkteurOption.dativ} untergeordnet ist - vielleicht hat ${declinedAkteur.nominativ} das Bedürfnis, sich aus irgendeinem Grund zu beweisen`
+                  name: `Die Herausforderung wurde von einem Untergebenen gestellt`,
+                  text: `Die Herausforderung wurde von jemandem ausgesprochen, der ${declinedAkteurOption.dativ} untergeordnet ist - vielleicht hat ${declinedAkteurOption.nominativ} das Bedürfnis, sich aus irgendeinem Grund zu beweisen`
               }]
           }, {
               name: `die Aufrechterhaltung eines Gesetzes`,
               text: `damit ${declinedAkteur.nominativ} ein Gesetz aufrechterhalten kann`,
               beschreibung: `${declinedAkteurOption.nominativ} könnte ein generell gesetzestreuer Bürger sein oder ein bestimmtes Gesetz zu seinem eigenen Vorteil aufrechterhalten wollen`,
               optionen: [{
-                  name: `zielt auf ein persönliches Gesetz ab`,
-                  text: ` Das Gesetz, das aufrechterhalten wird, ist ein selbst auferlegtes Gesetz. ${declinedAkteurOption.nominativ} hat vielleicht einen Eid geleistet oder sich selbst ein Versprechen gegeben, das ${declinedAkteurOption.nominativPersonalpronomen} hoffentlich nie brechen wird`
+                  name: `Es handelt sich um ein persönliches Gesetz`,
+                  text: `Das Gesetz, welches aufrechterhalten werden soll, ist ein selbst auferlegtes Gesetz. ${declinedAkteurOption.nominativ} hat vielleicht einen Eid geleistet oder sich selbst ein Versprechen gegeben, das ${declinedAkteurOption.nominativPersonalpronomen} hoffentlich nie brechen wird`
               }, {
-                  name: `zielt auf ein lokales Gesetz ab`,
+                  name: `Es handelt sich um ein lokales Gesetz`,
                   text: `Das Gesetz stammt aus der lokalen Region und könnte daher Außenstehenden, die mit den Besonderheiten dieser Kultur nicht vertraut sind, seltsam erscheinen`
               }, {
-                  name: `zielt auf ein nationales Gesetz ab`,
-                  text: ` Es handelt sich um ein nationales Gesetz, das den meisten Menschen vertraut ist. Vielleicht hält ${declinedAkteurOption.nominativ} es aus Ehre oder Pflichtgefühl ein oder um ${declinedAkteurOption.genitivPersonalpronomen} öffentliches Erscheinungsbild zu verbessern`
+                  name: `Es handelt sich um ein  nationales Gesetz`,
+                  text: `Das nationale Gesetz ist den meisten Menschen vertraut. Vielleicht hält ${declinedAkteurOption.nominativ} es aus Ehre oder Pflichtgefühl ein oder um ${declinedAkteurOption.genitivPersonalpronomen} öffentliches Erscheinungsbild zu verbessern`
               }, {
-                  name: `zielt auf ein planares Gesetz ab`,
+                  name: `Es handelt sich um ein ein planares Gesetz`,
                   text: `Das Gesetz ist von planarer Bedeutung - vielleicht muss Geld, das von einem Teufel gestohlen wurde, innerhalb eines Tages wiedergefunden werden oder ist für immer verloren, oder alle Elementarwesen müssen an ihre Heimatebene gebunden werden`
               }]
           }, {
-              name: `Rache`,
+              name: `ist das Streben nach Rache`,
               text: `damit ${declinedAkteur.nominativ} Rache nehmen kann`,
               beschreibung: `${declinedAkteurOption.nominativ} versucht vielleicht, eine vergangene Kränkung durch gleichwertigen oder sogar übertriebenen Vergeltungsschlag zu sühnen`,
               optionen: [{
-                  name: `wird genommen, weil ${declinedAkteurOption.nominativ} beleidigt wurde`,
+                  name: `Die Rache erfolgt, weil ${declinedAkteurOption.nominativ} beleidigt wurde`,
                   text: `${declinedAkteurOption.nominativ} wurde in irgendeiner Weise beleidigt und hofft, dass die Handlung ${declinedAkteurOption.nominativPossesivpronomenMaskulinum} Ruf rein waschen wird oder vielleicht die Person verleumdet, die ${declinedAkteurOption.akkusativPersonalpronomen} in ähnlicher Weise beleidigt hat`
               }, {
-                  name: `wird genommen, weil ${declinedAkteurOption.nominativ} inhaftiert wurde`,
+                  name: `Die Rache erfolgt, weil ${declinedAkteurOption.nominativ} inhaftiert wurde`,
                   text: `${declinedAkteurOption.nominativ} wurde für irgendetwas inhaftiert - in ${declinedAkteurOption.nominativPossesivpronomenPlural} Augen zu Unrecht oder ohne triftigen Grund - und will es dem System heimzahlen`
               }, {
-                  name: `wird genommen, weil jemand getötet wurde`,
+                  name: `Die Rache erfolgt, weil jemand getötet wurde`,
                   text: `${declinedAkteurOption.nominativ} selbst oder jemand, der ${declinedAkteurOption.dativPersonalpronomen} nahe stand, wurde getötet. ${declinedAkteurOption.nominativPersonalpronomen} hofft, durch den Abschluss der Handlung Frieden zu finden`
               }, {
-                  name: `wird genommen, weil etwas gestohlen wurde`,
+                  name: `Die Rache erfolgt, weil etwas gestohlen wurde`,
                   text: `${declinedAkteurOption.dativ} wurde etwas gestohlen, und ${declinedAkteurOption.nominativPersonalpronomen} möchte sich auf diese Weise an dem Dieb rächen`
               }]
           }, {
@@ -1289,16 +1295,16 @@
               text: `damit ${declinedAkteur.nominativ} Befehle ausführen kann`,
               beschreibung: `${declinedAkteurOption.nominativ} hat von einem Vorgesetzten den Befehl erhalten, die Handlung auszuführen. Er deligierte sie aus irgendeinem Grund: Angst, Faulheit, Geschäfte oder ähnliches`,
               optionen: [{
-                  name: `wurde von einem Soldaten angeordnet`,
+                  name: `Der Befehl wurde von einem Soldaten erteilt`,
                   text: `Ein Soldat hat den Befehl erteilt und ${declinedAkteurOption.nominativ} muss ihn ausführen, um die Sicherheit von Einzelpersonen oder einer ganzen Region zu gewährleisten`
               }, {
-                  name: `wurde von dem Arbeitgeber ${declinedAkteurOption.genitiv} angeordnet`,
+                  name: `Der Befehl wurde von dem Arbeitgeber ${declinedAkteurOption.genitiv} erteilt`,
                   text: `Der Arbeitgeber ${declinedAkteurOption.genitiv} hat den Befehl erteilt und dieser ist in irgendeiner Weise vorteilhaft für ihn - vielleicht führt er dazu, dass der Reichtum direkt in seine Hände gelangt`
               }, {
-                  name: `wurde von einem Anführer angeordnet`,
+                  name: `Der Befehl wurde von einem Anführer erteilt`,
                   text: `Ein Anführer (staatlich, spirituell oder ähnliches) hat den Befehl erteilt und muss ihn entweder aus persönlichen oder praktischen Gründen ausführen lassen`
               }, {
-                  name: `wurde von einer Gottheit angeordnet`,
+                  name: `Der Befehl wurde von einer Gottheit erteilt`,
                   text: `Eine Gottheit hat den Auftrag erteilt und diese ist ${declinedAkteurOption.dativ} vielleicht in einem Traum oder einer Vision erschienen, oder der Auftrag wurde ${declinedAkteurOption.dativPersonalpronomen} durch einen Priester mitgeteilt`
               }]
           }, {
@@ -1306,33 +1312,33 @@
               text: `damit ${declinedAkteur.nominativ} Magie entfesseln kann`,
               beschreibung: `${declinedAkteurOption.nominativ} ist überzeugt, dass ${declinedAkteurOption.dativPersonalpronomen} die Erfüllung des Auftrages den Zugang zu magischen Fähigkeiten ermöglicht, die ${declinedAkteurOption.dativPersonalpronomen} zuvor verwehrt waren. Dies kann ein direktes Ergebnis des Auftrags oder eine spätere Entwicklung sein`,
               optionen: [{
-                  name: `soll durch einen magischen Gegenstand erreicht werden`,
+                  name: `Die Magie soll durch einen magischen Gegenstand entfesselt werden`,
                   text: `${declinedAkteurOption.nominativ} möchte einen bestimmten magischen Gegenstand in die Hände bekommen, den ${declinedAkteurOption.nominativPersonalpronomen} für sich selbst nutzen möchte`
               }, {
-                  name: `soll durch wilde Magie erreicht werden`,
+                  name: `Die Magie soll durch wilde Magie entfesselt werden`,
                   text: `${declinedAkteurOption.nominativ} glaubt, dass der Auftrag ${declinedAkteurOption.nominativPersonalpronomen} erlaubt, die natürliche, chaotische Magie in sich selbst oder in der Welt um ihn herum anzuzapfen`
               }, {
-                  name: `soll durch ein Beschwörungsritual erreicht werden`,
+                  name: `Die Magie soll durch ein Beschwörungsritual entfesselt werden`,
                   text: `Der Auftrag ist der erste Schritt in einer Reihe von Taten, die es ${declinedAkteurOption.dativ} ermöglichen sollen, andere Kreaturen zu beschwören`
               }, {
-                  name: `soll durch die Verbesserung seiner arkanen Fähigkeiten erreicht werden`,
+                  name: `Die Magie soll durch die Verbesserung seiner arkanen Fähigkeiten entfesselt werden`,
                   text: `${declinedAkteurOption.nominativ} hofft, dass ${declinedAkteurOption.nominativPersonalpronomen} durch den Auftrag mehr über Magie und Zauberei lernen kann`
               }]
           }, {
-              name: `der Antrieb durch Emotionen`,
+              name: `ein Antrieb emotionaler Natur`,
               text: `weil ${declinedAkteur.nominativ} von Emotionen getrieben wird`,
               beschreibung: `${declinedAkteurOption.nominativ} hat den Auftrag oder das Kopfgeld aufgrund einer emotionalen Reaktion auf etwas ausgesetzt, das ihn bewegt hat`,
               optionen: [{
-                  name: `wird durch ein Verlangen befeuert`,
+                  name: `Die Emotion ist ein starkes Verlangen`,
                   text: `Starkes Verlangen überwältigt ${declinedAkteurOption.akkusativ}; vielleicht ist es ein Verlangen nach etwas oder jemand Gutem oder es ist ein böses Verlangen`
               }, {
-                  name: `wird durch Eifersucht befeuert`,
+                  name: `Die Emotion ist Eifersucht`,
                   text: `${declinedAkteurOption.nominativ} ist eifersüchtig, vielleicht auf einen Ebenbürtigen oder ${declinedZielOption.akkusativ}, und hat deshalb den Auftrag oder das Kopfgeld ausgesetzt, um zu versuchen, ihnen nachzueifern oder sie zu übertreffen`
               }, {
-                  name: `wird durch Wut befeuert`,
+                  name: `Die Emotion ist Wut`,
                   text: `${declinedAkteurOption.nominativ} ist durch etwas in Rage geraten und hat den Auftrag oder das Kopfgeld in seiner Wut vergeben. ${declinedAkteurOption.nominativPersonalpronomen} könnte es später bereuen`
               }, {
-                  name: `wird durch Abscheu befeuert`,
+                  name: `Die Emotion ist Abscheu`,
                   text: `${declinedAkteurOption.nominativ} war über etwas empört, angewidert oder entsetzt und verspürte einen moralischen oder sozialen Drang, den Auftrag oder das Kopfgeld zu vergeben`
               }]
           }, {
@@ -1340,16 +1346,16 @@
               text: `damit ${declinedAkteur.nominativ} Dominanz zeigen kann`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte sich gegenüber jemandem oder einer Gruppe von Personen als überlegen erweisen. ${declinedAkteurOption.nominativPersonalpronomen} hofft, dass der Auftrag oder das Kopfgeld dies beweisen wird`,
               optionen: [{
-                  name: `soll gegenüber Ebenbürtigen stattfinden`,
+                  name: `Die Darstellung soll vor Ebenbürtigen stattfinden`,
                   text: `${declinedAkteurOption.nominativ} will sich selbst beweisen oder Einfluss auf die eigene Familie, Ebenbürtige oder Freunde gewinnen`
               }, {
-                  name: `soll gegenüber ${declinedZielOption.dativ} stattfinden`,
-                  text: `${declinedAkteurOption.nominativ} will ${declinedAkteurOption.genitivPossesivpronomenFemininum} Dominanz über ${declinedZielOption.akkusativ} zeigen, wahrscheinlich im wörtlichen Sinne, indem ${declinedAkteurOption.nominativPersonalpronomen} dessen Leben negativ beeinflusst`
+                  name: `Die Darstellung soll vor ${declinedZielOption.dativ} stattfinden`,
+                  text: `${declinedAkteurOption.nominativ} will ${declinedAkteurOption.nominativPossesivpronomenFemininum} Dominanz über ${declinedZielOption.akkusativ} zeigen, wahrscheinlich im wörtlichen Sinne, indem ${declinedAkteurOption.nominativPersonalpronomen} dessen Leben negativ beeinflusst`
               }, {
-                  name: `soll gegenüber einem Rivalen stattfinden`,
+                  name: `Die Darstellung soll vor einem Rivalen stattfinden`,
                   text: `${declinedAkteurOption.nominativ} hat einen Rivalen, von dem ${declinedAkteurOption.nominativPersonalpronomen} glaubt, dass ${declinedAkteurOption.nominativPersonalpronomen} ihn durch die Vergabe des Auftrags oder des Kopfgelds vorführen oder in einem Wettbewerb schlagen kann`
               }, {
-                  name: `soll gegenüber einem ganzen Reich stattfinden`,
+                  name: `Die Darstellung soll vor einem ganzen Reich stattfinden`,
                   text: `${declinedAkteurOption.nominativ} möchte durch den Auftrag oder das Kopfgeld die Herrschaft über ein ganzes Reich von Personen erlangen. Es könnte sich um eine langfristige Folge handeln, die eintritt, nachdem der Auftrag erfüllt ist`
               }]
           }, {
@@ -1357,16 +1363,16 @@
               text: `damit ${declinedAkteur.nominativ} die Schätzen ${declinedZiel.genitiv} an sich nehmen kann`,
               beschreibung: `${declinedAkteurOption.nominativ} will die Schätze ${declinedZielOption.genitiv} an sich bringen. Vielleicht hofft ${declinedAkteurOption.nominativPersonalpronomen}, den Reichtum für einen guten Zweck zu verwenden, oder er wurde ${declinedAkteurOption.akkusativ} von vornherein entwendet`,
               optionen: [{
-                  name: `hat Reichtümer als Ziel`,
-                  text: `${declinedAkteurOption.nominativ} ist nur an Reichtum interessiert - Goldmünzen, Edelsteine, Schmuck und dergleichen, die ${declinedAkteurOption.nominativPersonalpronomen} selbst horten oder ausgeben kann`
+                  name: `${declinedAkteurOption.nominativ} will Reichtümer`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} ist nur an Reichtum interessiert - Goldmünzen, Edelsteine, Schmuck und dergleichen, die ${declinedAkteurOption.nominativPersonalpronomen} selbst horten oder ausgeben kann`
               }, {
-                  name: `hat besondere Schätze als Ziel`,
-                  text: `${declinedAkteurOption.nominativ} will einen bestimmten Schatz oder alle Schätze ${declinedZielOption.genitiv}. Sie könnten eine besondere Bedeutung haben, beispielsweise eine heilige Reliquie sein`
+                  name: `${declinedAkteurOption.nominativ} will etwas ganz Besonderes oder alles`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} will einen bestimmten Schatz oder alle Schätze ${declinedZielOption.genitiv}. Sie könnten eine besondere Bedeutung haben, beispielsweise eine heilige Reliquie sein`
               }, {
-                  name: `hat das Eigentum ${declinedZielOption.genitiv} als Ziel`,
-                  text: `${declinedAkteurOption.nominativ} will den Besitz ${declinedZielOption.genitiv}, das Land, in dem es lebt, ${declinedZielOption.genitivPossesivpronomenMaskulinum} Hort, sein Verlies oder ein anderes Bauwerk, über das es die Kontrolle hat`
+                  name: `${declinedAkteurOption.nominativ} will das Eigentum ${declinedZielOption.genitiv}`,
+                  text: `${declinedAkteurOption.nominativ} will die Besitztümer ${declinedZielOption.genitiv}, das Land, in dem ${declinedZielOption.nominativPersonalpronomen} lebt, ${declinedZielOption.nominativPossesivpronomenMaskulinum} Hort, ${declinedZielOption.nominativPossesivpronomenMaskulinum} Verlies oder ein anderes Bauwerk, über das ${declinedZielOption.nominativPersonalpronomen} die Kontrolle hat`
               }, {
-                  name: `hat magische Gegenstände als Ziel`,
+                  name: `${declinedAkteurOption.nominativ} will magische Gegenstände`,
                   text: `${declinedAkteurOption.nominativ} weiß, dass ${declinedZielOption.nominativ} einen oder mehrere magische Gegenstände besitzt, die ${declinedAkteurOption.nominativPersonalpronomen} selbst besitzen möchte. ${declinedAkteurOption.nominativPersonalpronomen} hofft vielleicht, sie zu benutzen oder ihre Benutzung zu verhindern`
               }]
           }, {
@@ -1374,57 +1380,57 @@
               text: `damit ${declinedAkteur.nominativ} Macht erlangt`,
               beschreibung: `${declinedAkteurOption.nominativ} glaubt, dass die Erfüllung des Auftrags ${declinedAkteurOption.nominativPossesivpronomenFemininum} eigene Macht entweder direkt oder indirekt stärken wird. Dies kann durch einen Pakt geschehen, den ${declinedAkteurOption.nominativPersonalpronomen} mit einem mächtigen Wesen geschlossen hat`,
               optionen: [{
-                  name: `soll durch Unsterblichkeit erreicht werden`,
+                  name: `${declinedAkteurOption.nominativ} will Unsterblichkeit erlangen`,
                   text: `Die Erfüllung des Auftrags oder des Kopfgelds bringt ${declinedAkteurOption.akkusativ} der Unsterblichkeit einen Schritt näher. Vielleicht hat ${declinedZielOption.nominativ} eine wichtige Zutat für einen Trank oder etwas Ähnliches`
               }, {
-                  name: `soll durch ein Artefakt erreicht werden`,
-                  text: `${declinedAkteurOption.nominativ} glaubt, dass ${declinedZielOption.nominativ} ein Artefakt von immenser Macht besitzt, oder dass die Handlung ihn dem Erhalt eines solchen Gegenstandes näher bringt`
+                  name: `${declinedAkteurOption.nominativ} will durch ein Artefakt mächtiger werden`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} glaubt, dass ${declinedZielOption.nominativ} ein Artefakt von immenser Macht besitzt, oder dass die Handlung ihn dem Erhalt eines solchen Gegenstandes näher bringt`
               }, {
-                  name: `soll durch einen mächtigen Zauber erreicht werden`,
-                  text: `${declinedAkteurOption.nominativ} versucht, einen mächtigen, realitätsverändernden Zauber zu wirken, kann dies aber nicht tun, ohne dass die Handlung zuvor vollendet wurde`
+                  name: `${declinedAkteurOption.nominativ} will einen mächtigen Zauber mächtiger werden`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} versucht, einen mächtigen, realitätsverändernden Zauber zu wirken, kann dies aber nicht tun, ohne dass die Handlung zuvor vollendet wurde`
               }, {
-                  name: `soll durch Unverwundbarkeit erreicht werden`,
-                  text: `${declinedAkteurOption.nominativ} hofft, Unverwundbarkeit zu erlangen, und sieht den Auftrag oder das Kopfgeld als einen Schritt in Richtung dieses Ziels`
+                  name: `${declinedAkteurOption.nominativ} will Unverwundbarkeit erlangen`,
+                  text: `${declinedAkteurOption.nominativPersonalpronomen} hofft, Unverwundbarkeit zu erlangen, und sieht den Auftrag oder das Kopfgeld als einen Schritt in Richtung dieses Ziels`
               }]
           }, {
               name: `die Erlangung von Kontrolle über die Natur`,
               text: `damit ${declinedAkteur.nominativ} die Natur kontrollieren kann`,
               beschreibung: `${declinedAkteurOption.nominativ} möchte auf die eine oder andere Weise ${declinedAkteurOption.nominativPossesivpronomenFemininum} Dominanz über die Natur zeigen. Dies kann Teil eines größeren Plans sein oder einfach nur um des Reizes willen geschehen`,
               optionen: [{
-                  name: `soll durch die Herrschaft über die Tiere erreicht werden`,
+                  name: `${declinedAkteurOption.nominativPersonalpronomen} will über die Tiere herrschen`,
                   text: `${declinedAkteurOption.nominativ} möchte ein bestimmtes Tier, eine ganze Spezies, ein Ökosystem oder vielleicht alle lebenden Tiere kontrollieren. Vielleicht hat ${declinedAkteurOption.nominativPersonalpronomen} einen bestimmten Zweck im Sinn, vielleicht eine Armee von Tieren`
               }, {
-                  name: `soll durch die Herrschaft über die Pflanzen erreicht werden`,
+                  name: `${declinedAkteurOption.nominativPersonalpronomen} will über die Pflanzen herrschen`,
                   text: ` ${declinedAkteurOption.nominativ} möchte eine bestimmte Pflanze, eine bestimmte Pflanzenart oder eine Gruppe von Pflanzen kontrollieren. Vielleicht will ${declinedAkteurOption.nominativPersonalpronomen} die Ernteerträge steigern oder eine Waldmauer um ${declinedAkteurOption.nominativPossesivpronomenFemininum} Stadt errichten`
               }, {
-                  name: `soll durch die Herrschaft über das Wetter erreicht werden`,
+                  name: `${declinedAkteurOption.nominativPersonalpronomen} will über das Wetter herrschen`,
                   text: `${declinedAkteurOption.nominativ} möchte das Wetter kontrollieren. Vielleicht hofft ${declinedAkteurOption.nominativPersonalpronomen}, von den Elementen durchdrungen zu werden, oder ${declinedAkteurOption.nominativPersonalpronomen} will es zur Verteidigung seines Reiches einsetzen`
               }, {
-                  name: `soll durch die Beherrschung über das Terrain erreicht werden`,
+                  name: `${declinedAkteurOption.nominativPersonalpronomen} will über das Terrain herrschen`,
                   text: `${declinedAkteurOption.nominativ} möchte das Terrain kontrollieren - vielleicht ein kleines Gebiet wie seinen eigenen Flussabschnitt oder Ackerland, oder eine ganze Region unter seiner Kontrolle haben`
               }]
           }, {
-              name: `die Durchführung des Rituals`,
+              name: `die Durchführung eines Rituals`,
               text: `denn diese Handlung ist Teil eines Rituals`,
               beschreibung: `${declinedAkteurOption.nominativ} führt ein Ritual durch; die Handlung, wie sie im Auftrag oder Kopfgeld festgelegt ist, ist Teil dieses Zauberrituals. Sie kann der erste, mittlere oder letzte Schritt sein`,
               optionen: [{
-                  name: `soll eine Beschwörung erreichen`,
+                  name: `Das Ritual ist eine Beschwörung`,
                   text: `${declinedAkteurOption.nominativ} möchte etwas beschwören - vielleicht ein Wesen aus einem anderen Reich oder einen Schatz von jenseits der Sterne`
               }, {
-                  name: `soll ein Portal öffnen`,
+                  name: `Das Ritual soll ein Portal öffnen`,
                   text: ` ${declinedAkteurOption.nominativ} möchte ein Portal zu einer anderen Existenzebene öffnen; vielleicht möchte ${declinedAkteurOption.nominativPersonalpronomen} dorthin reisen oder Wesen von dort herbeirufen`
               }, {
-                  name: `soll einen Pakt abschließen`,
+                  name: `Das Ritual soll einen Pakt abschließen`,
                   text: `${declinedAkteurOption.nominativ} hat einen Pakt mit einer anderen Entität geschlossen - ${declinedAkteurOption.nominativPersonalpronomen} wird das Ritual im Gegenzug für andersweltliche Magie durchführen`
               }, {
-                  name: `soll Erkenntnis über die Zukunft bringen`,
+                  name: `Das Ritual soll Erkenntnis über die Zukunft bringen`,
                   text: `${declinedAkteurOption.nominativ} möchte in die Zukunft sehen, vielleicht nur einmal, vielleicht aber auch als permanente Verzauberung`
               }]
           }, ];
-
+      
           //Wählt eine zufällige Absicht aus
           const absicht = getRandomText(absichten);
-
+      
           //Führt Variablendeklarationen und Zuweisungen für Absichten durch
           const absichtData = absicht;
           const absichtName = absichtData.name;
@@ -1435,57 +1441,57 @@
           const absichtOptionName = absichtOption.name;
           const absichtOptionText = absichtOption.text;
           const absichtOptionBeschreibung = absichtOption.beschreibung;
-
+      
           //Erstellt eine Liste von möglichen Entwicklungen basierend auf dekliniertem Ziel-Nomen und wählt zufällig eine Entwicklung aus
           const entwicklungen = [{
               name: `der Schutz durch eine höhere Macht`,
               text: `${declinedZiel.nominativ} wird von einer höheren Macht geschützt`,
               beschreibung: `${declinedZielOption.nominativ} ist nicht auf sich allein gestellt - ${declinedZielOption.nominativPersonalpronomen} wird von einem mächtigen Wesen beschützt, vermutlich weil ${declinedZielOption.nominativPersonalpronomen} in dessen Aufgabenbereich fällt oder weil ${declinedZielOption.nominativPersonalpronomen} in einer Weise handelt, die dessen Ziele fördert`,
               optionen: [{
-                  name: `kommt von einem Himmlischen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird von einem Himmlischen beschützt`,
                   text: `Ein Himmlischer, der vielleicht im Auftrag einer Gottheit arbeitet, schützt ${declinedZielOption.akkusativ} mit einer Art göttlicher Magie`
               }, {
-                  name: `kommt von einem Unhold`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} von einem Unhold beschützt`,
                   text: `Ein Unhold beschützt ${declinedZielOption.akkusativ}, höchstwahrscheinlich, weil ${declinedZielOption.nominativPossesivpronomenPlural} Taten dem Unhold gefallen haben oder weil er an einen höllischen Handel gebunden ist`
               }, {
-                  name: `kommt von einem Feenwesen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} von einem Feenwesen beschützt`,
                   text: `Ein Feenwesen beschützt ${declinedZielOption.akkusativ}, üblicherweise, weil ${declinedZielOption.nominativPersonalpronomen} auf irgendeine Weise wild ist, was das Feenwesen zu schätzen weiß, oder weil ${declinedZielOption.nominativPersonalpronomen} Teil eines Pakts ist, den sie beide abgeschlossen haben`
               }, {
-                  name: `kommt von einem andersweltlichen Wesen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} von einem andersweltlichen Wesen beschützt`,
                   text: `Ein fremdes, andersweltliches Wesen jenseits der Sterne interessiert sich aus einem unbekannten Grund für ${declinedZielOption.akkusativ}`
               }]
           }, {
               name: `die Flucht in ein Versteck`,
-              text: `${declinedZiel.nominativ} flieht in ${declinedZiel.genitivPossesivpronomenNeutrum} Versteck`,
-              beschreibung: `${declinedZielOption.nominativ} hat einen Versteck in der Nähe, in das ${declinedZielOption.nominativPersonalpronomen} flüchtet, wenn ${declinedZielOption.nominativPersonalpronomen} merkt, dass ein Kopfgeld auf ${declinedZielOption.akkusativPersonalpronomen} ausgesetzt ist oder dass ${declinedZielOption.nominativPersonalpronomen} gejagt wird`,
+              text: `${declinedZiel.nominativ} flieht in ${declinedZiel.nominativPossesivpronomenNeutrum} Versteck`,
+              beschreibung: `${declinedZielOption.nominativ} hat ein Versteck in der Nähe, in das ${declinedZielOption.nominativPersonalpronomen} flüchtet, wenn ${declinedZielOption.nominativPersonalpronomen} merkt, dass ein Kopfgeld auf ${declinedZielOption.akkusativPersonalpronomen} ausgesetzt ist oder dass ${declinedZielOption.nominativPersonalpronomen} gejagt wird`,
               optionen: [{
-                  name: `hat eine Höhle als Ziel`,
-                  text: `Dunkle und unterirdische Höhlen sind der ideale Unterschlupf für zahlreiche monströse Raubtiere oder für diejenigen, die heimlich leben wollen`
+                  name: `${declinedZielOption.nominativPersonalpronomen} flieht in eine Höhle`,
+                  text: `Dunkle und unterirdische Höhlen sind der ideale Unterschlupf für zahlreiche monströse Raubtiere oder für diejenigen, die versteckt leben möchten`
               }, {
-                  name: `hat ein Verlies als Ziel`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} flieht in ein Verlies`,
                   text: `Komplexe und weitläufige Verliese sind der perfekte Ort, um sich zu verlieren. Bestimmte Räume können genau auf die Bedürfnisse ${declinedZielOption.genitiv} zugeschnitten sein`
               }, {
-                  name: `hat eine Siedlung als Ziel`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} flieht in eine Siedlung`,
                   text: `${declinedZielOption.nominativ} hat ein Stützpunkt oder einen Zufluchtsort in einer Siedlung. Vielleicht handelt es sich um einen wichtigen Ort, wie einen Tempel, oder nur um einen vergessenen Keller`
               }, {
-                  name: `hat Ruinen als Ziel`,
-                  text: `${declinedZielOption.nominativ} hat sich in den Ruinen der Vergangenheit niedergelassen. Etwas hat ${declinedZielOption.akkustivPersonalpronomen} hierher gezogen - vielleicht ein magischer Gegenstand oder das verlorene Wissen der Vorzeit`
+                  name: `${declinedZielOption.nominativPersonalpronomen} flieht in eine Ruine`,
+                  text: `${declinedZielOption.nominativ} hat sich in den Ruinen der Vergangenheit niedergelassen. Etwas hat ${declinedZielOption.akkusativPersonalpronomen} hierher gezogen - vielleicht ein magischer Gegenstand oder das verlorene Wissen der Vorzeit`
               }]
           }, {
               name: `die Unschuld ${declinedZielOption.genitiv}`,
               text: `${declinedZiel.nominativ} wird fälschlicherweise beschuldigt`,
               beschreibung: `Was auch immer ${declinedZielOption.nominativ} getan haben soll, um das Kopfgeld zu verdienen und normalerweise mit der Absicht ${declinedAkteurOption.genitiv} zusammenhängt, es war nicht ${declinedZielOption.nominativ} selbst. Das Vergehen wurde ${declinedZielOption.dativPersonalpronomen} angehängt`,
               optionen: [{
-                  name: `kann bewiesen werden, denn eine andere Kreatur trägt die Schuld`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} ist unschuldig, denn eine andere Kreatur trägt die Schuld`,
                   text: `Eine andere Kreatur hat das getan, wofür ${declinedZielOption.nominativ} verantwortlich gemacht wird. Dies zu beweisen, ist nicht einfach, könnte aber ein unschuldiges Leben retten`
               }, {
-                  name: `kann bewiesen werden, denn ein Rivale trägt die Schuld`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} ist unschuldig, denn ein Rivale trägt die Schuld`,
                   text: `Der Rivale ${declinedZielOption.genitiv} hat das Vergehen inszeniert, um es so aussehen zu lassen, als sei ${declinedZielOption.nominativ} für die abscheuliche Tat verantwortlich`
               }, {
-                  name: `kann bewiesen werden, denn ein Zauberwirker trägt die Schuld`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} ist unschuldig, denn ein Zauberwirker trägt die Schuld`,
                   text: `Es ist ein schändlicher Zauberwirker am Werk. Er könnte die Wahrnehmung der Menschen manipulieren, um seine eigenen Missetaten zu vertuschen`
               }, {
-                  name: `kann bewiesen werden, denn ein Unbeteiligter trägt die Schuld`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} ist unschuldig, denn ein Unbeteiligter trägt die Schuld`,
                   text: `Die Untat wurde von jemandem begangen, der ${declinedZielOption.dativ} völlig unbekannt ist, aber dennoch überzeugend wirkt`
               }]
           }, {
@@ -1493,67 +1499,67 @@
               text: `das Ganze ist nur inszeniert`,
               beschreibung: `${declinedZielOption.nominativ} und ${declinedAkteurOption.nominativ} stecken irgendwie unter einer Decke. Vielleicht sind sie insgeheim Verbündete, oder einer arbeitet für den anderen. ${declinedZielOption.nominativ} oder ${declinedAkteurOption.nominativ} oder eine andere beteiligte Partei könnte die ganze Sache erfunden haben`,
               optionen: [{
-                  name: `ist durch Illusionen geschehen`,
+                  name: `Es war alles nur eine Illusion`,
                   text: `Illusorische Magie wird eingesetzt, um die Untat zu inszenieren. Nichts dergleichen ist tatsächlich passiert, aber die Magie hat es so aussehen lassen`
               }, {
-                  name: `ist durch ein Schauspiel geschehen`,
+                  name: `Es war nur ein Schauspiel`,
                   text: `Es wurde viel Zeit und Mühe darauf verwendet, die Untat vorzutäuschen. Dazu könnten Requisiten, bezahlte Darsteller, Schminkeffekte und Ähnliches verwendet worden sein`
               }, {
-                  name: `ist durch Ausübung von Zwang auf ${declinedZielOption.akkusativ} geschehen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wurde zu dem Ganzen gezwungen`,
                   text: `${declinedZielOption.nominativ} wurde gezwungen, so zu handeln, dass das Kopfgeld auf ${declinedZielOption.akkusativPersonalpronomen} ausgesetzt wurde. Vielleicht wurde ${declinedZielOption.nominativPersonalpronomen} durch ihre Gedankenkontrolle dazu bewegt oder war besessen`
               }, {
-                  name: `ist ein Verrat von innen`,
+                  name: `Es war ein Verrat von innen`,
                   text: `${declinedAkteurOption.nominativ} ist tatsächlich für die Untat verantwortlich. Vielleicht versucht ${declinedAkteurOption.nominativPersonalpronomen}, etwas zu beweisen`
               }]
           }, {
               name: `die Reue ${declinedZielOption.genitiv}`,
               text: `${declinedZiel.nominativ} bereut die eigenen Taten`,
-              beschreibung: `Fast augenblicklich wird ${declinedZielOption.dativ} klar, dass das, was ${declinedZielOption.nominativPersonalpronomen} getan hat, um einen Preis auf ${declinedZielOption.genitivPossesivpronomenMaskulinum} Kopf ausgesetzt zu bekommen, ein Fehler war, und ${declinedZielOption.nominativPersonalpronomen} versucht, sich davon zu distanzieren`,
+              beschreibung: `Fast augenblicklich wird ${declinedZielOption.dativ} klar, dass das, was ${declinedZielOption.nominativPersonalpronomen} getan hat, um einen Preis auf ${declinedZielOption.nominativPossesivpronomenMaskulinum} Kopf ausgesetzt zu bekommen, ein Fehler war, und ${declinedZielOption.nominativPersonalpronomen} versucht, sich davon zu distanzieren`,
               optionen: [{
-                  name: `wird durch ${declinedZielOption.nominativPossesivpronomenFemininum} Selbstaufgabe gezeigt`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} gibt sich selbst auf`,
                   text: `${declinedZielOption.nominativ} möchte sich den Gesetzeshütern stellen, um für ${declinedZielOption.nominativPossesivpronomenPlural} Taten vor Gericht gebracht und verurteilt zu werden`
               }, {
-                  name: `wird durch das Leisten von Reperationen gezeigt`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} leistet Reperationen`,
                   text: `${declinedZielOption.nominativ} möchte ${declinedZielOption.nominativPossesivpronomenPlural} vergangenen Verfehlungen wiedergutmachen. Vielleicht kann ${declinedZielOption.nominativPersonalpronomen} dem Geschädigten einen Gefallen oder eine Dienstleistung anbieten`
               }, {
-                  name: `führt zur Flucht ${declinedZielOption.genitiv} vom Tatort`,
-                  text: `${declinedZielOption.nominativ} ist so beschämt, dass ${declinedZielOption.nominativPersonalpronomen} den Schauplatz verlassen hat und wahrscheinlich nie wieder an diesem Ort gesehen wird`
+                  name: `${declinedZielOption.nominativPersonalpronomen} flüchtet vom Tatort`,
+                  text: `${declinedZielOption.nominativ} ist so beschämt, dass ${declinedZielOption.nominativPersonalpronomen} den Tatort verlassen hat und wahrscheinlich nie wieder an diesem Ort gesehen wird`
               }, {
-                  name: `wird durch das Überlaufen ${declinedZielOption.genitiv} gezeigt`,
-                  text: `${declinedZielOption.nominativ} hat sich von seinen früheren Überzeugungen abgewandt und vertritt nun ein neues Mantra. Ihre Einstellung zum Leben hat sich geändert`
+                  name: `${declinedZielOption.nominativPersonalpronomen} läuft zur anderen Seite über`,
+                  text: `${declinedZielOption.nominativ} hat sich von seinen früheren Überzeugungen abgewandt und vertritt nun ein neues Mantra. ${declinedZielOption.nominativPossesivpronomenFemininum} Einstellung zum Leben hat sich geändert`
               }]
           }, {
               name: `die Ausübung von Gerechtigkeit`,
               text: `Gerechtigkeit wird von unerwarteter Seite ausgeübt`,
-              beschreibung: `Irgendetwas bringt dem Übeltäter Gerechtigkeit, was je nach der Art der Sache ${declinedAkteurOption}, ${declinedZielOption.nominativ}, oder die Person sein kann, die den Auftrag oder das Kopfgeld erhält`,
+              beschreibung: `Irgendetwas bringt dem Übeltäter Gerechtigkeit, was je nach der Art der Sache ${declinedAkteurOption.nominativ}, ${declinedZielOption.nominativ}, oder die Person sein kann, die den Auftrag oder das Kopfgeld erhält`,
               optionen: [{
-                  name: `geschieht durch eine göttliche Macht`,
+                  name: `Eine göttliche Macht mischt sich ein`,
                   text: `Eine Gottheit, ein Avatar oder eine himmlische Person spricht ein Urteil über den Übeltäter. Sie können gezwungen werden, sich zu bessern, oder sie werden verändert, zerstört, verflucht oder ähnliches`
               }, {
-                  name: `geschieht durch eine planare Macht`,
+                  name: `Eine planare Macht mischt sich ein`,
                   text: `Ein planares Wesen, beispielsweise ein Vertreter des übernatürlichen Gesetzes oder des ungezügelten Chaos, mischt sich in die Angelegenheit ein`
               }, {
-                  name: `geschieht durch Helden`,
+                  name: `Helden mischen sich ein`,
                   text: ` Eine Gruppe berühmter Helden kommt, um ihren Beitrag zu leisten. Sie entscheiden sich für eine Seite und verteidigen diese mit Nachdruck`
               }, {
-                  name: `geschieht durch Bösewichte`,
+                  name: `Bösewichte mischen sich ein`,
                   text: `Eine oder mehrere Bösewichte werden in den Auftrag oder das Kopfgeld verwickelt. Sie fördern typischerweise böse Taten`
               }]
           }, {
               name: `die Erfüllung einer Prophezeiung`,
               text: `dadurch wird unwissentlich eine Prophezeiung erfüllt`,
-              beschreibung: `Die beteiligten Kreaturen sind sich nicht bewusst, dass ihr Handlung eine uralte Prophezeiung von immenser Bedeutung. Sobald der Auftrag oder das Kopfgeld vollendet ist, wird etwas Ungeheures geschehen`,
+              beschreibung: `Die beteiligten Kreaturen sind sich nicht bewusst, dass ihre Handlung eine uralte Prophezeiung von immenser Bedeutung. Sobald der Auftrag oder das Kopfgeld vollendet ist, wird etwas Ungeheures geschehen`,
               optionen: [{
-                  name: `führt zum Weltuntergang`,
+                  name: `Es kommt zum Weltuntergang`,
                   text: `Die Apokalypse bricht aus. Vielleicht beginnt eine Zombieplage die Welt zu überschwemmen oder ein Supervulkan bricht aus und bedeckt die Welt mit Asche`
               }, {
-                  name: `führt zur Geburt einer Gottheit`,
+                  name: `Eine Gottheit wird geboren`,
                   text: `Eine neue Gottheit wird aus dem Äther in die Realität geboren. Die Natur der Gottheit kann von einem wohltätigen Wohltäter bis zu einer bösartigen Bedrohung reichen`
               }, {
-                  name: `führt zu der Beschwörung eines neuen Wesens`,
+                  name: `Ein neues Wesen wird beschworen`,
                   text: `Ein Wesen wird aus einem anderen Reich beschworen. Es kann ein Elementarwesen, ein mystisches Wesen, ein teuflisches Wesen, ein Feenwesen oder ein anderes andersweltliches Wesen sein`
               }, {
-                  name: `führt zu einer Neudefinition der Realität`,
+                  name: `Die Realität wird neu definiert`,
                   text: `Etwas in der Welt wird neu definiert. Vielleicht geht die Sonne nicht mehr auf, Lykanthropie wird alltäglich, oder die Sterne werden lebendig`
               }]
           }, {
@@ -1561,16 +1567,16 @@
               text: `${declinedZiel.nominativ} verbreitet eine Krankheit`,
               beschreibung: `${declinedZielOption.nominativ} hat eine ansteckende Krankheit, die sich auf jeden überträgt, der mit ${declinedZielOption.dativ} in Kontakt kommt, egal wie kurz. Vielleicht ist die Verbreitung beabsichtigt, vielleicht aber auch nicht`,
               optionen: [{
-                  name: `führt zum Tod und dann zum Untod`,
+                  name: `Die Krankheit führt zum Tod und dann zum Untod`,
                   text: `Kreaturen, die von ${declinedZielOption.dativ} berührt oder getötet werden, sterben kurze Zeit später. Kurz darauf werden ihre Leichen als abscheuliche Untote wiederbelebt`
               }, {
-                  name: `führt zu einer symptomreichen Seuche`,
-                  text: `Eine üble Krankheit wird von ${declinedZielOption.dativ} verbreitet. Sie zeigt schnell ihre Wirkung und kann eine Vielzahl von Symptomen haben, darunter Fieber, Blindheit, unkontrollierbares Lachen oder ähnliches`
+                  name: `Die Krankheit führt zu einer symptomreichen Seuche`,
+                  text: `Sie zeigt schnell ihre Wirkung und kann eine Vielzahl von Symptomen haben, darunter Fieber, Blindheit, unkontrollierbares Lachen oder ähnliches`
               }, {
-                  name: `führt zu einer Pestilenz bei Flora und Fauna`,
+                  name: `Die Krankheit ist eine Plage für Flora und Fauna`,
                   text: ` ${declinedZielOption.nominativ} verbreitet eine Pestilenz, die Ernten, andere Pflanzen oder Tiere befällt. Sie kann Hungersnöte, Medikamentenmangel oder ähnliches verursachen`
               }, {
-                  name: `führt zu einer Transformation`,
+                  name: `Die Krankheit führt zu einer Transformation`,
                   text: `Die Berührung oder der Blick ${declinedZielOption.genitiv} bewirkt eine Mutation, die lebende oder nicht lebende Dinge in neue Formen verwandelt, deren Anblick erschreckend sein können`
               }]
           }, {
@@ -1578,16 +1584,16 @@
               text: `${declinedZiel.nominativ} wird von Gefolgsleuten unterstützt`,
               beschreibung: `${declinedZielOption.nominativ} ist nicht allein; ${declinedZielOption.nominativPersonalpronomen} hat unterwürfige Geschöpfe, die ${declinedZielOption.akkusativ} in irgendeiner Weise helfen, was die Erfüllung des Auftrags oder des Kopfgelds wahrscheinlich sehr viel schwieriger macht`,
               optionen: [{
-                  name: `besteht aus Humanoiden`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird von Humanoiden unterstützt`,
                   text: `${declinedZielOption.nominativ} hat humanoide Verbündete, die ${declinedZielOption.akkusativ} helfen. Vielleicht beten sie ${declinedZielOption.akkusativ} an, werden dafür bezahlt, zu dienen, sind versklavt oder sogar von Gedankenkontrolle beeinflusst`
               }, {
-                  name: `besteht aus Monstrositäten`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird von Monstrositäten unterstützt`,
                   text: `${declinedZielOption.nominativ} hat ein oder mehrere Monster unter seiner Kontrolle. Dabei kann es sich um ein Tier, ein Reittier, einen Wächter, einen Gefährten oder etwas anderes handeln`
               }, {
-                  name: `besteht aus Untoten`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird von Untoten unterstützt`,
                   text: `Wankende, wiederbelebte Leichen unterstützen ${declinedZielOption.akkusativ}. Vielleicht wurden sie von ${declinedZielOption.dativPersonalpronomen} erschaffen oder werden einfach von ${declinedZielOption.dativPersonalpronomen} kontrolliert`
               }, {
-                  name: `besteht aus Untoten`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wird von Konstrukten unterstützt`,
                   text: `${declinedZielOption.nominativ} hat belebte Konstrukte unter seiner Kontrolle. Sie können einen bestimmten Zweck erfüllen oder einfach nur nützlich sein. Vielleicht hat ${declinedZielOption.nominativ} sie erschaffen`
               }]
           }, {
@@ -1595,16 +1601,16 @@
               text: `${declinedZiel.nominativ} ergreift Maßnahmen, um sich zu schützen`,
               beschreibung: `${declinedZielOption.nominativ} wartet nicht unvorbereitet auf die Ausführung des Auftrags oder des Kopfgelds. Vielmehr hat ${declinedZielOption.nominativPersonalpronomen} gewisse Bemühungen unternommen, dies zu verhindern und sich vor Leid zu schützen`,
               optionen: [{
-                  name: `bestehen aus Fallen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} stellt Fallen auf`,
                   text: `${declinedZielOption.nominativ} hat Fallen geschaffen oder gekauft, um sich damit zu umstellen, vielleicht in seinem Versteck, Verließ, Hauptquartier oder ähnlichem. Die Fallen können darauf ausgelegt sein, zu behindern, zu blockieren, zu festzuhalten, zu verletzen oder sogar zu töten`
               }, {
-                  name: `bestehen aus Schutzzaubern`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} wirkt Schutzzauber`,
                   text: `${declinedZielOption.nominativ} verfügt über magische Schutzzauber, die ${declinedZielOption.nominativPersonalpronomen} schützen. Die Schutzzauber können verhindern, dass Magie in der Nähe eingesetzt wird, Hellsehen und Wahrsagemagie stoppen oder ${declinedZielOption.nominativPossesivpronomenFemininum} Rüstung oder Gesundheit stärken`
               }, {
-                  name: `bestehen aus einer Gruppe von Schergen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} befiehlt eine Gruppe von Schergen`,
                   text: `${declinedZielOption.nominativ} hat Schergen angeheuert, erschaffen, überredet oder anderweitig dazu gebracht, ${declinedZielOption.nominativPossesivpronomenPlural} Wächter zu sein und ${declinedZielOption.nominativPersonalpronomen} zu beschützen`
               }, {
-                  name: `bestehen aus Gesetzen und politischen Bündnissen`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} nutzt Gesetze und politische Bündnisse zu ${declinedZielOption.dativPossesivpronomenMaskulinum} Vorteil`,
                   text: `${declinedZielOption.nominativ} hat eine Gesetzgebung oder ein Gesetz benutzt, um sich vor Leid zu schützen. Vielleicht hat ${declinedZielOption.nominativPersonalpronomen} ein mächtiges Bündnis geschlossen, das es schützt`
               }]
           }, {
@@ -1612,16 +1618,16 @@
               text: `${declinedZiel.nominativ} reist in ein anderes Reich`,
               beschreibung: `${declinedZielOption.nominativ} reist auf irgendeine Weise in ein anderes Reich, um dem Auftrag oder dem Kopfgeld zu entgehen, das auf sie ausgesetzt wurde. Die Art der Reise kann magisch oder gewöhnlich sein`,
               optionen: [{
-                  name: `hat ein anderes Land als Ziel`,
-                  text: `${declinedZielOption.nominativ} reist sich von einem Land oder einer Region zu einem anderen`
+                  name: `Ziel ist ein anderes Land`,
+                  text: `${declinedZielOption.nominativ} reist von einem Land oder einer Region zu einem anderen`
               }, {
-                  name: `hat einen anderen Kontinent als Ziel`,
-                  text: `${declinedZielOption.nominativ} reist sich von einem Kontinent oder Reich zu einem anderen`
+                  name: `Ziel ist ein anderer Kontinent`,
+                  text: `${declinedZielOption.nominativ} reist von einem Kontinent oder Reich zu einem anderen`
               }, {
-                  name: `hat eine andere Welt als Ziel`,
-                  text: `${declinedZielOption.nominativ} reist sich von einer Welt in eine andere, wahrscheinlich mit Hilfe von Magie`
+                  name: `Ziel ist eine andere Welt`,
+                  text: `${declinedZielOption.nominativ} reist von einer Welt in eine andere, wahrscheinlich mit Hilfe von Magie`
               }, {
-                  name: `hat eine andere Ebene als Ziel`,
+                  name: `Ziel ist eine andere Ebene der Existenz`,
                   text: `${declinedZielOption.nominativ} reist von einer Ebene zu einer anderen, durch Teleportation oder ein Portal`
               }]
           }, {
@@ -1629,23 +1635,23 @@
               text: `${declinedZiel.nominativ} wird durch Magie geschützt`,
               beschreibung: `${declinedZielOption.nominativ} ist mit einem magischen Schutz versehen, der die Erfüllung des Auftrags oder des Kopfgelds erschwert. Die Magie kann von einer anderen Person auf es ausgeübt worden sein, oder ${declinedZielOption.nominativPersonalpronomen} hat es selbst gewirkt`,
               optionen: [{
-                  name: `führt zur Unsichbarkeit ${declinedZielOption.genitiv}`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} schützt sich durch Unsichtbarkeit`,
                   text: `${declinedZielOption.nominativ} ist unglaublich verstohlen und kann nicht aufgespürt werden. ${declinedZielOption.nominativPersonalpronomen} kann nur entdeckt werden, wenn ${declinedZielOption.nominativPersonalpronomen} aus erster Hand gesehen wird`
               }, {
-                  name: `führt zu einer illusorischen Tarnung`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} schützt sich mit einer illusorischen Tarnung`,
                   text: `${declinedZielOption.nominativ} ist durch eine Art Illusion geschützt, die sein wahres Aussehen verschleiert`
               }, {
-                  name: `führt zur Teleportationsfähigkeit`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} verfügt über eine Teleportationsfähigkeit`,
                   text: `${declinedZielOption.nominativ} hat die Fähigkeit, sich von einem Ort zum anderen zu teleportieren, was ${declinedZielOption.akkusativ} ermöglicht, sofort zu fliehen, sobald ${declinedZielOption.nominativPersonalpronomen} Gefahr wittert`
               }, {
-                  name: `führt zu einer Fähigkeitsverbesserung`,
+                  name: `${declinedZielOption.nominativPersonalpronomen} verbessert seine Fähigkeiten durch Magie`,
                   text: `${declinedZielOption.nominativ} verfügt über eine Verzauberung, die ${declinedZielOption.nominativPossesivpronomenPlural} Fähigkeiten verbessert. Dadurch kann ${declinedZielOption.nominativPersonalpronomen} stärker, schneller, schlauer, wachsamer oder ähnliches sein`
               }]
           }, ];
-
+      
           //Wählt eine zufällige Entwicklung aus
           const entwicklung = getRandomText(entwicklungen);
-
+      
           //Führt Variablendeklarationen und Zuweisungen für Entwicklungen durch
           const entwicklungData = entwicklung;
           const entwicklungName = entwicklungData.name;
@@ -1656,12 +1662,30 @@
           const entwicklungOptionName = entwicklungOption.name;
           const entwicklungOptionText = entwicklungOption.text;
           const entwicklungOptionBeschreibung = entwicklungOption.beschreibung;
-
+      
           // Erzeugt einen Quest-Satz mit dem Akteur, dem Ziel, einer Aktion, einer Absicht und einer Entwicklung
-          const questSentence = `${declinedAkteur.nominativEin} heuert euch an, um ${aktionText}, ${absichtText}, aber ${entwicklungText}. \n\nDer Auftraggeber ist ${declinedAkteur.nominativEin}. ${declinedAkteur.nominativ} ${akteurText}. Bei ${declinedAkteur.dativ} handelt es sich um ${declinedAkteurOption.akkusativEin}. ${declinedAkteurOption.nominativ} ${akteurOptionText}.\n\nDas Ziel ist ${declinedZiel.nominativEin}. ${declinedZiel.nominativ} ${zielText}. Bei ${declinedZiel.dativ} handelt es sich um ${declinedZielOption.akkusativEin}. ${declinedZielOption.nominativ} ${zielOptionText}.\n\nDie Aufgabe ist ${aktionName}. ${aktionBeschreibung}. ${aktionName} ${aktionOptionName}. ${aktionOptionText}. \n\nDie Absicht ist ${absichtName}. ${absichtBeschreibung}. ${absichtName} ${absichtOptionName}. ${absichtOptionText}.\n\nDie unerwartete Entwicklung ist ${entwicklungName}. ${entwicklungBeschreibung}. ${entwicklungName} ${entwicklungOptionName}. ${entwicklungOptionText}.\n\n`;
-
-          // Generiert einen Großbuchstaben für den ersten Buchstaben jedes Satzes
-          const questSentenceCapitalized = questSentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
+          const questSentence = `<strong>${declinedAkteur.nominativEin} heuert euch an, um ${aktionText}, ${absichtText}, aber ${entwicklungText}.</strong>\n\nDer Auftraggeber ist ${declinedAkteur.nominativEin}. ${declinedAkteur.nominativ} ${akteurText}. Bei ${declinedAkteur.dativ} handelt es sich um ${declinedAkteurOption.akkusativEin}. ${declinedAkteurOption.nominativ} ${akteurOptionText}.\n\nDas Ziel ist ${declinedZiel.nominativEin}. ${declinedZiel.nominativ} ${zielText}. Bei ${declinedZiel.dativ} handelt es sich um ${declinedZielOption.akkusativEin}. ${declinedZielOption.nominativ} ${zielOptionText}.\n\nDie Aufgabe ist ${aktionName}. ${aktionBeschreibung}. ${aktionOptionName}. ${aktionOptionText}. \n\nDie Absicht ist ${absichtName}. ${absichtBeschreibung}. ${absichtOptionName}. ${absichtOptionText}.\n\nDie unerwartete Entwicklung ist ${entwicklungName}. ${entwicklungBeschreibung}. ${entwicklungOptionName}. ${entwicklungOptionText}.\n\n`;
+      
+      function capitalizeSentencesWithHTML(text) {
+      // Zerlege den Text in Sätze und HTML-Tags
+      const sentencesWithHTML = text.split(/(\.\n\n|<[^>]*>)/g);
+      
+      // Großschreibung des Textes ohne HTML-Tags
+      let capitalizedText = '';
+      for (let i = 0; i < sentencesWithHTML.length; i++) {
+      const sentence = sentencesWithHTML[i];
+      if (!sentence.startsWith('<')) {
+      capitalizedText += sentence.replace(/(^\w|\.\s*\w)/g, (match) => match.toUpperCase());
+      } else {
+      capitalizedText += sentence;
+      }
+      }
+      
+      return capitalizedText;
+      }
+      
+      const questSentenceCapitalized = capitalizeSentencesWithHTML(questSentence);
+      
           return questSentenceCapitalized;
       }
       // Erstellt die Funktion zum Kopieren der generierten Ergebnisse in die Zwischenablage
@@ -1673,11 +1697,11 @@
           document.execCommand('copy');
           document.body.removeChild(tempElement);
       }
-
+      
       // on-click events
       btnGenerate.addEventListener('click', (event) => {
           event.preventDefault();
-
+      
           // clear existing results
           const container = document.getElementById('container');
           container.querySelectorAll('li').forEach((li) => li.remove());
@@ -1685,15 +1709,15 @@
           for (let i = 0; i < numQuests; i++) {
               const quest = generateQuest();
               const li = document.createElement('li');
-              li.textContent = quest;
+              li.innerHTML = quest;
               container.appendChild(li);
           }
       });
-
+      
       // Fügt einen Event Listener hinzu, um das Standardverhalten des 'btnClear'-Buttons zu verhindern
       btnClear.addEventListener('click', (event) => {
           event.preventDefault();
-
+      
           // Entfernt bisher generierte Resulate
           const container = document.getElementById('container');
           container.querySelectorAll('li').forEach((li) => li.remove());
@@ -1703,7 +1727,7 @@
           event.preventDefault();
           const container = document.getElementById('container');
           const questElements = container.querySelectorAll('li');
-
+      
           if (questElements.length > 0) {
               const namesList = Array.from(questElements).map((li) => li.textContent).join('\n');
               copyToClipboard(namesList);
@@ -1712,19 +1736,19 @@
               alert('Die Liste ist leer.');
           }
       });
-
+      
       // Fügt einen Textknoten 'Anzahl der Quests: ' sowie die Felder 'numQuestsField', den Button 'btnGenerate' und den Button 'btnClear' dem Dokumentkörper hinzu.
-      document.body.appendChild(document.createTextNode('Anzahl der Quests: '));
+      document.body.appendChild(document.createTextNode('Quest-Anzahl: '));
       document.body.appendChild(numQuestsField);
       document.body.appendChild(btnGenerate);
       document.body.appendChild(btnCopy);
       document.body.appendChild(btnClear);
-
+      
       // Fügt einen Container für die Ergebnisse hinzu
       const container = document.createElement('ul');
       container.id = 'container';
       document.body.appendChild(container);
-
+            
     </script>
   </body>
 </html>
